@@ -1,9 +1,10 @@
 package com.example.pokebox.activities
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
+//import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -20,6 +21,7 @@ class ViewCard : AppCompatActivity() {
 
     lateinit var pset : PokemonSet
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -67,9 +69,9 @@ class ViewCard : AppCompatActivity() {
         name.text = "${card?.name}"
         number.text = "${card?.number}/${pset.printedTotal}"
         supertype.text = "${card?.supertype}"
-        subtype.text = "${card?.subtypes?.joinToString(", ") ?: "N/A"}"
+        subtype.text = card?.subtypes?.joinToString(", ") ?: "-"
         set.text = "Set: ${pset.name}"
-        type.text = "Type: ${card?.types?.joinToString(", ") ?: "N/A"}"
+        type.text = "Type: ${card?.types?.joinToString(", ") ?: "-"}"
         rarity.text = "Rarity: ${card?.rarity}"
         artist.text = "Artist: ${card?.artist ?: "Info Not Available"}"
 

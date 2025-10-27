@@ -27,6 +27,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
         android:text="@string/buscar_por_sets"
+        android:backgroundTint="@color/Primary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvbuscarcartas" />
@@ -40,6 +41,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
         android:text="@string/b_squeda_avanzada"
+        android:backgroundTint="@color/Primary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btListSets" />
@@ -52,10 +54,12 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
+        android:backgroundTint="@color/Primary"
         android:text="@string/progreso_sets"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.505"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvmiscolecciones" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
     <Button
         android:id="@+id/btCompMazo"
@@ -66,6 +70,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
         android:text="@string/comprobar_mazo"
+        android:backgroundTint="@color/Primary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btListSetsPerc" />
@@ -96,5 +101,33 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btAdvSearch" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@+id/tvmiscolecciones">
+
+        <Spinner
+            android:id="@+id/spColecciones"
+            android:layout_width="150dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="8dp"/>
+
+        <Button
+            android:id="@+id/btCrearColeccion"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:padding="0dp"
+            android:text="@string/bigplus"
+            style="@style/textboldbig"
+
+            android:backgroundTint="@color/Primary"/>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

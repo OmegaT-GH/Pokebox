@@ -75,7 +75,7 @@
 
     <style name="textboldauto">
 
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColor">@color/white</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">15sp</item>
         <item name="android:fontFamily">@fonts/montserrat_bold</item>
@@ -84,7 +84,7 @@
 
     <style name="textboldbigauto">
 
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColor">@color/white</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">25sp</item>
         <item name="android:fontFamily">@fonts/montserrat_bold</item>
@@ -93,7 +93,7 @@
 
     <style name="textauto">
 
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColor">@color/white</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textSize">15sp</item>
         <item name="android:fontFamily">@fonts/montserrat_regular</item>
@@ -102,7 +102,7 @@
 
     <style name="textbigauto">
 
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColor">@color/white</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textSize">25sp</item>
         <item name="android:fontFamily">@fonts/montserrat_regular</item>

@@ -7,4 +7,10 @@
     <string name="comprobar_mazo">Comprobar mazo</string>
     <string name="buscar_cartas">Buscar Cartas</string>
     <string name="mis_colecciones">Mis Colecciones</string>
+    <string name="buscar">Buscar…</string>
+    <string name="addtocollection">＋ Añadir a la colección</string>
+    <string name="filtrosdebusqueda">Filtros de búsqueda</string>
+    <string name="rangohp">Rango de HP</string>
+    <string name="bigplus">＋</string>
+    <string name="card_image">Card image</string>
 </resources>

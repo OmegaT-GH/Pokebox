@@ -62,6 +62,38 @@ class MainActivity : AppCompatActivity() {
         *
         * */
 
+        /*
+
+        * Tablas BD
+        *
+        * Set
+        * -----------------
+        * setID     Nombre
+        * me1       Mega Evolution
+        * neo1      Neo Genesis
+        *
+        * Card
+        * -----------------
+        * cardID    Set
+        * me1-102   me1
+        * neo1-5    neo1
+        *
+        * Collection
+        * -----------------
+        * colID     Nombre
+        * 1         My Collection
+        * 2         Yuka Morii Cards
+        *
+        * OwnedCards
+        * -----------------
+        * colID     cardID
+        * 1         me1-102
+        * 1         me1-59
+        * 2         me1-59
+        * 2         neo1-23
+        *
+        * */
+
         val btloadsets = findViewById<Button>(R.id.btLoadSets)
         val btsv9 = findViewById<Button>(R.id.btloadSV9)
         val btlista = findViewById<Button>(R.id.btcard)

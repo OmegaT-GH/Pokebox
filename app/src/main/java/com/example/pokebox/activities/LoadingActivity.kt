@@ -1,5 +1,6 @@
 package com.example.pokebox.activities
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.os.Looper
@@ -39,6 +40,7 @@ class LoadingActivity : AppCompatActivity() {
 
     }
 
+    @SuppressLint("SetTextI18n")
     private fun loadCards() {
 
         Thread {
@@ -63,6 +65,11 @@ class LoadingActivity : AppCompatActivity() {
                     val Creader = JsonReader(CinputStream.reader())
                     val Ctype = object : TypeToken<List<PokemonCard>>() {}.type
                     val cards: List<PokemonCard> = Gson().fromJson(Creader, Ctype)
+
+                    cards.forEach { card ->
+                        card.releaseDate = set.releaseDate
+                    }
+
                     CardRepository.addCards(cards)
                     Creader.close()
 

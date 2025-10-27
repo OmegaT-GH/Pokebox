@@ -1,31 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/main"
     android:layout_width="match_parent"
-    android:background="@color/Background"
     android:layout_height="match_parent"
-    tools:context=".activities.AdvancedSearch">
+    android:background="@color/Background">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/tbarSearch"
+    <LinearLayout
+        android:layout_marginTop="?attr/actionBarSize"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/DarkSecondary"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/editTextText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="text"
-        android:text="Name"
-        tools:layout_editor_absoluteX="19dp"
-        tools:layout_editor_absoluteY="73dp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:orientation="horizontal">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <Button
+                android:id="@+id/btOpenFilters"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                style="@style/textbig"
+                android:backgroundTint="@color/Primary"
+                android:text="≡"
+                android:layout_weight="1"
+                android:layout_gravity="center"/>
+
+            <EditText
+                android:id="@+id/etSearch"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:inputType="text"
+                android:hint="@string/buscar"
+                android:layout_weight="9"
+                android:layout_gravity="center"/>
+
+            <Button
+                android:id="@+id/btSearch"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:text="Buscar"
+                android:backgroundTint="@color/Primary"
+                android:layout_weight="2"
+                android:layout_gravity="center" />
+
+        </LinearLayout>
+
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:orientation="horizontal"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/textboldbig"
+                android:text="  Ordenar por:    "
+                android:layout_gravity="center_vertical"/>
+
+            <Spinner
+                android:id="@+id/spOrdenar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="text"
+                android:layout_gravity="center_vertical"/>
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rviewfilteredsearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/scrFiltro"
+        android:layout_width="280dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@color/DarkPrimary"
+        android:padding="10dp">
+
+        <LinearLayout
+            android:id="@+id/contFiltro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"/>
+
+    </ScrollView>
+
+
+
+
+
+</androidx.drawerlayout.widget.DrawerLayout>

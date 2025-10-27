@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.Button
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.pokebox.R
@@ -21,10 +22,12 @@ class MainMenu : AppCompatActivity() {
             insets
         }
 
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+
         val btsetsearch = findViewById<Button>(R.id.btListSets)
         val btadvsearch = findViewById<Button>(R.id.btAdvSearch)
-        val btsetperc = findViewById<Button>(R.id.btListSetsPerc)
-        val btcompmazo = findViewById<Button>(R.id.btCompMazo)
+        //val btsetperc = findViewById<Button>(R.id.btListSetsPerc)
+        //val btcompmazo = findViewById<Button>(R.id.btCompMazo)
 
         btsetsearch.setOnClickListener {
             val i = Intent(this, ListSetsSearch::class.java)

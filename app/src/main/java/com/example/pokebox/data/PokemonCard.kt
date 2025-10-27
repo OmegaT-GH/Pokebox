@@ -26,7 +26,8 @@ data class PokemonCard(
     val flavorText: String?,
     val nationalPokedexNumbers: List<Int>?,
     val legalities: Legalities?,
-    val images: CardImages?
+    val images: CardImages?,
+    var releaseDate: String? = null
 )  : Parcelable
 
 @Parcelize
