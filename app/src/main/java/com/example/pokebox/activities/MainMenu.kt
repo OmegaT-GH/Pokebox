@@ -9,6 +9,8 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.pokebox.R
+import com.example.pokebox.bd.DBHelper
+import com.example.pokebox.bd.InitializeBD
 import com.example.pokebox.data.CardRepository
 
 class MainMenu : AppCompatActivity() {
@@ -23,6 +25,14 @@ class MainMenu : AppCompatActivity() {
         }
 
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+
+        // NO SEPARAR BLOQUE ------------
+        val db = DBHelper(this)
+        val initdb = InitializeBD()
+        initdb.setsycartas(this, db)
+        // ------------------------------
+
+
 
         val btsetsearch = findViewById<Button>(R.id.btListSets)
         val btadvsearch = findViewById<Button>(R.id.btAdvSearch)

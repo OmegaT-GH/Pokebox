@@ -86,11 +86,11 @@ class MainActivity : AppCompatActivity() {
         *
         * OwnedCards
         * -----------------
-        * colID     cardID
-        * 1         me1-102
-        * 1         me1-59
-        * 2         me1-59
-        * 2         neo1-23
+        * colID     cardID      amount
+        * 1         me1-102     3
+        * 1         me1-59      1
+        * 2         me1-59      1
+        * 2         neo1-23     2
         *
         * */
 
