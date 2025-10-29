@@ -115,7 +115,7 @@
 
         <Spinner
             android:id="@+id/spColecciones"
-            android:layout_width="150dp"
+            android:layout_width="300dp"
             android:layout_height="48dp"
             android:layout_marginEnd="8dp"/>
 

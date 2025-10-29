@@ -10,4 +10,5 @@
     <color name="DarkPrimary">#FF3C5AA6</color>
     <color name="DarkSecondary">#FFC7A008</color>
     <color name="LowOpacityDarkerPrimary">#99877B20</color>
+    <color name="DisabledButton">#FF676767</color>
 </resources>

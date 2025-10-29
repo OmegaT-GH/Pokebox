@@ -205,13 +205,13 @@ class AdvancedSearch : AppCompatActivity() {
             val adapter = object : ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, spinnerOptions) {
                 override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
                     val v = super.getView(position, convertView, parent) as TextView
-                    v.setTextAppearance(context, R.style.text) // aquí aplicas tu estilo
+                    v.setTextAppearance(R.style.text)
                     return v
                 }
 
                 override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
                     val v = super.getDropDownView(position, convertView, parent) as TextView
-                    v.setTextAppearance(context, R.style.text) // mismo estilo para dropdown
+                    v.setTextAppearance(R.style.text)
                     return v
                 }
             }

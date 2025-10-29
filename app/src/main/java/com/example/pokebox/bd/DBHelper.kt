@@ -16,11 +16,11 @@ class DBHelper(context: Context?) :
 
     override fun onCreate(db: SQLiteDatabase?) {
         val CREATE_TABLA_SETS =
-            "CREATE TABLE ${TABLA_SETS} ($setID TEXT PRIMARY KEY, $setName TEXT)"
+            "CREATE TABLE ${TABLA_SETS} ($setID TEXT PRIMARY KEY, $setName TEXT, $setCode TEXT)"
         val CREATE_TABLA_CARTAS =
             "CREATE TABLE ${TABLA_CARTAS} ($cardID TEXT PRIMARY KEY NOT NULL, $setID TEXT NOT NULL, FOREIGN KEY ($setID) REFERENCES $TABLA_SETS($setID))"
         val CREATE_TABLA_COLECCIONES =
-            "CREATE TABLE ${TABLA_COLECCIONES} ($colID INTEGER PRIMARY KEY AUTOINCREMENT, $colName TEXT)"
+            "CREATE TABLE ${TABLA_COLECCIONES} ($colID INTEGER PRIMARY KEY AUTOINCREMENT, $colName TEXT UNIQUE)"
         val CREATE_TABLA_CARTASCOLECCION =
             "CREATE TABLE ${TABLA_CARTASCOLECCION} ($cardID TEXT, $colID INTEGER, $ccamount INTEGER, PRIMARY KEY ($cardID, $colID), FOREIGN KEY ($cardID) REFERENCES $TABLA_CARTAS($cardID), FOREIGN KEY ($colID) REFERENCES $TABLA_COLECCIONES($colID))"
 
@@ -39,11 +39,12 @@ class DBHelper(context: Context?) :
         onCreate(db)
     }
 
-    fun addSet(id: String?, name: String?, db: SQLiteDatabase? = null): Boolean {
+    fun addSet(id: String?, name: String?, code: String?, db: SQLiteDatabase? = null): Boolean {
         val database = db ?: writableDatabase
         val values = ContentValues().apply {
             put(setID, id)
             put(setName, name)
+            put(setCode, code)
         }
         return database.insert(TABLA_SETS, null, values) != -1L
     }
@@ -67,12 +68,33 @@ class DBHelper(context: Context?) :
         }
     }
 
+    fun addCardtoCollection (colIDq: Int?, cardIDq: String?, db: SQLiteDatabase): Boolean {
+        val values = ContentValues().apply {
+            put(colID, colIDq)
+            put (cardID, cardIDq)
+            put (ccamount, 0)
+        }
+
+        return db.insert(TABLA_CARTASCOLECCION, null, values) != 1L
+    }
+
     fun getSetByID (setIDq: String?): Cursor {
         return readableDatabase.rawQuery("SELECT * FROM $TABLA_SETS WHERE $setID = ?", arrayOf(setIDq))
     }
 
     fun getCardByID (cardIDq: String?): Cursor {
         return readableDatabase.rawQuery("SELECT * FROM $TABLA_CARTAS WHERE $cardID = ?", arrayOf(cardIDq))
+    }
+
+    fun getCardsFromSet (setIDq: String?): Cursor {
+        return readableDatabase.rawQuery("SELECT * FROM $TABLA_CARTAS WHERE $setID = ?", arrayOf(setIDq))
+    }
+
+    fun getCollectionFromName (colnameq: String?): Int? {
+        val cur: Cursor = readableDatabase.rawQuery("SELECT $colID FROM $TABLA_COLECCIONES WHERE $colName = ?", arrayOf(colnameq))
+        cur.use {
+            return if (it.moveToFirst()) it.getInt(it.getColumnIndexOrThrow(colID)) else null
+        }
     }
 
     fun getCardAmount (colIDq: Int?, cardIDq: String?): Int {
@@ -126,6 +148,7 @@ class DBHelper(context: Context?) :
         const val TABLA_CARTASCOLECCION = "CartasColeccion"
         const val setID = "setID"
         const val setName = "setName"
+        const val setCode = "setCode"
         const val cardID = "cardID"
         const val colID = "colID"
         const val colName = "colName"
