@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_margin="10dp"
+    android:paddingTop="15dp"
+    android:paddingBottom="15dp"
+    android:paddingStart="15dp"
+    android:paddingEnd="15dp"
+    android:background="@drawable/rounded_item_background">
+
+    <ImageView
+        android:id="@+id/ivsplogo"
+        android:contentDescription="@string/set_logo"
+        android:layout_width="160dp"
+        android:layout_height="90dp"
+        android:layout_marginBottom="20dp"
+        android:layout_gravity="center"
+        />
+
+    <TextView
+        android:id="@+id/tvspname"
+        style="@style/textbold"
+        android:textAlignment="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tvspperc"
+            style="@style/textbold"
+            android:textAlignment="center"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:layout_weight="2" />
+
+        <ProgressBar
+            android:id="@+id/pbarperc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_marginEnd="20dp"
+            android:layout_weight="6"/>
+
+        <TextView
+            android:id="@+id/tvspcards"
+            style="@style/textbold"
+            android:textAlignment="center"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3" />
+
+    </LinearLayout>
+
+</LinearLayout>

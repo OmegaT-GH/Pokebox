@@ -1,5 +1,6 @@
 package com.example.pokebox.adapters
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -11,11 +12,11 @@ import com.bumptech.glide.Glide
 import com.example.pokebox.R
 import com.example.pokebox.data.PokemonSet
 
-class ListSetsSearchAdapter(
+class ListSetsAdapter(
     private val context: Context,
     private val sets: List<PokemonSet>,
     private val onItemClick: ((PokemonSet) -> Unit)? = null
-) : RecyclerView.Adapter<ListSetsSearchAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<ListSetsAdapter.ViewHolder>() {
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val setLogo: ImageView = itemView.findViewById(R.id.SetLogo)
@@ -23,6 +24,7 @@ class ListSetsSearchAdapter(
         val setName: TextView = itemView.findViewById(R.id.SetName)
         val setCards: TextView = itemView.findViewById(R.id.SetCards)
 
+        @SuppressLint("SetTextI18n")
         fun bind(set: PokemonSet) {
             Glide.with(context).load(set.images?.logo).into(setLogo)
             Glide.with(context).load(set.images?.symbol).override(60, 60).into(setSymbol)

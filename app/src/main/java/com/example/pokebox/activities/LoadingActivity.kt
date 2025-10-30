@@ -47,11 +47,11 @@ class LoadingActivity : AppCompatActivity() {
 
             val gson = Gson()
 
-            val SinputStream = assets.open("json/sets/en.json")
-            val Sreader = JsonReader(SinputStream.reader())
-            val Stype = object : TypeToken<List<PokemonSet>>() {}.type
-            val sets: List<PokemonSet> = gson.fromJson(Sreader, Stype)
-            Sreader.close()
+            val sinputStream = assets.open("json/sets/en.json")
+            val sreader = JsonReader(sinputStream.reader())
+            val stype = object : TypeToken<List<PokemonSet>>() {}.type
+            val sets: List<PokemonSet> = gson.fromJson(sreader, stype)
+            sreader.close()
 
             val totalsets = sets.size
             var loadedsets = 0
@@ -61,17 +61,17 @@ class LoadingActivity : AppCompatActivity() {
                 try {
 
                     val path = "json/cards/en/" + set.id + ".json"
-                    val CinputStream = assets.open(path)
-                    val Creader = JsonReader(CinputStream.reader())
-                    val Ctype = object : TypeToken<List<PokemonCard>>() {}.type
-                    val cards: List<PokemonCard> = Gson().fromJson(Creader, Ctype)
+                    val cinputStream = assets.open(path)
+                    val creader = JsonReader(cinputStream.reader())
+                    val ctype = object : TypeToken<List<PokemonCard>>() {}.type
+                    val cards: List<PokemonCard> = Gson().fromJson(creader, ctype)
 
                     cards.forEach { card ->
                         card.releaseDate = set.releaseDate
                     }
 
                     CardRepository.addCards(cards)
-                    Creader.close()
+                    creader.close()
 
                 } catch (e: Exception) {
                     e.printStackTrace()

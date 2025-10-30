@@ -14,11 +14,11 @@ import com.google.gson.stream.JsonReader
 class InitializeBD() {
 
     fun setsycartas(c: Context, db: DBHelper) {
-        val SinputStream = c.assets.open("json/sets/en.json")
-        val Sreader = JsonReader(SinputStream.reader())
-        val Stype = object : TypeToken<List<PokemonSet>>() {}.type
-        val sets: List<PokemonSet> = Gson().fromJson(Sreader, Stype)
-        Sreader.close()
+        val sinputStream = c.assets.open("json/sets/en.json")
+        val sreader = JsonReader(sinputStream.reader())
+        val stype = object : TypeToken<List<PokemonSet>>() {}.type
+        val sets: List<PokemonSet> = Gson().fromJson(sreader, stype)
+        sreader.close()
 
         val database = db.writableDatabase
         database.transaction {
@@ -31,11 +31,11 @@ class InitializeBD() {
                     db.addSet(set.id, set.name, set.ptcgoCode, this)
 
                     val path = "json/cards/en/${set.id}.json"
-                    val CinputStream = c.assets.open(path)
-                    val Creader = JsonReader(CinputStream.reader())
-                    val Ctype = object : TypeToken<List<PokemonCard>>() {}.type
-                    val cards: List<PokemonCard> = Gson().fromJson(Creader, Ctype)
-                    Creader.close()
+                    val cinputStream = c.assets.open(path)
+                    val creader = JsonReader(cinputStream.reader())
+                    val ctype = object : TypeToken<List<PokemonCard>>() {}.type
+                    val cards: List<PokemonCard> = Gson().fromJson(creader, ctype)
+                    creader.close()
                     Log.d(null, "Cargando set: ${set.name}")
 
                     for (card in cards) {
@@ -52,11 +52,11 @@ class InitializeBD() {
         db.addCollection(name)
         val colid = db.getCollectionFromName(name)
 
-        val SinputStream = c.assets.open("json/sets/en.json")
-        val Sreader = JsonReader(SinputStream.reader())
-        val Stype = object : TypeToken<List<PokemonSet>>() {}.type
-        val sets: List<PokemonSet> = Gson().fromJson(Sreader, Stype)
-        Sreader.close()
+        val sinputStream = c.assets.open("json/sets/en.json")
+        val sreader = JsonReader(sinputStream.reader())
+        val stype = object : TypeToken<List<PokemonSet>>() {}.type
+        val sets: List<PokemonSet> = Gson().fromJson(sreader, stype)
+        sreader.close()
 
         val wdb = db.writableDatabase
         wdb.transaction {
@@ -68,7 +68,7 @@ class InitializeBD() {
                     while (it.moveToNext()) {
 
                         val cardid = it.getString(it.getColumnIndexOrThrow("cardID"))
-                        db.addCardtoCollection(colid, cardid, wdb)
+                        db.addEmptyCardtoCollection(colid, cardid, wdb)
 
                     }
                 }
@@ -79,39 +79,41 @@ class InitializeBD() {
 
     }
 
-    fun actualizarcoleccion(c: Context, db: DBHelper, cname: String) {
-        val rdb = db.readableDatabase
+    fun actualizarcoleccion(db: DBHelper, cname: String) {
         val wdb = db.writableDatabase
 
-        val colID = db.getCollectionFromName(cname)
-        if (colID == null) return
+        val colID = db.getCollectionFromName(cname) ?: return
 
-        wdb.beginTransaction()
+        wdb.transaction {
+            val allCards = mutableListOf<String>()
+            val existingCards = mutableSetOf<String>()
 
-        val allCards = rdb.rawQuery("SELECT ${DBHelper.cardID} FROM ${DBHelper.TABLA_CARTAS}", null)
-
-        allCards.use { cur ->
-            while (cur.moveToNext()) {
-                val cardID = cur.getString(cur.getColumnIndexOrThrow(DBHelper.cardID))
-
-                val existsCursor = rdb.rawQuery(
-                    "SELECT 1 FROM ${DBHelper.TABLA_CARTASCOLECCION} WHERE ${DBHelper.colID} = ? AND ${DBHelper.cardID} = ? LIMIT 1",
-                    arrayOf(colID.toString(), cardID)
-                )
-
-                val exists = existsCursor.use { it.moveToFirst() }
-
-                if (!exists) {
-                    val values = ContentValues().apply {
-                        put(DBHelper.colID, colID)
-                        put(DBHelper.cardID, cardID)
-                        put(DBHelper.ccamount, 0)
-                    }
-                    wdb.insert(DBHelper.TABLA_CARTASCOLECCION, null, values)
+            wdb.rawQuery("SELECT ${DBHelper.CARD_ID} FROM ${DBHelper.TABLA_CARTAS}", null).use { cur ->
+                while (cur.moveToNext()) {
+                    allCards.add(cur.getString(cur.getColumnIndexOrThrow(DBHelper.CARD_ID)))
                 }
             }
-        }
 
-        wdb.setTransactionSuccessful()
+            wdb.rawQuery(
+                "SELECT ${DBHelper.CARD_ID} FROM ${DBHelper.TABLA_CARTASCOLECCION} WHERE ${DBHelper.COL_ID} = ?",
+                arrayOf(colID.toString())
+            ).use { cur ->
+                while (cur.moveToNext()) {
+                    existingCards.add(cur.getString(cur.getColumnIndexOrThrow(DBHelper.CARD_ID)))
+                }
+            }
+
+            val values = ContentValues()
+            for (cardID in allCards) {
+                if (!existingCards.contains(cardID)) {
+                    values.clear()
+                    values.put(DBHelper.COL_ID, colID)
+                    values.put(DBHelper.CARD_ID, cardID)
+                    values.put(DBHelper.CC_AMOUNT, 0)
+                    insert(DBHelper.TABLA_CARTASCOLECCION, null, values)
+                }
+            }
+
+        }
     }
 }

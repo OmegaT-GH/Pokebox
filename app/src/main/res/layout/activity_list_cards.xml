@@ -5,15 +5,16 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.ListSetsSearch"
+    tools:context=".activities.ListSets"
     android:background="@color/Background">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rviewsetsearch"
+        android:id="@+id/rviewcardsearch"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

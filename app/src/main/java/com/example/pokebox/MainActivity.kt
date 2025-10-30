@@ -11,8 +11,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.bumptech.glide.Glide
-import com.example.pokebox.activities.ListSetsSearch
+import com.example.pokebox.activities.ListSets
 import com.example.pokebox.activities.MainMenu
+import com.example.pokebox.adapters.ListAdapter
 import com.example.pokebox.data.PokemonCard
 import com.example.pokebox.data.PokemonSet
 import com.google.gson.Gson
@@ -100,15 +101,15 @@ class MainActivity : AppCompatActivity() {
 
 
 
-        val SinputStream = assets.open("json/sets/en.json")
-        val Sreader = JsonReader(SinputStream.reader())
-        val Stype = object : TypeToken<List<PokemonSet>>() {}.type
-        val sets: List<PokemonSet> = Gson().fromJson(Sreader, Stype)
-        Sreader.close()
+        val sinputStream = assets.open("json/sets/en.json")
+        val sreader = JsonReader(sinputStream.reader())
+        val stype = object : TypeToken<List<PokemonSet>>() {}.type
+        val sets: List<PokemonSet> = Gson().fromJson(sreader, stype)
+        sreader.close()
 
 
         btloadsets.setOnClickListener{
-            val i = Intent(this, ListSetsSearch::class.java)
+            val i = Intent(this, ListSets::class.java)
             this.startActivity(i)
         }
 
@@ -151,11 +152,11 @@ class MainActivity : AppCompatActivity() {
         Glide.with(applicationContext).load(set?.images?.symbol).into(iview)
 
 
-        val CinputStream = assets.open("json/cards/en/" + id + ".json")
-        val Creader = JsonReader(CinputStream.reader())
-        val Ctype = object : TypeToken<List<PokemonCard>>() {}.type
-        val cards: List<PokemonCard> = Gson().fromJson(Creader, Ctype)
-        Creader.close()
+        val cinputStream = assets.open("json/cards/en/$id.json")
+        val creader = JsonReader(cinputStream.reader())
+        val ctype = object : TypeToken<List<PokemonCard>>() {}.type
+        val cards: List<PokemonCard> = Gson().fromJson(creader, ctype)
+        creader.close()
 
         val adapter = ListAdapter(this, cards)
         listView.adapter = adapter
