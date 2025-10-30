@@ -19,7 +19,7 @@
         android:layout_marginStart="20dp"
         android:layout_weight="2"
         android:adjustViewBounds="true"
-        android:contentDescription="Card Image"
+        android:contentDescription="@string/card_image"
         android:scaleType="fitCenter"
         app:srcCompat="@drawable/ic_launcher_background" />
 
@@ -88,7 +88,7 @@
         <TextView
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:text="0"
+            android:text=""
             android:textSize="20sp"
             style="@style/textbold"
             android:textAlignment="center"

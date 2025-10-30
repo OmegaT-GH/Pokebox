@@ -1,8 +1,8 @@
 package com.example.pokebox.activities
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -30,14 +30,19 @@ class ListCardsSearch : AppCompatActivity() {
 
         val rview = findViewById<RecyclerView>(R.id.rviewcardsearch)
 
-        val set = intent.getParcelableExtra<PokemonSet>("pset")
+        val set = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent.getParcelableExtra("pset", PokemonSet::class.java)
+        } else {
+            @Suppress("DEPRECATION")
+            intent.getParcelableExtra<PokemonSet>("pset")
+        }
         if (set != null) {
 
-            val CinputStream = assets.open("json/cards/en/" + set.id + ".json")
-            val Creader = JsonReader(CinputStream.reader())
-            val Ctype = object : TypeToken<List<PokemonCard>>() {}.type
-            val cards: List<PokemonCard> = Gson().fromJson(Creader, Ctype)
-            Creader.close()
+            val cinputStream = assets.open("json/cards/en/" + set.id + ".json")
+            val creader = JsonReader(cinputStream.reader())
+            val ctype = object : TypeToken<List<PokemonCard>>() {}.type
+            val cards: List<PokemonCard> = Gson().fromJson(creader, ctype)
+            creader.close()
 
             val lmanager = LinearLayoutManager(this)
             rview.layoutManager = lmanager

@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activities.MainMenu"
-    android:background="@color/Background">
+    android:background="@color/Background"
+    tools:ignore="Overdraw">
 
     <ImageView
         android:id="@+id/imageView"

@@ -2,7 +2,6 @@ package com.example.pokebox.activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -29,11 +28,11 @@ class ListSetsSearch : AppCompatActivity() {
 
         val rview = findViewById<RecyclerView>(R.id.rviewsetsearch)
 
-        val SinputStream = assets.open("json/sets/en.json")
-        val Sreader = JsonReader(SinputStream.reader())
-        val Stype = object : TypeToken<List<PokemonSet>>() {}.type
-        val sets: List<PokemonSet> = Gson().fromJson(Sreader, Stype)
-        Sreader.close()
+        val sinputStream = assets.open("json/sets/en.json")
+        val sreader = JsonReader(sinputStream.reader())
+        val stype = object : TypeToken<List<PokemonSet>>() {}.type
+        val sets: List<PokemonSet> = Gson().fromJson(sreader, stype)
+        sreader.close()
 
         val lmanager = LinearLayoutManager(this)
         rview.layoutManager = lmanager

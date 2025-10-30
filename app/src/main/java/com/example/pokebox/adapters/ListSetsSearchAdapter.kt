@@ -1,5 +1,6 @@
 package com.example.pokebox.adapters
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -23,6 +24,7 @@ class ListSetsSearchAdapter(
         val setName: TextView = itemView.findViewById(R.id.SetName)
         val setCards: TextView = itemView.findViewById(R.id.SetCards)
 
+        @SuppressLint("SetTextI18n")
         fun bind(set: PokemonSet) {
             Glide.with(context).load(set.images?.logo).into(setLogo)
             Glide.with(context).load(set.images?.symbol).override(60, 60).into(setSymbol)

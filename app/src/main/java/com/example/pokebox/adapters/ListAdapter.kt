@@ -1,4 +1,4 @@
-package com.example.pokebox
+package com.example.pokebox.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -8,6 +8,7 @@ import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
+import com.example.pokebox.R
 import com.example.pokebox.data.PokemonCard
 
 class ListAdapter(private val context: Context, private val cards: List<PokemonCard>) : BaseAdapter() {

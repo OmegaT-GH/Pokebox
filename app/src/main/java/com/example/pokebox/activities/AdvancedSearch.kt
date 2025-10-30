@@ -20,7 +20,7 @@ import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import com.example.pokebox.DEBUG_ListFilters
+import com.example.pokebox.DEBUGListFilters
 import com.example.pokebox.R
 import com.example.pokebox.data.CardRepository
 import androidx.core.view.isGone
@@ -91,7 +91,7 @@ class AdvancedSearch : AppCompatActivity() {
         addSortSection()
 
         btdebug.setOnClickListener {
-            val i = Intent(this, DEBUG_ListFilters::class.java)
+            val i = Intent(this, DEBUGListFilters::class.java)
             this.startActivity(i)
         }
 
