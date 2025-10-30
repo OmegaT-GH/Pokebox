@@ -8,6 +8,7 @@
 
     <ImageView
         android:id="@+id/ImagenCarta"
+        android:contentDescription="@string/imagen_carta"
         android:layout_width="60dp"
         android:layout_height="80dp"
         android:scaleType="centerCrop"/>

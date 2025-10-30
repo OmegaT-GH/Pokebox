@@ -13,6 +13,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.bumptech.glide.Glide
 import com.example.pokebox.activities.ListSetsSearch
 import com.example.pokebox.activities.MainMenu
+import com.example.pokebox.adapters.ListAdapter
 import com.example.pokebox.data.PokemonCard
 import com.example.pokebox.data.PokemonSet
 import com.google.gson.Gson
@@ -62,17 +63,49 @@ class MainActivity : AppCompatActivity() {
         *
         * */
 
+        /*
+
+        * Tablas BD
+        *
+        * Set
+        * -----------------
+        * setID     Nombre
+        * me1       Mega Evolution
+        * neo1      Neo Genesis
+        *
+        * Card
+        * -----------------
+        * cardID    Set
+        * me1-102   me1
+        * neo1-5    neo1
+        *
+        * Collection
+        * -----------------
+        * colID     Nombre
+        * 1         My Collection
+        * 2         Yuka Morii Cards
+        *
+        * OwnedCards
+        * -----------------
+        * colID     cardID      amount
+        * 1         me1-102     3
+        * 1         me1-59      1
+        * 2         me1-59      1
+        * 2         neo1-23     2
+        *
+        * */
+
         val btloadsets = findViewById<Button>(R.id.btLoadSets)
         val btsv9 = findViewById<Button>(R.id.btloadSV9)
         val btlista = findViewById<Button>(R.id.btcard)
 
 
 
-        val SinputStream = assets.open("json/sets/en.json")
-        val Sreader = JsonReader(SinputStream.reader())
-        val Stype = object : TypeToken<List<PokemonSet>>() {}.type
-        val sets: List<PokemonSet> = Gson().fromJson(Sreader, Stype)
-        Sreader.close()
+        val sinputStream = assets.open("json/sets/en.json")
+        val sreader = JsonReader(sinputStream.reader())
+        val stype = object : TypeToken<List<PokemonSet>>() {}.type
+        val sets: List<PokemonSet> = Gson().fromJson(sreader, stype)
+        sreader.close()
 
 
         btloadsets.setOnClickListener{
@@ -119,11 +152,11 @@ class MainActivity : AppCompatActivity() {
         Glide.with(applicationContext).load(set?.images?.symbol).into(iview)
 
 
-        val CinputStream = assets.open("json/cards/en/" + id + ".json")
-        val Creader = JsonReader(CinputStream.reader())
-        val Ctype = object : TypeToken<List<PokemonCard>>() {}.type
-        val cards: List<PokemonCard> = Gson().fromJson(Creader, Ctype)
-        Creader.close()
+        val cinputStream = assets.open("json/cards/en/$id.json")
+        val creader = JsonReader(cinputStream.reader())
+        val ctype = object : TypeToken<List<PokemonCard>>() {}.type
+        val cards: List<PokemonCard> = Gson().fromJson(creader, ctype)
+        creader.close()
 
         val adapter = ListAdapter(this, cards)
         listView.adapter = adapter

@@ -1,5 +1,6 @@
 package com.example.pokebox.adapters
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -26,6 +27,7 @@ class ListCardsSearchAdapter (
         val cardRarity: TextView = itemView.findViewById(R.id.CardRarity)
         val cardSupertype: TextView = itemView.findViewById(R.id.CardSuperType)
 
+        @SuppressLint("SetTextI18n")
         fun bind(card: PokemonCard) {
             Glide.with(context).load(card.images?.small).fitCenter().into(cardImage)
             cardName.text = card.name

@@ -7,4 +7,20 @@
     <string name="comprobar_mazo">Comprobar mazo</string>
     <string name="buscar_cartas">Buscar Cartas</string>
     <string name="mis_colecciones">Mis Colecciones</string>
+    <string name="buscar">Buscar…</string>
+    <string name="addtocollection">＋ Añadir a la colección</string>
+    <string name="filtrosdebusqueda">Filtros de búsqueda</string>
+    <string name="rangohp">Rango de HP</string>
+    <string name="bigplus">＋</string>
+    <string name="card_image">Card image</string>
+    <string name="test">test</string>
+    <string name="set_logo">Set Logo</string>
+    <string name="set_symbol">Set Symbol</string>
+    <string name="imagen_carta">Imagen Carta</string>
+    <string name="three_lines">≡</string>
+    <string name="buscarsinpuntos">Buscar</string>
+    <string name="ordenar_por">Ordenar por:</string>
+    <string name="journey_together">Journey Together</string>
+    <string name="lista_sets">Lista Sets</string>
+    <string name="cargar_cartas_de_baseset">Cargar cartas de baseset</string>
 </resources>

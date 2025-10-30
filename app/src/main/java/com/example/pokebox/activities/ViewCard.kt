@@ -1,9 +1,11 @@
 package com.example.pokebox.activities
 
+import android.annotation.SuppressLint
+import android.os.Build
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
+//import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -20,6 +22,7 @@ class ViewCard : AppCompatActivity() {
 
     lateinit var pset : PokemonSet
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -30,7 +33,12 @@ class ViewCard : AppCompatActivity() {
             insets
         }
 
-        val card = intent.getParcelableExtra<PokemonCard>("pcard")
+        val card = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent.getParcelableExtra("pcard", PokemonCard::class.java)
+        } else {
+            @Suppress("DEPRECATION")
+            intent.getParcelableExtra<PokemonCard>("pcard")
+        }
 
         val ivcard = findViewById<ImageView>(R.id.ivCardLarge)
         val name = findViewById<TextView>(R.id.tvCardName)
@@ -42,11 +50,11 @@ class ViewCard : AppCompatActivity() {
         val rarity = findViewById<TextView>(R.id.tvCardRarity)
         val artist = findViewById<TextView>(R.id.tvCardArtist)
 
-        val SinputStream = assets.open("json/sets/en.json")
-        val Sreader = JsonReader(SinputStream.reader())
-        val Stype = object : TypeToken<List<PokemonSet>>() {}.type
-        val sets: List<PokemonSet> = Gson().fromJson(Sreader, Stype)
-        Sreader.close()
+        val sinputStream = assets.open("json/sets/en.json")
+        val sreader = JsonReader(sinputStream.reader())
+        val stype = object : TypeToken<List<PokemonSet>>() {}.type
+        val sets: List<PokemonSet> = Gson().fromJson(sreader, stype)
+        sreader.close()
 
         val cardid = card?.id
         val setid = cardid?.substringBefore("-")
@@ -67,9 +75,9 @@ class ViewCard : AppCompatActivity() {
         name.text = "${card?.name}"
         number.text = "${card?.number}/${pset.printedTotal}"
         supertype.text = "${card?.supertype}"
-        subtype.text = "${card?.subtypes?.joinToString(", ") ?: "N/A"}"
+        subtype.text = card?.subtypes?.joinToString(", ") ?: "-"
         set.text = "Set: ${pset.name}"
-        type.text = "Type: ${card?.types?.joinToString(", ") ?: "N/A"}"
+        type.text = "Type: ${card?.types?.joinToString(", ") ?: "-"}"
         rarity.text = "Rarity: ${card?.rarity}"
         artist.text = "Artist: ${card?.artist ?: "Info Not Available"}"
 
