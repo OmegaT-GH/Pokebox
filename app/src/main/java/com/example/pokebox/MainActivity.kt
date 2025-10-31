@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.bumptech.glide.Glide
-import com.example.pokebox.activities.ListSetsSearch
+import com.example.pokebox.activities.ListSets
 import com.example.pokebox.activities.MainMenu
 import com.example.pokebox.adapters.ListAdapter
 import com.example.pokebox.data.PokemonCard
@@ -109,7 +109,7 @@ class MainActivity : AppCompatActivity() {
 
 
         btloadsets.setOnClickListener{
-            val i = Intent(this, ListSetsSearch::class.java)
+            val i = Intent(this, ListSets::class.java)
             this.startActivity(i)
         }
 

@@ -86,6 +86,7 @@
         android:layout_weight="2">
 
         <TextView
+            android:id="@+id/tvamount"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:text=""

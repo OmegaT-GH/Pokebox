@@ -1,8 +1,10 @@
 package com.example.pokebox.activities
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -10,18 +12,22 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pokebox.R
-import com.example.pokebox.adapters.ListCardsSearchAdapter
+import com.example.pokebox.adapters.ListCardsAdapter
+import com.example.pokebox.bd.DBHelper
 import com.example.pokebox.data.PokemonCard
 import com.example.pokebox.data.PokemonSet
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.google.gson.stream.JsonReader
 
-class ListCardsSearch : AppCompatActivity() {
+class ListCards : AppCompatActivity() {
+
+    lateinit var rviewadap: ListCardsAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_list_cards_search)
+        setContentView(R.layout.activity_list_cards)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -29,14 +35,19 @@ class ListCardsSearch : AppCompatActivity() {
         }
 
         val rview = findViewById<RecyclerView>(R.id.rviewcardsearch)
+        val db = DBHelper(this)
+        val colid = intent.getIntExtra("col", -1)
+        Log.d(null,colid.toString())
 
         val set = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             intent.getParcelableExtra("pset", PokemonSet::class.java)
         } else {
             @Suppress("DEPRECATION")
-            intent.getParcelableExtra<PokemonSet>("pset")
+            intent.getParcelableExtra("pset")
         }
         if (set != null) {
+
+            val cardamounts = mutableListOf<Int>()
 
             val cinputStream = assets.open("json/cards/en/" + set.id + ".json")
             val creader = JsonReader(cinputStream.reader())
@@ -49,13 +60,23 @@ class ListCardsSearch : AppCompatActivity() {
             rview.clipToPadding = false
             rview.setPadding(16, 16, 16, 16)
 
-            rview.adapter = ListCardsSearchAdapter(this, set, cards) { selectedCard ->
+            for (card in cards) {
+                if (colid != -1) {
+                    val am = db.getCardAmount(colid, card.id)
+                    cardamounts.add(am)
+                } else {
+                    cardamounts.add(0)
+                }
+            }
+
+            rviewadap  = ListCardsAdapter(this, set, cards, cardamounts) { selectedCard ->
                 //Toast.makeText(this, "Pulsado: ${selectedCard.name}", Toast.LENGTH_SHORT).show()
 
                 val i = Intent(this, ViewCard::class.java)
                 i.putExtra("pcard", selectedCard)
                 this.startActivity(i)
             }
+            rview.adapter = rviewadap
 
 
 
@@ -70,5 +91,21 @@ class ListCardsSearch : AppCompatActivity() {
 
 
 
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    override fun onResume() {
+        super.onResume()
+
+        val db = DBHelper(this)
+        val colid = intent.getIntExtra("col", -1)
+
+        if (colid != -1 && this::rviewadap.isInitialized) {
+            for ((index, card) in rviewadap.cards.withIndex()) {
+                val am = db.getCardAmount(colid, card.id)
+                rviewadap.cardAmounts[index] = am
+            }
+            rviewadap.notifyDataSetChanged()
+        }
     }
 }

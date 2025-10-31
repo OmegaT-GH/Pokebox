@@ -5,6 +5,7 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.util.Log
 import kotlinx.coroutines.sync.Mutex
 
 class DBHelper(context: Context?) :
@@ -59,7 +60,7 @@ class DBHelper(context: Context?) :
         return database.insert(TABLA_CARTAS, null, values) != -1L
     }
 
-    fun addCollection (name: String?): Boolean {
+    fun addCollection(name: String?): Boolean {
         val values = ContentValues().apply {
             put(COL_NAME, name)
         }
@@ -69,40 +70,79 @@ class DBHelper(context: Context?) :
         }
     }
 
-    fun addCardtoCollection (colIDq: Int?, cardIDq: String?, db: SQLiteDatabase): Boolean {
+    fun addEmptyCardtoCollection(colIDq: Int?, cardIDq: String?, db: SQLiteDatabase): Boolean {
         val values = ContentValues().apply {
             put(COL_ID, colIDq)
-            put (CARD_ID, cardIDq)
-            put (CC_AMOUNT, 0)
+            put(CARD_ID, cardIDq)
+            put(CC_AMOUNT, 0)
         }
 
         return db.insert(TABLA_CARTASCOLECCION, null, values) != 1L
     }
 
-    fun getSetByID (setIDq: String?): Cursor {
-        return readableDatabase.rawQuery("SELECT * FROM $TABLA_SETS WHERE $SET_ID = ?", arrayOf(setIDq))
+    fun addCardtoCollection(colIDq: Int?, cardIDq: String?, db: SQLiteDatabase): Boolean {
+        val query = """
+        UPDATE $TABLA_CARTASCOLECCION
+        SET $CC_AMOUNT = $CC_AMOUNT + 1
+        WHERE $COL_ID = ? AND $CARD_ID = ?
+        """.trimIndent()
+
+        return try {
+            db.execSQL(query, arrayOf(colIDq.toString(), cardIDq))
+            true
+        } catch (e: Exception) {
+            Log.e("DB", "Error incrementando cantidad de carta", e)
+            false
+        }
+    }
+
+    fun getSetByID(setIDq: String?): Cursor {
+        return readableDatabase.rawQuery(
+            "SELECT * FROM $TABLA_SETS WHERE $SET_ID = ?",
+            arrayOf(setIDq)
+        )
     }
 
 //    fun getCardByID (cardIDq: String?): Cursor {
 //        return readableDatabase.rawQuery("SELECT * FROM $TABLA_CARTAS WHERE $cardID = ?", arrayOf(cardIDq))
 //    }
 
-    fun getCardsFromSet (setIDq: String?): Cursor {
-        return readableDatabase.rawQuery("SELECT * FROM $TABLA_CARTAS WHERE $SET_ID = ?", arrayOf(setIDq))
+    fun getCardsFromSet(setIDq: String?): Cursor {
+        return readableDatabase.rawQuery(
+            "SELECT * FROM $TABLA_CARTAS WHERE $SET_ID = ?",
+            arrayOf(setIDq)
+        )
     }
 
-    fun getCollectionFromName (colnameq: String?): Int? {
-        val cur: Cursor = readableDatabase.rawQuery("SELECT $COL_ID FROM $TABLA_COLECCIONES WHERE $COL_NAME = ?", arrayOf(colnameq))
+    fun getCollectionFromName(colnameq: String?): Int? {
+        val cur: Cursor = readableDatabase.rawQuery(
+            "SELECT $COL_ID FROM $TABLA_COLECCIONES WHERE $COL_NAME = ?",
+            arrayOf(colnameq)
+        )
         cur.use {
             return if (it.moveToFirst()) it.getInt(it.getColumnIndexOrThrow(COL_ID)) else null
         }
     }
 
-    fun getCardAmount (colIDq: Int?, cardIDq: String?): Int {
+    fun getSetswithcards(colIDq: Int?): Cursor {
+        val query = """
+        SELECT DISTINCT s.$SET_ID
+        FROM $TABLA_SETS s
+        JOIN $TABLA_CARTAS c ON s.$SET_ID = c.$SET_ID
+        JOIN $TABLA_CARTASCOLECCION cc 
+        ON c.$CARD_ID = cc.$CARD_ID AND cc.$COL_ID = ?
+        WHERE cc.$CC_AMOUNT > 0
+    """.trimIndent()
+
+        return readableDatabase.rawQuery(query, arrayOf(colIDq.toString()))
+    }
+
+    fun getCardAmount(colIDq: Int?, cardIDq: String?): Int {
         readableDatabase.use { db ->
             val cursor = db.rawQuery(
                 "SELECT $CC_AMOUNT FROM $TABLA_CARTASCOLECCION WHERE $CARD_ID = ? AND $COL_ID = ?",
-                arrayOf(cardIDq, colIDq.toString()))
+                arrayOf(cardIDq, colIDq.toString())
+            )
 
             cursor.use {
                 return if (it.moveToFirst()) {
@@ -115,9 +155,37 @@ class DBHelper(context: Context?) :
         }
     }
 
-    fun getSetPercentage (setIDq: String?, colIDq: Int?): Int {
+    fun getSetCardAmount(setIDq: String, colIDq: Int?): Int {
+        val query = """
+        SELECT COUNT(DISTINCT c.$CARD_ID) AS cardCount
+        FROM $TABLA_CARTAS c
+        JOIN $TABLA_CARTASCOLECCION cc ON c.$CARD_ID = cc.$CARD_ID
+        WHERE c.$SET_ID = ? AND cc.$COL_ID = ? AND cc.$CC_AMOUNT > 0
+    """.trimIndent()
+
+
+        val cur = readableDatabase.rawQuery(query, arrayOf(setIDq, colIDq.toString()))
+        cur.use {
+            return if (cur.moveToFirst()) cur.getInt(cur.getColumnIndexOrThrow("cardCount")) else 0
+        }
+    }
+
+    fun debugRemoveAllCollections() {
+        val wdb = writableDatabase
+        val query = """
+            DELETE FROM $TABLA_CARTASCOLECCION
+        """.trimIndent()
+        val query2 = """
+            DELETE FROM $TABLA_COLECCIONES
+        """.trimIndent()
+        wdb.execSQL(query)
+        wdb.execSQL(query2)
+    }
+
+    fun getSetPercentage(setIDq: String?, colIDq: Int?): Int {
         readableDatabase.use { db ->
-            val cursor = db.rawQuery("""
+            val cursor = db.rawQuery(
+                """
             SELECT (COUNT(DISTINCT c.$CARD_ID) * 100) / t.total AS percentage
             FROM $TABLA_CARTAS c
             LEFT JOIN $TABLA_CARTASCOLECCION cc 
@@ -128,7 +196,8 @@ class DBHelper(context: Context?) :
                 WHERE $SET_ID = ?
             ) t
             WHERE c.$SET_ID = ? AND cc.$CC_AMOUNT > 0
-        """.trimIndent(), arrayOf(colIDq.toString(), setIDq, setIDq))
+        """.trimIndent(), arrayOf(colIDq.toString(), setIDq, setIDq)
+            )
 
             cursor.use {
                 return if (it.moveToFirst()) {

@@ -68,7 +68,7 @@ class InitializeBD() {
                     while (it.moveToNext()) {
 
                         val cardid = it.getString(it.getColumnIndexOrThrow("cardID"))
-                        db.addCardtoCollection(colid, cardid, wdb)
+                        db.addEmptyCardtoCollection(colid, cardid, wdb)
 
                     }
                 }
@@ -79,7 +79,7 @@ class InitializeBD() {
 
     }
 
-    fun actualizarcoleccion(c: Context, db: DBHelper, cname: String) {
+    fun actualizarcoleccion(db: DBHelper, cname: String) {
         val wdb = db.writableDatabase
 
         val colID = db.getCollectionFromName(cname) ?: return

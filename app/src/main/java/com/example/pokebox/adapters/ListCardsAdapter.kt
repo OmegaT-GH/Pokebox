@@ -13,12 +13,13 @@ import com.example.pokebox.R
 import com.example.pokebox.data.PokemonCard
 import com.example.pokebox.data.PokemonSet
 
-class ListCardsSearchAdapter (
+class ListCardsAdapter (
     private val context: Context,
     private val set: PokemonSet,
-    private val cards: List<PokemonCard>,
+    val cards: List<PokemonCard>,
+    val cardAmounts: MutableList<Int>,
     private val onItemClick: ((PokemonCard) -> Unit)? = null
-) : RecyclerView.Adapter<ListCardsSearchAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<ListCardsAdapter.ViewHolder>() {
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val cardImage: ImageView = itemView.findViewById(R.id.CardImage)
@@ -26,14 +27,16 @@ class ListCardsSearchAdapter (
         val cardNumber: TextView = itemView.findViewById(R.id.CardNumber)
         val cardRarity: TextView = itemView.findViewById(R.id.CardRarity)
         val cardSupertype: TextView = itemView.findViewById(R.id.CardSuperType)
+        val cardAmount: TextView = itemView.findViewById(R.id.tvamount)
 
         @SuppressLint("SetTextI18n")
-        fun bind(card: PokemonCard) {
+        fun bind(card: PokemonCard, amount: Int) {
             Glide.with(context).load(card.images?.small).fitCenter().into(cardImage)
             cardName.text = card.name
             cardNumber.text = "${card.number}/${set.printedTotal}"
             cardRarity.text = card.rarity
             cardSupertype.text = card.supertype
+            cardAmount.text = amount.toString()
 
             itemView.setOnClickListener {
                 onItemClick?.invoke(card)
@@ -48,7 +51,7 @@ class ListCardsSearchAdapter (
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(cards[position])
+        holder.bind(cards[position], cardAmounts[position])
     }
 
     override fun getItemCount(): Int = cards.size

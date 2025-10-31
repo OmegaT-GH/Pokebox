@@ -108,7 +108,7 @@ class MainMenu : AppCompatActivity() {
             }
             for (nombre in colecciones) {
                 DBHelper.dbMutex.withLock {
-                    initdb.actualizarcoleccion(this@MainMenu, db, nombre)
+                    initdb.actualizarcoleccion(db, nombre)
                     Log.d("BD", "Actualizando la colección: $nombre")
                 }
             }
@@ -120,8 +120,17 @@ class MainMenu : AppCompatActivity() {
         // ----------------------------------------------------------------------------------
 
 
+        val btremovecolsDEBUG = findViewById<Button>(R.id.debugremovecollections)
+        btremovecolsDEBUG.setOnClickListener {
+            db.debugRemoveAllCollections()
+            reloadspinner(db, btsetperc, btcompmazo, spcol)
+        }
+
         btsetsearch.setOnClickListener {
-            val i = Intent(this, ListSetsSearch::class.java)
+            val colid = db.getCollectionFromName(spcol.selectedItem.toString())
+            val i = Intent(this, ListSets::class.java)
+            i.putExtra("mode", "list")
+            i.putExtra("col", colid)
             this.startActivity(i)
         }
 
@@ -181,6 +190,22 @@ class MainMenu : AppCompatActivity() {
                 etName.text.clear()
             }
             adbuilder.show()
+        }
+
+        btsetperc.setOnClickListener {
+
+            val selectedcollection = spcol.selectedItem.toString()
+            val colid = db.getCollectionFromName(selectedcollection)
+            val i = Intent(this, ListSets::class.java)
+            i.putExtra("mode", "percentage")
+            i.putExtra("col", colid)
+            this.startActivity(i)
+        }
+
+        btcompmazo.setOnClickListener {
+
+
+
         }
 
 
