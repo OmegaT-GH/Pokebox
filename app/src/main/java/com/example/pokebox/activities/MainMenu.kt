@@ -135,11 +135,14 @@ class MainMenu : AppCompatActivity() {
         }
 
         btadvsearch.setOnClickListener {
+            val colid = db.getCollectionFromName(spcol.selectedItem.toString())
             if (CardRepository.getCards().isEmpty()) {
                 val i = Intent(this, LoadingActivity::class.java)
+                i.putExtra("col", colid)
                 this.startActivity(i)
             } else {
                 val i = Intent(this, AdvancedSearch::class.java)
+                i.putExtra("col", colid)
                 this.startActivity(i)
             }
         }

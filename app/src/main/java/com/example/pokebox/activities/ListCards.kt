@@ -47,8 +47,6 @@ class ListCards : AppCompatActivity() {
         }
         if (set != null) {
 
-            val cardamounts = mutableListOf<Int>()
-
             val cinputStream = assets.open("json/cards/en/" + set.id + ".json")
             val creader = JsonReader(cinputStream.reader())
             val ctype = object : TypeToken<List<PokemonCard>>() {}.type
@@ -60,6 +58,7 @@ class ListCards : AppCompatActivity() {
             rview.clipToPadding = false
             rview.setPadding(16, 16, 16, 16)
 
+            val cardamounts = mutableListOf<Int>()
             for (card in cards) {
                 if (colid != -1) {
                     val am = db.getCardAmount(colid, card.id)

@@ -95,6 +95,41 @@ class MainActivity : AppCompatActivity() {
         *
         * */
 
+        /*
+        * Pokémon: 22
+        * 4 Dreepy TWM 128
+        * 4 Drakloak TWM 129
+        * 2 Dragapult ex TWM 130
+        * 2 Duskull PRE 35
+        * 2 Dusclops PRE 36
+        * 1 Dusknoir PRE 37
+        * 2 Budew PRE 4
+        * 1 Hawlucha SVI 118
+        * 1 Latias ex SSP 76
+        * 1 Munkidori TWM 95
+        * 1 Fezandipiti ex SFA 38
+        * 1 Bloodmoon Ursaluna ex TWM 141
+        *
+        * Trainer: 31
+        * 4 Iono PAL 185
+        * 4 Professor's Research JTG 155
+        * 3 Boss's Orders MEG 114
+        * 2 Lillie's Determination MEG 119
+        * 1 Professor Turo's Scenario PAR 171
+        * 4 Ultra Ball MEG 131
+        * 4 Buddy-Buddy Poffin TEF 144
+        * 4 Night Stretcher SFA 61
+        * 3 Counter Catcher PAR 160
+        * 1 Nest Ball SVI 181
+        * 1 Jamming Tower TWM 153
+        *
+        * Energy: 7
+        * 3 Luminous Energy PAL 191
+        * 2 Psychic Energy SVE 21
+        * 1 Fire Energy SVE 18
+        * 1 Neo Upper Energy TEF 162
+        * */
+
         val btloadsets = findViewById<Button>(R.id.btLoadSets)
         val btsv9 = findViewById<Button>(R.id.btloadSV9)
         val btlista = findViewById<Button>(R.id.btcard)

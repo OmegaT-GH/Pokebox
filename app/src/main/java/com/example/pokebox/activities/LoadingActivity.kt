@@ -95,8 +95,9 @@ class LoadingActivity : AppCompatActivity() {
                 pbar.progress = 100
 
                 android.os.Handler(Looper.getMainLooper()).postDelayed({
-                    startActivity(Intent(this, AdvancedSearch::class.java))
-                    finish()
+                    val i = Intent(this, AdvancedSearch::class.java)
+                    i.putExtra("col", intent.getIntExtra("colid", -1))
+                    this.startActivity(i)
                 }, 1000)
 
             }

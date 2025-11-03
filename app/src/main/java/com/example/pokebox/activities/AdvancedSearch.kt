@@ -19,14 +19,28 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.children
 import androidx.drawerlayout.widget.DrawerLayout
-import com.example.pokebox.DEBUGListFilters
 import com.example.pokebox.R
 import com.example.pokebox.data.CardRepository
 import androidx.core.view.isGone
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.pokebox.adapters.ListCardsAdapter
+import com.example.pokebox.bd.DBHelper
+import com.example.pokebox.data.CardFilter
 
 class AdvancedSearch : AppCompatActivity() {
+
+    private val filterCheckboxes = mutableMapOf<String, List<CheckBox>>()
+    private var artistSpinner: Spinner? = null
+    private var minHpEditText: EditText? = null
+    private var maxHpEditText: EditText? = null
+    private var sortSpinner: Spinner? = null
+    lateinit var rviewadap: ListCardsAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_advanced_search)
@@ -36,9 +50,15 @@ class AdvancedSearch : AppCompatActivity() {
             insets
         }
 
-        val btdebug = findViewById<Button>(R.id.btSearch)
+        val db = DBHelper(this)
+        val colid = intent.getIntExtra("col", -1)
+
+        val btsearch = findViewById<Button>(R.id.btSearch)
         val btfilters = findViewById<Button>(R.id.btOpenFilters)
         val drawer = findViewById<DrawerLayout>(R.id.main)
+        val rview = findViewById<RecyclerView>(R.id.rviewfilteredsearch)
+        val lmanager = LinearLayoutManager(this)
+        rview.layoutManager = lmanager
 
 
         val filterContainer = findViewById<LinearLayout>(R.id.contFiltro)
@@ -74,10 +94,6 @@ class AdvancedSearch : AppCompatActivity() {
         val allRarities = allCards.mapNotNull { it.rarity }.distinct().sorted()
         val allArtists = allCards.mapNotNull { it.artist }.distinct().sorted()
         val hasAbility = listOf("Yes", "No")
-        /*
-        val minHP: Int? = null,\n\n
-        val maxHP: Int? = null"
-        */
 
         addFilterSection("Supertype", allSupertypes)
         addFilterSection("Subtype", allSubtypes)
@@ -90,9 +106,41 @@ class AdvancedSearch : AppCompatActivity() {
 
         addSortSection()
 
-        btdebug.setOnClickListener {
-            val i = Intent(this, DEBUGListFilters::class.java)
-            this.startActivity(i)
+        btsearch.setOnClickListener {
+
+            val filter = collectFilters()
+            val filteredcards = CardRepository.getFilteredCards(filter)
+            val sortedcards = when (sortSpinner?.selectedItem?.toString()) {
+                "Nombre (A-Z)" -> filteredcards.sortedBy { it.name?.lowercase() }
+                "Nombre (Z-A)" -> filteredcards.sortedByDescending { it.name?.lowercase() }
+                "Más recientes primero" -> filteredcards.sortedByDescending { it.releaseDate }
+                "Más antiguas primero" -> filteredcards.sortedBy { it.releaseDate }
+                else -> filteredcards
+            }
+
+            val cardamounts = mutableListOf<Int>()
+            for (card in sortedcards) {
+                if (colid != -1) {
+                    val am = db.getCardAmount(colid, card.id)
+                    cardamounts.add(am)
+                } else {
+                    cardamounts.add(0)
+                }
+            }
+
+            if (::rviewadap.isInitialized) {
+                rviewadap.updateData(sortedcards, cardamounts)
+            } else {
+                rviewadap = ListCardsAdapter(this, sortedcards, cardamounts) { selectedCard ->
+                    val i = Intent(this, ViewCard::class.java)
+                    i.putExtra("pcard", selectedCard)
+                    this.startActivity(i)
+                }
+
+                rview.setHasFixedSize(true)
+                rview.adapter = rviewadap
+            }
+
         }
 
         btfilters.setOnClickListener {
@@ -131,8 +179,6 @@ class AdvancedSearch : AppCompatActivity() {
             )
         }
 
-        //header.isBaselineAligned = true
-
         val arrow = ImageView(this).apply {
             setImageResource(R.drawable.arrow_right)
         }
@@ -167,6 +213,7 @@ class AdvancedSearch : AppCompatActivity() {
         }
 
         findViewById<LinearLayout>(R.id.contFiltro).addView(sectionLayout)
+        filterCheckboxes[title] = contentLayout.children.filterIsInstance<CheckBox>().toList()
     }
     fun addSpinnerSection(title: String, options: List<String>) {
         val sectionLayout = LinearLayout(this).apply {
@@ -244,6 +291,9 @@ class AdvancedSearch : AppCompatActivity() {
         }
 
         findViewById<LinearLayout>(R.id.contFiltro).addView(sectionLayout)
+        if (title == "Artist") {
+            artistSpinner = spinner
+        }
     }
     fun addHPSection() {
         val sectionLayout = LinearLayout(this).apply {
@@ -315,14 +365,53 @@ class AdvancedSearch : AppCompatActivity() {
         }
 
         findViewById<LinearLayout>(R.id.contFiltro).addView(sectionLayout)
+        minHpEditText = minHP
+        maxHpEditText = maxHP
     }
     private fun addSortSection() {
         val sortingSpinner = findViewById<Spinner>(R.id.spOrdenar)
 
-        val options = listOf("Nombre (A-Z)", "Nombre (Z-A)", "Más recientes primero", "Más antiguas primero")
+        val options = listOf("Más recientes primero", "Más antiguas primero", "Nombre (A-Z)", "Nombre (Z-A)")
 
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, options)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         sortingSpinner.adapter = adapter
+        sortSpinner = sortingSpinner
+    }
+
+    private fun collectFilters(): CardFilter {
+        val selectedSupertypes = filterCheckboxes["Supertype"]?.filter { it.isChecked }?.map { it.text.toString() }.orEmpty()
+        val selectedSubtypes = filterCheckboxes["Subtype"]?.filter { it.isChecked }?.map { it.text.toString() }.orEmpty()
+        val selectedTypes = filterCheckboxes["Type"]?.filter { it.isChecked }?.map { it.text.toString() }.orEmpty()
+        val selectedLegalities = filterCheckboxes["Legality"]?.filter { it.isChecked }?.map { it.text.toString() }.orEmpty()
+        val selectedRarities = filterCheckboxes["Rarity"]?.filter { it.isChecked }?.map { it.text.toString() }.orEmpty()
+
+        val hasAbilityFilter = filterCheckboxes["Has Ability"]?.firstOrNull { it.isChecked }?.text?.let {
+            when (it) {
+                "Yes" -> true
+                "No" -> false
+                else -> null
+            }
+        }
+
+        val name = findViewById<EditText>(R.id.etSearch)?.text?.toString()?.takeIf { it.isNotBlank() }
+
+        val artist = artistSpinner?.selectedItem?.toString()?.takeIf { it != "Todos" }
+
+        val minHP = minHpEditText?.text?.toString()?.toIntOrNull()
+        val maxHP = maxHpEditText?.text?.toString()?.toIntOrNull()
+
+        return CardFilter(
+            nombre = name,
+            supertype = selectedSupertypes,
+            subtype = selectedSubtypes,
+            type = selectedTypes,
+            legality = selectedLegalities,
+            rarity = selectedRarities,
+            artist = artist,
+            hasability = hasAbilityFilter,
+            minHP = minHP,
+            maxHP = maxHP
+        )
     }
 }

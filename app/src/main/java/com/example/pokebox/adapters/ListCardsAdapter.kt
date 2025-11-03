@@ -15,11 +15,18 @@ import com.example.pokebox.data.PokemonSet
 
 class ListCardsAdapter (
     private val context: Context,
-    private val set: PokemonSet,
-    val cards: List<PokemonCard>,
-    val cardAmounts: MutableList<Int>,
+    private val set: PokemonSet?,
+    var cards: List<PokemonCard>,
+    var cardAmounts: MutableList<Int>,
     private val onItemClick: ((PokemonCard) -> Unit)? = null
 ) : RecyclerView.Adapter<ListCardsAdapter.ViewHolder>() {
+
+    constructor(
+        context: Context,
+        cards: List<PokemonCard>,
+        cardAmounts: MutableList<Int> = MutableList(cards.size) { 0 },
+        onItemClick: ((PokemonCard) -> Unit)? = null
+    ) : this(context, null, cards, cardAmounts, onItemClick)
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val cardImage: ImageView = itemView.findViewById(R.id.CardImage)
@@ -33,7 +40,11 @@ class ListCardsAdapter (
         fun bind(card: PokemonCard, amount: Int) {
             Glide.with(context).load(card.images?.small).fitCenter().into(cardImage)
             cardName.text = card.name
-            cardNumber.text = "${card.number}/${set.printedTotal}"
+            cardNumber.text = if (set != null) {
+                "${card.number}/${set.printedTotal}"
+            } else {
+                "#${card.number}"
+            }
             cardRarity.text = card.rarity
             cardSupertype.text = card.supertype
             cardAmount.text = amount.toString()
@@ -55,4 +66,10 @@ class ListCardsAdapter (
     }
 
     override fun getItemCount(): Int = cards.size
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateData(newCards: List<PokemonCard>, newCardAmounts: MutableList<Int>) {
+        cards = newCards
+        cardAmounts = newCardAmounts
+        notifyDataSetChanged()
+    }
 }
