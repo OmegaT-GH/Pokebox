@@ -1,4 +1,4 @@
-package com.example.pokebox.activities
+package com.omegat.pokebox.activities
 
 //import android.widget.Toast
 import android.annotation.SuppressLint
@@ -20,10 +20,10 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
-import com.example.pokebox.R
-import com.example.pokebox.bd.DBHelper
-import com.example.pokebox.data.PokemonCard
-import com.example.pokebox.data.PokemonSet
+import com.omegat.pokebox.R
+import com.omegat.pokebox.bd.DBHelper
+import com.omegat.pokebox.data.PokemonCard
+import com.omegat.pokebox.data.PokemonSet
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.google.gson.stream.JsonReader

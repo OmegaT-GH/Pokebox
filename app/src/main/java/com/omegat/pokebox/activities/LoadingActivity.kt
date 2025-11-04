@@ -1,4 +1,4 @@
-package com.example.pokebox.activities
+package com.omegat.pokebox.activities
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -10,10 +10,10 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.example.pokebox.R
-import com.example.pokebox.data.CardRepository
-import com.example.pokebox.data.PokemonCard
-import com.example.pokebox.data.PokemonSet
+import com.omegat.pokebox.R
+import com.omegat.pokebox.data.CardRepository
+import com.omegat.pokebox.data.PokemonCard
+import com.omegat.pokebox.data.PokemonSet
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.google.gson.stream.JsonReader

@@ -1,4 +1,4 @@
-package com.example.pokebox.activities
+package com.omegat.pokebox.activities
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -11,11 +11,11 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.pokebox.R
-import com.example.pokebox.adapters.ListCardsAdapter
-import com.example.pokebox.bd.DBHelper
-import com.example.pokebox.data.PokemonCard
-import com.example.pokebox.data.PokemonSet
+import com.omegat.pokebox.R
+import com.omegat.pokebox.adapters.ListCardsAdapter
+import com.omegat.pokebox.bd.DBHelper
+import com.omegat.pokebox.data.PokemonCard
+import com.omegat.pokebox.data.PokemonSet
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.google.gson.stream.JsonReader

@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.pokebox"
+    namespace = "com.omegat.pokebox"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.example.pokebox"
+        applicationId = "com.omegat.pokebox"
         minSdk = 26
         targetSdk = 36
         versionCode = 1

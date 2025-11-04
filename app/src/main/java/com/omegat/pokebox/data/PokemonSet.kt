@@ -1,4 +1,4 @@
-package com.example.pokebox.data
+package com.omegat.pokebox.data
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

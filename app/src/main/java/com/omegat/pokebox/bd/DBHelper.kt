@@ -1,4 +1,4 @@
-package com.example.pokebox.bd
+package com.omegat.pokebox.bd
 
 import android.content.ContentValues
 import android.content.Context

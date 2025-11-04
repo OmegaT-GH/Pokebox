@@ -1,12 +1,12 @@
-package com.example.pokebox.bd
+package com.omegat.pokebox.bd
 
 import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import android.util.Log
 import androidx.core.database.sqlite.transaction
-import com.example.pokebox.data.PokemonCard
-import com.example.pokebox.data.PokemonSet
+import com.omegat.pokebox.data.PokemonCard
+import com.omegat.pokebox.data.PokemonSet
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.google.gson.stream.JsonReader

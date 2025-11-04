@@ -1,4 +1,4 @@
-package com.example.pokebox
+package com.omegat.pokebox
 
 import android.content.Intent
 import android.os.Bundle
@@ -11,11 +11,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.bumptech.glide.Glide
-import com.example.pokebox.activities.ListSets
-import com.example.pokebox.activities.MainMenu
-import com.example.pokebox.adapters.ListAdapter
-import com.example.pokebox.data.PokemonCard
-import com.example.pokebox.data.PokemonSet
+import com.omegat.pokebox.activities.ListSets
+import com.omegat.pokebox.activities.MainMenu
+import com.omegat.pokebox.adapters.ListAdapter
+import com.omegat.pokebox.data.PokemonCard
+import com.omegat.pokebox.data.PokemonSet
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.google.gson.stream.JsonReader

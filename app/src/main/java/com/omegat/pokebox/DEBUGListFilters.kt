@@ -1,4 +1,4 @@
-package com.example.pokebox
+package com.omegat.pokebox
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge

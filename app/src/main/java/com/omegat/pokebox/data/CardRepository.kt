@@ -1,4 +1,4 @@
-package com.example.pokebox.data
+package com.omegat.pokebox.data
 
 object CardRepository {
     private var allCards: MutableList<PokemonCard> = mutableListOf()

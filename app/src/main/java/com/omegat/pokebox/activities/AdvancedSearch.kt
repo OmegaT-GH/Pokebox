@@ -1,4 +1,4 @@
-package com.example.pokebox.activities
+package com.omegat.pokebox.activities
 
 import android.content.Intent
 import android.os.Bundle
@@ -21,14 +21,14 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.children
 import androidx.drawerlayout.widget.DrawerLayout
-import com.example.pokebox.R
-import com.example.pokebox.data.CardRepository
+import com.omegat.pokebox.R
+import com.omegat.pokebox.data.CardRepository
 import androidx.core.view.isGone
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.pokebox.adapters.ListCardsAdapter
-import com.example.pokebox.bd.DBHelper
-import com.example.pokebox.data.CardFilter
+import com.omegat.pokebox.adapters.ListCardsAdapter
+import com.omegat.pokebox.bd.DBHelper
+import com.omegat.pokebox.data.CardFilter
 
 class AdvancedSearch : AppCompatActivity() {
 

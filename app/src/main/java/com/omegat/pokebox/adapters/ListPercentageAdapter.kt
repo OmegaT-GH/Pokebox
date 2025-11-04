@@ -1,4 +1,4 @@
-package com.example.pokebox.adapters
+package com.omegat.pokebox.adapters
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -10,8 +10,8 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.pokebox.R
-import com.example.pokebox.data.PokemonSet
+import com.omegat.pokebox.R
+import com.omegat.pokebox.data.PokemonSet
 
 class ListPercentageAdapter(
     private val context: Context,

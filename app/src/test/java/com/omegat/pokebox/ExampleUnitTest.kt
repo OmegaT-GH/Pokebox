@@ -1,4 +1,4 @@
-package com.example.pokebox
+package com.omegat.pokebox
 
 import org.junit.Test
 
