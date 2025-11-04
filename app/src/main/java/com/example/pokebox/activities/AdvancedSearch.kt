@@ -378,7 +378,6 @@ class AdvancedSearch : AppCompatActivity() {
         sortingSpinner.adapter = adapter
         sortSpinner = sortingSpinner
     }
-
     private fun collectFilters(): CardFilter {
         val selectedSupertypes = filterCheckboxes["Supertype"]?.filter { it.isChecked }?.map { it.text.toString() }.orEmpty()
         val selectedSubtypes = filterCheckboxes["Subtype"]?.filter { it.isChecked }?.map { it.text.toString() }.orEmpty()

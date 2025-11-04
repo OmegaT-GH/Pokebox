@@ -52,7 +52,7 @@ class ViewCard : AppCompatActivity() {
             intent.getParcelableExtra("pcard", PokemonCard::class.java)
         } else {
             @Suppress("DEPRECATION")
-            intent.getParcelableExtra<PokemonCard>("pcard")
+            intent.getParcelableExtra("pcard")
         }
 
         val ivcard = findViewById<ImageView>(R.id.ivCardLarge)
@@ -101,13 +101,13 @@ class ViewCard : AppCompatActivity() {
         artist.text = "Artist: ${card?.artist ?: "Info Not Available"}"
 
         btadd.setOnClickListener {
-            AddDialog(this, db, cardid.toString())
+            addDialog(this, db, cardid.toString())
         }
 
 
     }
 
-    fun AddDialog(context: Context, db: DBHelper, cardId: String) {
+    fun addDialog(context: Context, db: DBHelper, cardId: String) {
         lifecycleScope.launch(Dispatchers.IO) {
             val collections = mutableListOf<String>()
             db.readableDatabase.use { rdb ->
