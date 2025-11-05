@@ -86,7 +86,7 @@ class ViewCard : AppCompatActivity() {
             }
         }
 
-        if (card?.subtypes?.contains("BREAK") == true) {
+        if (card?.subtypes?.contains("BREAK") == true || card?.subtypes?.contains("LEGEND") == true) {
             ivcard.rotation = 90f
         }
 
