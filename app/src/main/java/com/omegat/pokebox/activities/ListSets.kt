@@ -75,7 +75,7 @@ class ListSets : AppCompatActivity() {
                 percamount.add(pa)
             }
 
-            rviewadap  = ListPercentageAdapter(this, setswithcards, perc, percamount) { selectedSet ->
+            rviewadap  = ListPercentageAdapter(this, setswithcards.reversed(), perc, percamount) { selectedSet ->
                 //Toast.makeText(this, "Pulsado: ${selectedSet.name}", Toast.LENGTH_SHORT).show()
 
                 val i = Intent(this, ListCards::class.java)
@@ -91,7 +91,7 @@ class ListSets : AppCompatActivity() {
             val colid = intent.getIntExtra("col", -1)
             Log.d(null,colid.toString())
 
-            rview.adapter = ListSetsAdapter(this, sets) { selectedSet ->
+            rview.adapter = ListSetsAdapter(this, sets.reversed()) { selectedSet ->
                 //Toast.makeText(this, "Pulsado: ${selectedSet.name}", Toast.LENGTH_SHORT).show()
 
                 val i = Intent(this, ListCards::class.java)

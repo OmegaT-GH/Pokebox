@@ -116,7 +116,7 @@
 
         <Spinner
             android:id="@+id/spColecciones"
-            android:layout_width="300dp"
+            android:layout_width="260dp"
             android:layout_height="48dp"
             android:layout_marginEnd="8dp"/>
 
@@ -127,24 +127,20 @@
             android:padding="0dp"
             android:text="@string/bigplus"
             style="@style/textboldbig"
+            android:backgroundTint="@color/Primary"/>
+
+        <Button
+            android:id="@+id/btEliminarColeccion"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:padding="0dp"
+            android:layout_marginStart="8dp"
+            android:text="@string/bigminus"
+            style="@style/textboldbig"
 
             android:backgroundTint="@color/Primary"/>
 
 
     </LinearLayout>
-
-    <Button
-        android:id="@+id/debugremovecollections"
-        android:layout_width="200dp"
-        android:layout_height="48dp"
-        android:padding="0dp"
-        android:layout_marginTop="100dp"
-        android:text="(DEBUG) Remove all collections"
-        style="@style/textbold"
-        app:layout_constraintTop_toBottomOf="@+id/btCompMazo"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:backgroundTint="#BB0000"
-        tools:ignore="HardcodedText" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

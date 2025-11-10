@@ -95,13 +95,13 @@ class AdvancedSearch : AppCompatActivity() {
         val allArtists = allCards.mapNotNull { it.artist }.distinct().sorted()
         val hasAbility = listOf("Yes", "No")
 
-        addFilterSection("Supertype", allSupertypes)
-        addFilterSection("Subtype", allSubtypes)
-        addFilterSection("Type", allTypes)
-        addFilterSection("Legality", allLegalities)
-        addFilterSection("Rarity", allRarities)
-        addSpinnerSection("Artist", allArtists)
-        addFilterSection("Has Ability", hasAbility)
+        addFilterSection(getString(R.string.supertype), allSupertypes)
+        addFilterSection(getString(R.string.subtype), allSubtypes)
+        addFilterSection(getString(R.string.type), allTypes)
+        addFilterSection(getString(R.string.legality), allLegalities)
+        addFilterSection(getString(R.string.rarity), allRarities)
+        addSpinnerSection(getString(R.string.artist), allArtists)
+        addFilterSection(getString(R.string.has_ability), hasAbility)
         addHPSection()
 
         addSortSection()
@@ -111,10 +111,10 @@ class AdvancedSearch : AppCompatActivity() {
             val filter = collectFilters()
             val filteredcards = CardRepository.getFilteredCards(filter)
             val sortedcards = when (sortSpinner?.selectedItem?.toString()) {
-                "Nombre (A-Z)" -> filteredcards.sortedBy { it.name?.lowercase() }
-                "Nombre (Z-A)" -> filteredcards.sortedByDescending { it.name?.lowercase() }
-                "Más recientes primero" -> filteredcards.sortedByDescending { it.releaseDate }
-                "Más antiguas primero" -> filteredcards.sortedBy { it.releaseDate }
+                getString(R.string.nombre_a_z) -> filteredcards.sortedBy { it.name?.lowercase() }
+                getString(R.string.nombre_z_a) -> filteredcards.sortedByDescending { it.name?.lowercase() }
+                getString(R.string.m_s_recientes_primero) -> filteredcards.sortedByDescending { it.releaseDate }
+                getString(R.string.m_s_antiguas_primero) -> filteredcards.sortedBy { it.releaseDate }
                 else -> filteredcards
             }
 
@@ -335,7 +335,7 @@ class AdvancedSearch : AppCompatActivity() {
         }
 
         val minHP = EditText(this).apply {
-            hint = "Mín."
+            hint = context.getString(R.string.min)
             inputType = InputType.TYPE_CLASS_NUMBER
             layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f).apply {
                 marginEnd = 8
@@ -344,7 +344,7 @@ class AdvancedSearch : AppCompatActivity() {
         }
 
         val maxHP = EditText(this).apply {
-            hint = "Máx."
+            hint = context.getString(R.string.max)
             inputType = InputType.TYPE_CLASS_NUMBER
             layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
             setPadding(16, 20, 16, 20)
@@ -371,7 +371,7 @@ class AdvancedSearch : AppCompatActivity() {
     private fun addSortSection() {
         val sortingSpinner = findViewById<Spinner>(R.id.spOrdenar)
 
-        val options = listOf("Más recientes primero", "Más antiguas primero", "Nombre (A-Z)", "Nombre (Z-A)")
+        val options = listOf(getString(R.string.m_s_recientes_primero), getString(R.string.m_s_antiguas_primero), getString(R.string.nombre_a_z), getString(R.string.nombre_z_a))
 
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, options)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)

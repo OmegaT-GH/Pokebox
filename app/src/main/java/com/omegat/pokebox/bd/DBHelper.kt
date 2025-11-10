@@ -80,15 +80,15 @@ class DBHelper(context: Context?) :
         return db.insert(TABLA_CARTASCOLECCION, null, values) != 1L
     }
 
-    fun addCardtoCollection(colIDq: Int?, cardIDq: String?, db: SQLiteDatabase): Boolean {
+    fun addCardtoCollection(colIDq: Int?, cardIDq: String?, db: SQLiteDatabase, amount: Int): Boolean {
         val query = """
         UPDATE $TABLA_CARTASCOLECCION
-        SET $CC_AMOUNT = $CC_AMOUNT + 1
+        SET $CC_AMOUNT = ?
         WHERE $COL_ID = ? AND $CARD_ID = ?
         """.trimIndent()
 
         return try {
-            db.execSQL(query, arrayOf(colIDq.toString(), cardIDq))
+            db.execSQL(query, arrayOf(amount.toString(), colIDq.toString(), cardIDq))
             true
         } catch (e: Exception) {
             Log.e("DB", "Error incrementando cantidad de carta", e)
@@ -170,7 +170,7 @@ class DBHelper(context: Context?) :
         }
     }
 
-    fun debugRemoveAllCollections() {
+    /*fun debugRemoveAllCollections() {
         val wdb = writableDatabase
         val query = """
             DELETE FROM $TABLA_CARTASCOLECCION
@@ -180,6 +180,18 @@ class DBHelper(context: Context?) :
         """.trimIndent()
         wdb.execSQL(query)
         wdb.execSQL(query2)
+    }*/
+
+    fun removeCollection(colIDq: Int?) {
+        val wdb = writableDatabase
+        val query = """
+            DELETE FROM $TABLA_CARTASCOLECCION WHERE $COL_ID = ?
+        """.trimIndent()
+        val query2 = """
+            DELETE FROM $TABLA_COLECCIONES WHERE $COL_ID = ?
+        """.trimIndent()
+        wdb.execSQL(query, arrayOf(colIDq))
+        wdb.execSQL(query2, arrayOf(colIDq))
     }
 
     fun getSetPercentage(setIDq: String?, colIDq: Int?): Int {

@@ -5,10 +5,13 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.NumberPicker
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
@@ -20,14 +23,13 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import com.google.gson.stream.JsonReader
 import com.omegat.pokebox.R
 import com.omegat.pokebox.bd.DBHelper
 import com.omegat.pokebox.data.PokemonCard
 import com.omegat.pokebox.data.PokemonSet
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import com.google.gson.stream.JsonReader
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.withLock
@@ -98,7 +100,7 @@ class ViewCard : AppCompatActivity() {
         set.text = "Set: ${pset.name}"
         type.text = "Type: ${card?.types?.joinToString(", ") ?: "-"}"
         rarity.text = "Rarity: ${card?.rarity}"
-        artist.text = "Artist: ${card?.artist ?: "Info Not Available"}"
+        artist.text = "Artist: ${card?.artist ?: getString(R.string.info_not_available)}"
 
         btadd.setOnClickListener {
             addDialog(this, db, cardid.toString())
@@ -140,7 +142,7 @@ class ViewCard : AppCompatActivity() {
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
                 if (collections.isEmpty()) {
-                    adapter.add("No existen colecciones.")
+                    adapter.add(getString(R.string.no_existen_colecciones))
                     spcols.isEnabled = false
                 } else {
                     for (name in collections) adapter.add(name)
@@ -148,50 +150,80 @@ class ViewCard : AppCompatActivity() {
                 }
                 spcols.adapter = adapter
 
-                val adbuilder = AlertDialog.Builder(context)
-                adbuilder.setTitle("Seleccionar colección:")
-                adbuilder.setView(cont)
-                adbuilder.setPositiveButton("Aceptar", null)
-                adbuilder.setNegativeButton("Cancelar") { dialog, which -> dialog.dismiss() }
 
+                val inflater = LayoutInflater.from(context)
+                val dialogView = inflater.inflate(R.layout.dialog_add_to_collection, null)
 
-                val dialog = adbuilder.create()
+                val spCols = dialogView.findViewById<Spinner>(R.id.spColeccionesATC)
+                val npCantidad = dialogView.findViewById<NumberPicker>(R.id.npCantidad)
 
-                dialog.setOnShowListener {
-                    val positive = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                npCantidad.minValue = 0
+                npCantidad.maxValue = 99
+                npCantidad.value = 0
 
-                    positive.isEnabled = collections.isNotEmpty() && spcols.isEnabled
+                spCols.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                        val colName = spCols.selectedItem.toString()
+                        lifecycleScope.launch(Dispatchers.IO) {
+                            DBHelper.dbMutex.withLock {
+                                val colId = db.getCollectionFromName(colName)
+                                val cantidad = db.getCardAmount(colId, cardId)
+                                withContext(Dispatchers.Main) {
+                                    npCantidad.value = cantidad
+                                }
+                            }
+                        }
+                    }
+                    override fun onNothingSelected(parent: AdapterView<*>?) {}
+                }
+
+                spCols.adapter = ArrayAdapter(
+                    context,
+                    android.R.layout.simple_spinner_dropdown_item,
+                    collections
+                )
+
+                val adBuilder = AlertDialog.Builder(context)
+                    .setTitle(getString(R.string.add_card_to_collection))
+                    .setView(dialogView)
+                    .setPositiveButton(getString(R.string.add), null)
+                    .setNegativeButton(R.string.cancelar, null)
+
+                val pickerdialog = adBuilder.create()
+
+                pickerdialog.setOnShowListener {
+                    val positive = pickerdialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                    positive.isEnabled = collections.isNotEmpty()
 
                     positive.setOnClickListener {
-                        val colname = spcols.selectedItem.toString()
-                        CoroutineScope(Dispatchers.IO).launch {
+                        val colName = spCols.selectedItem.toString()
+                        val cantidad = npCantidad.value
+
+                        lifecycleScope.launch (Dispatchers.IO) {
                             DBHelper.dbMutex.withLock {
-                                val colid = db.getCollectionFromName(colname)
+                                val colId = db.getCollectionFromName(colName)
                                 val wdb = db.writableDatabase
 
-                                val success = db.addCardtoCollection(colid, cardId, wdb)
+                                val success = db.addCardtoCollection(colId, cardId, wdb, cantidad)
+
                                 withContext(Dispatchers.Main) {
-                                    if (success) {
-                                        Toast.makeText(
-                                            context,
-                                            "Añadido a '$colname'",
-                                            Toast.LENGTH_SHORT
-                                        ).show()
-                                    } else {
-                                        Toast.makeText(
-                                            context,
-                                            "Error añadiendo a la colección.",
-                                            Toast.LENGTH_SHORT
-                                        ).show()
-                                    }
-                                    dialog.dismiss()
+                                    Toast.makeText(
+                                        context,
+                                        if (success)
+                                            "${getString(R.string.a_adido_a)} '$colName' ($cantidad)"
+                                        else
+                                            getString(R.string.error_a_adiendo_a_la_colecci_n),
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+
+                                    pickerdialog.dismiss()
                                 }
                             }
                         }
                     }
                 }
 
-                dialog.show()
+                pickerdialog.show()
             }
         }
     }

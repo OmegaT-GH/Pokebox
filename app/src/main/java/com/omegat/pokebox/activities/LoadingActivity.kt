@@ -83,7 +83,7 @@ class LoadingActivity : AppCompatActivity() {
                 runOnUiThread {
 
                     pbar.progress = progress
-                    tvprog.text = "Cargando sets... $loadedsets/$totalsets ($progress%)"
+                    tvprog.text = getString(R.string.cargando_sets) + " $loadedsets/$totalsets ($progress%)"
 
                 }
 
@@ -91,13 +91,15 @@ class LoadingActivity : AppCompatActivity() {
 
             runOnUiThread {
 
-                tvprog.text = "Carga completa. (${CardRepository.getCards().size} cartas)"
+                tvprog.text = getString(R.string.carga_completa) + "${CardRepository.getCards().size} " + getString(
+                    R.string.cartas)
                 pbar.progress = 100
 
                 android.os.Handler(Looper.getMainLooper()).postDelayed({
                     val i = Intent(this, AdvancedSearch::class.java)
                     i.putExtra("col", intent.getIntExtra("colid", -1))
                     this.startActivity(i)
+                    finish()
                 }, 1000)
 
             }

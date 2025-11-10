@@ -1,6 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Pokebox</string>
-    <string name="pokebox_logo" translatable="false">Pokebox logo</string>
     <string name="buscar_por_sets">Search by set</string>
     <string name="b_squeda_avanzada">Advanced search</string>
     <string name="progreso_sets">Set progress</string>
@@ -11,19 +11,8 @@
     <string name="addtocollection">＋ Add to collection</string>
     <string name="filtrosdebusqueda">Search filters</string>
     <string name="rangohp">HP Range</string>
-    <string name="bigplus" translatable="false">＋</string>
-    <string name="bigminus"  translatable="false">🗑</string>
-    <string name="card_image" translatable="false">Card image</string>
-    <string name="test" translatable="false">test</string>
-    <string name="set_logo" translatable="false">Set Logo</string>
-    <string name="set_symbol" translatable="false">Set Symbol</string>
-    <string name="imagen_carta" translatable="false">Imagen Carta</string>
-    <string name="three_lines" translatable="false">≡</string>
     <string name="buscarsinpuntos">Search</string>
     <string name="ordenar_por">Sort by:</string>
-    <string name="journey_together" translatable="false">Journey Together</string>
-    <string name="lista_sets" translatable="false">Lista Sets</string>
-    <string name="cargar_cartas_de_baseset" translatable="false">Cargar cartas de baseset</string>
     <string name="rarity">Rarity</string>
     <string name="legality">Legality</string>
     <string name="artist">Artist</string>

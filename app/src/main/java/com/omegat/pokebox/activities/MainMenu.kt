@@ -52,6 +52,7 @@ class MainMenu : AppCompatActivity() {
         val btsetperc = findViewById<Button>(R.id.btListSetsPerc)
         val btcompmazo = findViewById<Button>(R.id.btCompMazo)
         val btaddcol = findViewById<Button>(R.id.btCrearColeccion)
+        val btdelcol = findViewById<Button>(R.id.btEliminarColeccion)
 
         val rlay = findViewById<ConstraintLayout>(R.id.main)
 
@@ -100,7 +101,7 @@ class MainMenu : AppCompatActivity() {
                 initdb.setsycartas(this@MainMenu, db)
             }
             withContext(Dispatchers.Main) {
-                reloadspinner(db, btsetperc, btcompmazo, spcol)
+                reloadspinner(db, btsetperc, btcompmazo, spcol, btdelcol)
             }
             val colecciones = withContext(Dispatchers.Main) {
                 val adapter = spcol.adapter
@@ -109,7 +110,7 @@ class MainMenu : AppCompatActivity() {
             for (nombre in colecciones) {
                 DBHelper.dbMutex.withLock {
                     initdb.actualizarcoleccion(db, nombre)
-                    Log.d("BD", "Actualizando la colección: $nombre")
+                    Log.d("BD", getString(R.string.actualizando_la_colecci_n) + " $nombre")
                 }
             }
             withContext(Dispatchers.Main) {
@@ -118,13 +119,6 @@ class MainMenu : AppCompatActivity() {
             }
         }
         // ----------------------------------------------------------------------------------
-
-
-        val btremovecolsDEBUG = findViewById<Button>(R.id.debugremovecollections)
-        btremovecolsDEBUG.setOnClickListener {
-            db.debugRemoveAllCollections()
-            reloadspinner(db, btsetperc, btcompmazo, spcol)
-        }
 
         btsetsearch.setOnClickListener {
             val colid = db.getCollectionFromName(spcol.selectedItem.toString())
@@ -149,19 +143,19 @@ class MainMenu : AppCompatActivity() {
 
         btaddcol.setOnClickListener {
             val adbuilder = AlertDialog.Builder(this)
-            adbuilder.setTitle("Nombre de la colección:")
+            adbuilder.setTitle(getString(R.string.nombre_de_la_colecci_n))
 
             val etName = EditText(this)
             etName.inputType = InputType.TYPE_CLASS_TEXT
 
             adbuilder.setView(etName)
             adbuilder.setPositiveButton(
-                "Crear"
+                getString(R.string.crear)
             ) { dialog, which ->
                 if (etName.text.isEmpty()) {
                     Toast.makeText(
                         this,
-                        "El nombre de la colección no puede estar en blanco.",
+                        getString(R.string.el_nombre_de_la_colecci_n_no_puede_estar_en_blanco),
                         Toast.LENGTH_SHORT
                     ).show()
                 } else {
@@ -171,15 +165,15 @@ class MainMenu : AppCompatActivity() {
                     if (id == null) {
                         Toast.makeText(
                             this,
-                            "Coleccion '$ncolname' creada correctamente",
+                            getString(R.string.coleccion) +  " '$ncolname' " + getString(R.string.creada_correctamente),
                             Toast.LENGTH_SHORT
                         ).show()
                         initdb.crearcoleccion(this, db, ncolname)
-                        reloadspinner(db, btsetperc, btcompmazo, spcol)
+                        reloadspinner(db, btsetperc, btcompmazo, spcol, btdelcol)
                     } else {
                         Toast.makeText(
                             this,
-                            "Una colección con ese nombre ya existe.",
+                            getString(R.string.una_colecci_n_con_ese_nombre_ya_existe),
                             Toast.LENGTH_SHORT
                         ).show()
                     }
@@ -188,7 +182,7 @@ class MainMenu : AppCompatActivity() {
 
             }
             adbuilder.setNegativeButton(
-                "Cancelar"
+                getString(R.string.cancelar)
             ) { dialog, which ->
                 etName.text.clear()
             }
@@ -211,10 +205,16 @@ class MainMenu : AppCompatActivity() {
 
         }
 
+        btdelcol.setOnClickListener {
+            val colid = db.getCollectionFromName(spcol.selectedItem.toString())
+            db.removeCollection(colid)
+            reloadspinner(db, btsetperc, btcompmazo, spcol, btdelcol)
+        }
+
 
     }
 
-    fun reloadspinner(db: DBHelper, btsetperc: Button, btcompmazo: Button, spcol: Spinner) {
+    fun reloadspinner(db: DBHelper, btsetperc: Button, btcompmazo: Button, spcol: Spinner, btdelcol: Button) {
         val collist: ArrayList<String> = ArrayList()
         val rdb = db.readableDatabase
         val cur: Cursor = rdb.rawQuery("SELECT * FROM Coleccion", null)
@@ -229,7 +229,7 @@ class MainMenu : AppCompatActivity() {
                 this,
                 android.R.layout.simple_spinner_item
             )
-            adapter.add("No existen colecciones.")
+            adapter.add(getString(R.string.no_existen_colecciones))
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             spcol.setAdapter(adapter)
             spcol.isEnabled = false
@@ -237,6 +237,8 @@ class MainMenu : AppCompatActivity() {
             btsetperc.setBackgroundColor(getColor(R.color.DisabledButton))
             btcompmazo.isEnabled = false
             btcompmazo.setBackgroundColor(getColor(R.color.DisabledButton))
+            btdelcol.isEnabled = false
+            btdelcol.setBackgroundColor(getColor(R.color.DisabledButton))
 
         } else {
 
@@ -252,6 +254,8 @@ class MainMenu : AppCompatActivity() {
             btsetperc.setBackgroundColor(getColor(R.color.Primary))
             btcompmazo.isEnabled = true
             btcompmazo.setBackgroundColor(getColor(R.color.Primary))
+            btdelcol.isEnabled = true
+            btdelcol.setBackgroundColor(getColor(R.color.Primary))
 
         }
     }

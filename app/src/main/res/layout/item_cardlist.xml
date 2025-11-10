@@ -90,8 +90,8 @@
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:text=""
-            android:textSize="20sp"
             style="@style/textbold"
+            android:textSize="15sp"
             android:textAlignment="center"
             android:layout_gravity="center"/>
 

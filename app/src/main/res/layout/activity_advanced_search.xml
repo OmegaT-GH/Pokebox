@@ -21,11 +21,14 @@
 
             <Button
                 android:id="@+id/btOpenFilters"
-                android:layout_width="60dp"
+                android:layout_width="30dp"
                 android:layout_height="60dp"
                 style="@style/textbig"
                 android:backgroundTint="@color/Primary"
                 android:text="@string/three_lines"
+                android:padding="0dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
                 android:layout_weight="1"
                 android:layout_gravity="center"/>
 
@@ -36,6 +39,8 @@
                 android:layout_gravity="center"
                 android:layout_weight="9"
                 android:hint="@string/buscar"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
                 android:importantForAutofill="no"
                 android:inputType="text"
                 android:textColorHint="#AAAAAA"
@@ -43,9 +48,11 @@
 
             <Button
                 android:id="@+id/btSearch"
-                android:layout_width="100dp"
+                android:layout_width="120dp"
                 android:layout_height="60dp"
                 android:text="@string/buscarsinpuntos"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
                 style="@style/textbig"
                 android:backgroundTint="@color/Primary"
                 android:layout_weight="2"
@@ -58,7 +65,7 @@
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:orientation="horizontal"
-            android:layout_gravity="center_vertical"
+            android:gravity="center"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp">
 
@@ -67,14 +74,18 @@
                 android:layout_height="wrap_content"
                 style="@style/textboldbig"
                 android:text="@string/ordenar_por"
-                android:layout_gravity="center_vertical"/>
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="32dp"/>
 
             <Spinner
                 android:id="@+id/spOrdenar"
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
-                style="text"
-                android:layout_gravity="center_vertical"/>
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_gravity="center_vertical"
+                style="text"/>
 
         </LinearLayout>
 

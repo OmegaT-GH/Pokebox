@@ -52,6 +52,12 @@ class ListCardsAdapter (
             itemView.setOnClickListener {
                 onItemClick?.invoke(card)
             }
+
+            if (amount == 0) {
+                cardImage.alpha = 0.4f
+            } else {
+                cardImage.alpha = 1f
+            }
         }
     }
 
