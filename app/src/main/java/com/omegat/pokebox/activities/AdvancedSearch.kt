@@ -12,6 +12,7 @@ import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
@@ -245,6 +246,16 @@ class AdvancedSearch : AppCompatActivity() {
         header.addView(arrow)
         sectionLayout.addView(header)
 
+        val spinnerContainer = RelativeLayout(this).apply {
+            layoutParams = RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.MATCH_PARENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT
+            ).apply {
+                setMargins(0, 8, 0, 8)
+            }
+            setBackgroundResource(R.drawable.spinner_background_white)
+        }
+
         val spinner = Spinner(this).apply {
             val spinnerOptions = mutableListOf("Todos")
             spinnerOptions.addAll(options)
@@ -277,11 +288,12 @@ class AdvancedSearch : AppCompatActivity() {
             setPadding(16, 8, 16, 8)
         }
 
-        spinner.visibility = View.GONE
-        sectionLayout.addView(spinner)
+        spinnerContainer.addView(spinner)
+        spinnerContainer.visibility = View.GONE
+        sectionLayout.addView(spinnerContainer)
 
         header.setOnClickListener {
-            spinner.visibility = if (spinner.isGone) {
+            spinnerContainer.visibility = if (spinnerContainer.isGone) {
                 arrow.rotation = 90f
                 View.VISIBLE
             } else {

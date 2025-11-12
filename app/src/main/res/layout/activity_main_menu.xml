@@ -114,11 +114,16 @@
         android:gravity="center"
         app:layout_constraintTop_toBottomOf="@+id/tvmiscolecciones">
 
-        <Spinner
-            android:id="@+id/spColecciones"
+        <RelativeLayout
             android:layout_width="260dp"
             android:layout_height="48dp"
-            android:layout_marginEnd="8dp"/>
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/spinner_background_primary">
+            <Spinner
+                android:id="@+id/spColecciones"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+        </RelativeLayout>
 
         <Button
             android:id="@+id/btCrearColeccion"

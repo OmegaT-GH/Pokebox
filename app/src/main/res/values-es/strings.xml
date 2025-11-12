@@ -46,4 +46,6 @@
     <string name="add_card_to_collection">Añadir carta a colección</string>
     <string name="add">Añadir</string>
     <string name="info_not_available">Info no disponible</string>
+    <string name="paste_decklist_here">Pega tu decklist aquí…</string>
+    <string name="check_cards">Comprobar Cartas</string>
 </resources>

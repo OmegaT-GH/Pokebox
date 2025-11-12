@@ -124,6 +124,16 @@ class DBHelper(context: Context?) :
         }
     }
 
+    fun getCollectionFromID(colIDq: Int?): String? {
+        val cur: Cursor = readableDatabase.rawQuery(
+            "SELECT $COL_NAME FROM $TABLA_COLECCIONES WHERE $COL_ID = ?",
+            arrayOf(colIDq.toString())
+        )
+        cur.use {
+            return if (it.moveToFirst()) it.getString(it.getColumnIndexOrThrow(COL_NAME)) else null
+        }
+    }
+
     fun getSetswithcards(colIDq: Int?): Cursor {
         val query = """
         SELECT DISTINCT s.$SET_ID

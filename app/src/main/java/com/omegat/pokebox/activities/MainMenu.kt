@@ -200,9 +200,11 @@ class MainMenu : AppCompatActivity() {
         }
 
         btcompmazo.setOnClickListener {
-
-
-
+            val selectedcollection = spcol.selectedItem.toString()
+            val colid = db.getCollectionFromName(selectedcollection)
+            val i = Intent(this, CheckDeck::class.java)
+            i.putExtra("col", colid)
+            this.startActivity(i)
         }
 
         btdelcol.setOnClickListener {

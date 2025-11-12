@@ -18,7 +18,6 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
@@ -50,6 +49,7 @@ class ViewCard : AppCompatActivity() {
             insets
         }
 
+        val colid = intent.getIntExtra("col", -1)
         val card = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             intent.getParcelableExtra("pcard", PokemonCard::class.java)
         } else {
@@ -103,13 +103,13 @@ class ViewCard : AppCompatActivity() {
         artist.text = "Artist: ${card?.artist ?: getString(R.string.info_not_available)}"
 
         btadd.setOnClickListener {
-            addDialog(this, db, cardid.toString())
+            addDialog(this, db, cardid.toString(), colid)
         }
 
 
     }
 
-    fun addDialog(context: Context, db: DBHelper, cardId: String) {
+    fun addDialog(context: Context, db: DBHelper, cardId: String, colid: Int) {
         lifecycleScope.launch(Dispatchers.IO) {
             val collections = mutableListOf<String>()
             db.readableDatabase.use { rdb ->
@@ -126,30 +126,9 @@ class ViewCard : AppCompatActivity() {
             }
 
             withContext(Dispatchers.Main) {
-                val cont = ConstraintLayout(context)
-                val spcols = Spinner(context)
-                spcols.id = View.generateViewId()
-
-                val params = ConstraintLayout.LayoutParams(
-                    ConstraintLayout.LayoutParams.MATCH_PARENT,
-                    ConstraintLayout.LayoutParams.WRAP_CONTENT
-                )
-                params.setMargins(24, 24, 24, 24)
-                spcols.layoutParams = params
-                cont.addView(spcols)
 
                 val adapter = ArrayAdapter<String>(context, android.R.layout.simple_spinner_item)
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-
-                if (collections.isEmpty()) {
-                    adapter.add(getString(R.string.no_existen_colecciones))
-                    spcols.isEnabled = false
-                } else {
-                    for (name in collections) adapter.add(name)
-                    spcols.isEnabled = true
-                }
-                spcols.adapter = adapter
-
 
                 val inflater = LayoutInflater.from(context)
                 val dialogView = inflater.inflate(R.layout.dialog_add_to_collection, null)
@@ -157,9 +136,22 @@ class ViewCard : AppCompatActivity() {
                 val spCols = dialogView.findViewById<Spinner>(R.id.spColeccionesATC)
                 val npCantidad = dialogView.findViewById<NumberPicker>(R.id.npCantidad)
 
+                if (collections.isEmpty()) {
+                    adapter.add(getString(R.string.no_existen_colecciones))
+                    spCols.isEnabled = false
+                    spCols.adapter = adapter
+                } else {
+                    for (name in collections) adapter.add(name)
+                    spCols.isEnabled = true
+                    spCols.adapter = adapter
+                    spCols.setSelection(adapter.getPosition(db.getCollectionFromID(colid)))
+                }
+
                 npCantidad.minValue = 0
                 npCantidad.maxValue = 99
                 npCantidad.value = 0
+
+
 
                 spCols.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
@@ -176,12 +168,6 @@ class ViewCard : AppCompatActivity() {
                     }
                     override fun onNothingSelected(parent: AdapterView<*>?) {}
                 }
-
-                spCols.adapter = ArrayAdapter(
-                    context,
-                    android.R.layout.simple_spinner_dropdown_item,
-                    collections
-                )
 
                 val adBuilder = AlertDialog.Builder(context)
                     .setTitle(getString(R.string.add_card_to_collection))

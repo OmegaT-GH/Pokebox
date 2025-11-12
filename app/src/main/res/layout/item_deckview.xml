@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_gravity="top|center">
+
+    <ImageView
+        android:id="@+id/CardImage"
+        android:layout_width="90dp"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_weight="2"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/card_image"
+        android:scaleType="fitCenter"
+        android:layout_marginBottom="8dp"
+        app:srcCompat="@drawable/ic_launcher_background" />
+
+    <TextView
+        android:id="@+id/tvDeckCardName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="4dp"
+        style="@style/textbold"/>
+
+    <TextView
+        android:id="@+id/tvDeckCardSet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="4dp"
+        style="@style/text" />
+
+    <TextView
+        android:id="@+id/tvDeckCardAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        style="@style/textbold" />
+
+</LinearLayout>

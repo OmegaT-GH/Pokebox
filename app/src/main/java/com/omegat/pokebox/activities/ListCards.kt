@@ -73,6 +73,7 @@ class ListCards : AppCompatActivity() {
 
                 val i = Intent(this, ViewCard::class.java)
                 i.putExtra("pcard", selectedCard)
+                i.putExtra("col", colid)
                 this.startActivity(i)
             }
             rview.adapter = rviewadap
