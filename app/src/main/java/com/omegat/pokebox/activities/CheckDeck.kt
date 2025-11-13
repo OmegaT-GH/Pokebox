@@ -13,7 +13,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -63,9 +62,6 @@ class CheckDeck : AppCompatActivity() {
         val et = findViewById<EditText>(R.id.etDecklist)
         val btcheck = findViewById<Button>(R.id.btDeckCheck)
         val rview = findViewById<RecyclerView>(R.id.rviewdeck)
-
-        val divider = DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
-        rview.addItemDecoration(divider)
 
         loadSpinner(this, db, spcols, colid)
 

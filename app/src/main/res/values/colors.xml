@@ -3,9 +3,11 @@
     <color name="black">#FF000000</color>
     <color name="LowOpacityBlack">#63000000</color>
     <color name="LowerOpacityBlack">#20000000</color>
+    <color name="LowerOpacityLighterBlack">#20606060</color>
     <color name="white">#FFFFFFFF</color>
 
     <color name="Background">#FF424245</color>
+    <color name="LighterBackground">#FF626265</color>
     <color name="Primary">#FF2A75BB</color>
     <!--color name="Secondary">#FFFFCB05</color-->
     <color name="DarkPrimary">#FF3C5AA6</color>

@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
@@ -49,10 +50,10 @@ class MainMenu : AppCompatActivity() {
         ncolname = ""
 
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-        val btsetsearch = findViewById<Button>(R.id.btListSets)
-        val btadvsearch = findViewById<Button>(R.id.btAdvSearch)
-        val btsetperc = findViewById<Button>(R.id.btListSetsPerc)
-        val btcompmazo = findViewById<Button>(R.id.btCompMazo)
+        val btsetsearch = findViewById<LinearLayout>(R.id.btListSets)
+        val btadvsearch = findViewById<LinearLayout>(R.id.btAdvSearch)
+        val btsetperc = findViewById<LinearLayout>(R.id.btListSetsPerc)
+        val btcompmazo = findViewById<LinearLayout>(R.id.btCompMazo)
         val btaddcol = findViewById<Button>(R.id.btCrearColeccion)
         val btdelcol = findViewById<Button>(R.id.btEliminarColeccion)
 
@@ -247,7 +248,7 @@ class MainMenu : AppCompatActivity() {
 
     }
 
-    fun reloadspinner(db: DBHelper, btsetperc: Button, btcompmazo: Button, spcol: Spinner, btdelcol: Button, id: Int?) {
+    fun reloadspinner(db: DBHelper, btsetperc: LinearLayout, btcompmazo: LinearLayout, spcol: Spinner, btdelcol: Button, id: Int?) {
         val collist: ArrayList<String> = ArrayList()
         val rdb = db.readableDatabase
         val cur: Cursor = rdb.rawQuery("SELECT * FROM Coleccion", null)
@@ -268,10 +269,10 @@ class MainMenu : AppCompatActivity() {
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             spcol.setAdapter(adapter)
             spcol.isEnabled = false
-            btsetperc.isEnabled = false
-            btsetperc.setBackgroundColor(getColor(R.color.DisabledButton))
-            btcompmazo.isEnabled = false
-            btcompmazo.setBackgroundColor(getColor(R.color.DisabledButton))
+            btsetperc.isClickable = false
+            btsetperc.background = ContextCompat.getDrawable(this, R.drawable.menubuttondisabled)
+            btcompmazo.isClickable = false
+            btcompmazo.background = ContextCompat.getDrawable(this, R.drawable.menubuttondisabled)
             btdelcol.isEnabled = false
             btdelcol.setBackgroundColor(getColor(R.color.DisabledButton))
 
@@ -281,10 +282,10 @@ class MainMenu : AppCompatActivity() {
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             spcol.setAdapter(adapter)
             spcol.isEnabled = true
-            btsetperc.isEnabled = true
-            btsetperc.setBackgroundColor(getColor(R.color.Primary))
-            btcompmazo.isEnabled = true
-            btcompmazo.setBackgroundColor(getColor(R.color.Primary))
+            btsetperc.isClickable = true
+            btsetperc.background = ContextCompat.getDrawable(this, R.drawable.menubutton)
+            btcompmazo.isClickable = true
+            btcompmazo.background = ContextCompat.getDrawable(this, R.drawable.menubutton)
             btdelcol.isEnabled = true
             btdelcol.setBackgroundColor(getColor(R.color.Primary))
 

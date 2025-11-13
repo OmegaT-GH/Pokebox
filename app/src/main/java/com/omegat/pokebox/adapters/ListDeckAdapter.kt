@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.omegat.pokebox.R
@@ -51,6 +52,12 @@ class ListDeckAdapter(
             itemView.setOnClickListener {
                 val colid = getCurrentColId()
                 onItemClick?.invoke(card, colid)
+            }
+
+            if (absoluteAdapterPosition % 2 == 0) {
+                itemView.background = ContextCompat.getDrawable(itemView.context, R.drawable.rounded_item_background)
+            } else {
+                itemView.background = ContextCompat.getDrawable(itemView.context, R.drawable.rounded_item_background_lighter)
             }
         }
     }
