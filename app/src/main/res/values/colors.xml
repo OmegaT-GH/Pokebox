@@ -7,8 +7,8 @@
 
     <color name="Background">#FF424245</color>
     <color name="Primary">#FF2A75BB</color>
-    <color name="Secondary">#FFFFCB05</color>
+    <!--color name="Secondary">#FFFFCB05</color-->
     <color name="DarkPrimary">#FF3C5AA6</color>
-    <color name="DarkSecondary">#FFC7A008</color>
+    <!--color name="DarkSecondary">#FFC7A008</color-->
     <color name="DisabledButton">#FF676767</color>
 </resources>

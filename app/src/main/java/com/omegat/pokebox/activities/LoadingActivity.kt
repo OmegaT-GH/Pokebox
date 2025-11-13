@@ -33,6 +33,7 @@ class LoadingActivity : AppCompatActivity() {
             insets
         }
 
+
         pbar = findViewById(R.id.pbloading)
         tvprog = findViewById(R.id.tvloading)
 
@@ -42,7 +43,7 @@ class LoadingActivity : AppCompatActivity() {
 
     @SuppressLint("SetTextI18n")
     private fun loadCards() {
-
+        val type = intent.getStringExtra("type")
         Thread {
 
             val gson = Gson()
@@ -68,6 +69,7 @@ class LoadingActivity : AppCompatActivity() {
 
                     cards.forEach { card ->
                         card.releaseDate = set.releaseDate
+                        card.ptcgoCode = set.ptcgoCode
                     }
 
                     CardRepository.addCards(cards)
@@ -96,10 +98,21 @@ class LoadingActivity : AppCompatActivity() {
                 pbar.progress = 100
 
                 android.os.Handler(Looper.getMainLooper()).postDelayed({
-                    val i = Intent(this, AdvancedSearch::class.java)
-                    i.putExtra("col", intent.getIntExtra("colid", -1))
-                    this.startActivity(i)
-                    finish()
+
+
+                    if (type == "search") {
+                        val i = Intent(this, AdvancedSearch::class.java)
+                        i.putExtra("col", intent.getIntExtra("col", -1))
+                        this.startActivity(i)
+                        finish()
+                    } else if (type == "deck") {
+                        val i = Intent(this, CheckDeck::class.java)
+                        i.putExtra("col", intent.getIntExtra("col", -1))
+                        this.startActivity(i)
+                        finish()
+                    }
+
+
                 }, 1000)
 
             }

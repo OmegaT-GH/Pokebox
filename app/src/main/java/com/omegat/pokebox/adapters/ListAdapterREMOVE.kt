@@ -11,7 +11,7 @@ import com.bumptech.glide.Glide
 import com.omegat.pokebox.R
 import com.omegat.pokebox.data.PokemonCard
 
-class ListAdapter(private val context: Context, private val cards: List<PokemonCard>) : BaseAdapter() {
+class ListAdapterREMOVE(private val context: Context, private val cards: List<PokemonCard>) : BaseAdapter() {
 
     override fun getCount(): Int = cards.size
     override fun getItem(position: Int): Any = cards[position]

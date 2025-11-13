@@ -25,11 +25,15 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.omegat.pokebox.R
 import com.omegat.pokebox.data.CardRepository
 import androidx.core.view.isGone
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.omegat.pokebox.adapters.ListCardsAdapter
 import com.omegat.pokebox.bd.DBHelper
 import com.omegat.pokebox.data.CardFilter
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class AdvancedSearch : AppCompatActivity() {
 
@@ -110,37 +114,49 @@ class AdvancedSearch : AppCompatActivity() {
         btsearch.setOnClickListener {
 
             val filter = collectFilters()
-            val filteredcards = CardRepository.getFilteredCards(filter)
-            val sortedcards = when (sortSpinner?.selectedItem?.toString()) {
-                getString(R.string.nombre_a_z) -> filteredcards.sortedBy { it.name?.lowercase() }
-                getString(R.string.nombre_z_a) -> filteredcards.sortedByDescending { it.name?.lowercase() }
-                getString(R.string.m_s_recientes_primero) -> filteredcards.sortedByDescending { it.releaseDate }
-                getString(R.string.m_s_antiguas_primero) -> filteredcards.sortedBy { it.releaseDate }
-                else -> filteredcards
-            }
 
-            val cardamounts = mutableListOf<Int>()
-            for (card in sortedcards) {
-                if (colid != -1) {
-                    val am = db.getCardAmount(colid, card.id)
-                    cardamounts.add(am)
-                } else {
-                    cardamounts.add(0)
-                }
-            }
+            lifecycleScope.launch(Dispatchers.IO) {
 
-            if (::rviewadap.isInitialized) {
-                rviewadap.updateData(sortedcards, cardamounts)
-            } else {
-                rviewadap = ListCardsAdapter(this, sortedcards, cardamounts) { selectedCard ->
-                    val i = Intent(this, ViewCard::class.java)
-                    i.putExtra("pcard", selectedCard)
-                    this.startActivity(i)
+                val filteredcards = CardRepository.getFilteredCards(filter)
+                val sortedcards = when (sortSpinner?.selectedItem?.toString()) {
+                    getString(R.string.nombre_a_z) -> filteredcards.sortedBy { it.name?.lowercase() }
+                    getString(R.string.nombre_z_a) -> filteredcards.sortedByDescending { it.name?.lowercase() }
+                    getString(R.string.m_s_recientes_primero) -> filteredcards.sortedByDescending { it.releaseDate }
+                    getString(R.string.m_s_antiguas_primero) -> filteredcards.sortedBy { it.releaseDate }
+                    else -> filteredcards
                 }
 
-                rview.setHasFixedSize(true)
-                rview.adapter = rviewadap
+                val cardamounts = mutableListOf<Int>()
+                for (card in sortedcards) {
+                    if (colid != -1) {
+                        val am = db.getCardAmount(colid, card.id)
+                        cardamounts.add(am)
+                    } else {
+                        cardamounts.add(0)
+                    }
+                }
+
+                withContext(Dispatchers.Main) {
+
+                    if (::rviewadap.isInitialized) {
+                        rviewadap.updateData(sortedcards, cardamounts)
+                    } else {
+                        rviewadap = ListCardsAdapter(this@AdvancedSearch, sortedcards, cardamounts) { selectedCard ->
+                            val i = Intent(this@AdvancedSearch, ViewCard::class.java)
+                            i.putExtra("pcard", selectedCard)
+                            startActivity(i)
+                        }
+
+                        rview.setHasFixedSize(true)
+                        rview.adapter = rviewadap
+                    }
+
+                }
+
             }
+
+
+
 
         }
 

@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.AdapterView
@@ -14,7 +15,6 @@ import android.widget.ImageView
 import android.widget.NumberPicker
 import android.widget.Spinner
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -57,6 +57,8 @@ class ViewCard : AppCompatActivity() {
             intent.getParcelableExtra("pcard")
         }
 
+        Log.d("ViewCard", "coleccion:$colid")
+
         val ivcard = findViewById<ImageView>(R.id.ivCardLarge)
         val name = findViewById<TextView>(R.id.tvCardName)
         val number = findViewById<TextView>(R.id.tvCardNumber)
@@ -92,7 +94,12 @@ class ViewCard : AppCompatActivity() {
             ivcard.rotation = 90f
         }
 
-        Glide.with(this).load(card?.images?.large).fitCenter().into(ivcard)
+        Glide.with(this)
+            .load(card?.images?.large)
+            .placeholder(R.drawable.placeholdercard)
+            .error(R.drawable.placeholdercard)
+            .fitCenter()
+            .into(ivcard)
         name.text = "${card?.name}"
         number.text = "${card?.number}/${pset.printedTotal}"
         supertype.text = "${card?.supertype}"
@@ -193,14 +200,17 @@ class ViewCard : AppCompatActivity() {
                                 val success = db.addCardtoCollection(colId, cardId, wdb, cantidad)
 
                                 withContext(Dispatchers.Main) {
-                                    Toast.makeText(
-                                        context,
-                                        if (success)
+                                    if (success) {
+                                        Log.d(
+                                            "add",
                                             "${getString(R.string.a_adido_a)} '$colName' ($cantidad)"
-                                        else
-                                            getString(R.string.error_a_adiendo_a_la_colecci_n),
-                                        Toast.LENGTH_SHORT
-                                    ).show()
+                                        )
+                                    } else {
+                                        Log.d(
+                                            "add",
+                                            getString(R.string.error_a_adiendo_a_la_colecci_n)
+                                        )
+                                    }
 
                                     pickerdialog.dismiss()
                                 }

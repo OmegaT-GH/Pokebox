@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
+import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.Spinner
 import android.widget.Toast
@@ -29,6 +30,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
+
 
 class MainMenu : AppCompatActivity() {
 
@@ -101,7 +103,7 @@ class MainMenu : AppCompatActivity() {
                 initdb.setsycartas(this@MainMenu, db)
             }
             withContext(Dispatchers.Main) {
-                reloadspinner(db, btsetperc, btcompmazo, spcol, btdelcol)
+                reloadspinner(db, btsetperc, btcompmazo, spcol, btdelcol, null)
             }
             val colecciones = withContext(Dispatchers.Main) {
                 val adapter = spcol.adapter
@@ -133,6 +135,7 @@ class MainMenu : AppCompatActivity() {
             if (CardRepository.getCards().isEmpty()) {
                 val i = Intent(this, LoadingActivity::class.java)
                 i.putExtra("col", colid)
+                i.putExtra("type", "search")
                 this.startActivity(i)
             } else {
                 val i = Intent(this, AdvancedSearch::class.java)
@@ -148,7 +151,20 @@ class MainMenu : AppCompatActivity() {
             val etName = EditText(this)
             etName.inputType = InputType.TYPE_CLASS_TEXT
 
-            adbuilder.setView(etName)
+            val container = LinearLayout(this)
+            container.orientation = LinearLayout.VERTICAL
+            val scale = resources.displayMetrics.density
+            val margLR = (scale * 16 / .5f).toInt()
+            val margUD = (scale * 4 / .5f).toInt()
+            val params = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+            params.setMargins(margLR, margUD, margLR, margUD)
+            etName.layoutParams = params
+            container.addView(etName)
+
+            adbuilder.setView(container)
             adbuilder.setPositiveButton(
                 getString(R.string.crear)
             ) { dialog, which ->
@@ -163,13 +179,10 @@ class MainMenu : AppCompatActivity() {
 
                     val id = db.getCollectionFromName(ncolname)
                     if (id == null) {
-                        Toast.makeText(
-                            this,
-                            getString(R.string.coleccion) +  " '$ncolname' " + getString(R.string.creada_correctamente),
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        Log.d("created", getString(R.string.coleccion) +  " '$ncolname' " + getString(R.string.creada_correctamente))
                         initdb.crearcoleccion(this, db, ncolname)
-                        reloadspinner(db, btsetperc, btcompmazo, spcol, btdelcol)
+                        val newid = db.getCollectionFromName(ncolname)
+                        reloadspinner(db, btsetperc, btcompmazo, spcol, btdelcol, newid)
                     } else {
                         Toast.makeText(
                             this,
@@ -202,21 +215,39 @@ class MainMenu : AppCompatActivity() {
         btcompmazo.setOnClickListener {
             val selectedcollection = spcol.selectedItem.toString()
             val colid = db.getCollectionFromName(selectedcollection)
-            val i = Intent(this, CheckDeck::class.java)
-            i.putExtra("col", colid)
-            this.startActivity(i)
+
+            if (CardRepository.getCards().isEmpty()) {
+                val i = Intent(this, LoadingActivity::class.java)
+                i.putExtra("col", colid)
+                i.putExtra("type", "deck")
+                this.startActivity(i)
+            } else {
+                val i = Intent(this, CheckDeck::class.java)
+                i.putExtra("col", colid)
+                this.startActivity(i)
+            }
         }
 
         btdelcol.setOnClickListener {
             val colid = db.getCollectionFromName(spcol.selectedItem.toString())
-            db.removeCollection(colid)
-            reloadspinner(db, btsetperc, btcompmazo, spcol, btdelcol)
+
+            AlertDialog.Builder(this)
+                .setTitle(getString(R.string.delete_collection))
+                .setMessage(getString(R.string.are_you_sure_you_want_to_delete, spcol.selectedItem))
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setPositiveButton(android.R.string.ok
+                ) { dialog, whichButton ->
+                    db.removeCollection(colid)
+                    reloadspinner(db, btsetperc, btcompmazo, spcol, btdelcol, null)
+                }
+                .setNegativeButton(android.R.string.cancel, null).show()
+
         }
 
 
     }
 
-    fun reloadspinner(db: DBHelper, btsetperc: Button, btcompmazo: Button, spcol: Spinner, btdelcol: Button) {
+    fun reloadspinner(db: DBHelper, btsetperc: Button, btcompmazo: Button, spcol: Spinner, btdelcol: Button, id: Int?) {
         val collist: ArrayList<String> = ArrayList()
         val rdb = db.readableDatabase
         val cur: Cursor = rdb.rawQuery("SELECT * FROM Coleccion", null)
@@ -225,12 +256,14 @@ class MainMenu : AppCompatActivity() {
                 collist.add(it.getString(it.getColumnIndexOrThrow("colName")))
             }
         }
+
+        val adapter = ArrayAdapter<String?>(
+            this,
+            android.R.layout.simple_spinner_item
+        )
+
         if (collist.isEmpty()) {
 
-            val adapter = ArrayAdapter<String?>(
-                this,
-                android.R.layout.simple_spinner_item
-            )
             adapter.add(getString(R.string.no_existen_colecciones))
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             spcol.setAdapter(adapter)
@@ -244,10 +277,6 @@ class MainMenu : AppCompatActivity() {
 
         } else {
 
-            val adapter = ArrayAdapter<String?>(
-                this,
-                android.R.layout.simple_spinner_item
-            )
             adapter.addAll(collist)
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             spcol.setAdapter(adapter)
@@ -260,5 +289,7 @@ class MainMenu : AppCompatActivity() {
             btdelcol.setBackgroundColor(getColor(R.color.Primary))
 
         }
+
+        spcol.setSelection(adapter.getPosition(db.getCollectionFromID(id)))
     }
 }

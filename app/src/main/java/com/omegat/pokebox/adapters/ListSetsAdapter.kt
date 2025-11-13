@@ -26,8 +26,18 @@ class ListSetsAdapter(
 
         @SuppressLint("SetTextI18n")
         fun bind(set: PokemonSet) {
-            Glide.with(context).load(set.images?.logo).into(setLogo)
-            Glide.with(context).load(set.images?.symbol).override(60, 60).into(setSymbol)
+            Glide.with(context)
+                .load(set.images?.logo)
+                .placeholder(R.drawable.placeholderlogo)
+                .error(R.drawable.placeholderlogo)
+                .fitCenter()
+                .into(setLogo)
+            Glide.with(context)
+                .load(set.images?.symbol)
+                .override(60, 60)
+                .placeholder(R.drawable.placeholdersymbol)
+                .error(R.drawable.placeholdersymbol)
+                .into(setSymbol)
             setName.text = set.name
             setCards.text = "${set.printedTotal}/${set.total}"
 

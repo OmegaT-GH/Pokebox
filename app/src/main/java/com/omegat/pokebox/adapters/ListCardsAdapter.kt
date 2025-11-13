@@ -13,7 +13,7 @@ import com.omegat.pokebox.R
 import com.omegat.pokebox.data.PokemonCard
 import com.omegat.pokebox.data.PokemonSet
 
-class ListCardsAdapter (
+class ListCardsAdapter(
     private val context: Context,
     private val set: PokemonSet?,
     var cards: List<PokemonCard>,
@@ -38,7 +38,10 @@ class ListCardsAdapter (
 
         @SuppressLint("SetTextI18n")
         fun bind(card: PokemonCard, amount: Int) {
-            Glide.with(context).load(card.images?.small).fitCenter().into(cardImage)
+            Glide.with(context).load(card.images?.small)
+                .placeholder(R.drawable.placeholdercard).error(R.drawable.placeholdercard)
+                .fitCenter()
+                .into(cardImage)
             cardName.text = card.name
             cardNumber.text = if (set != null) {
                 "${card.number}/${set.printedTotal}"
@@ -72,6 +75,7 @@ class ListCardsAdapter (
     }
 
     override fun getItemCount(): Int = cards.size
+
     @SuppressLint("NotifyDataSetChanged")
     fun updateData(newCards: List<PokemonCard>, newCardAmounts: MutableList<Int>) {
         cards = newCards

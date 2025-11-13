@@ -5,7 +5,6 @@
     <string name="b_squeda_avanzada">Búsqueda avanzada</string>
     <string name="progreso_sets">Progreso sets</string>
     <string name="comprobar_mazo">Comprobar mazo</string>
-    <string name="buscar_cartas">Buscar cartas</string>
     <string name="mis_colecciones">Mis colecciones</string>
     <string name="buscar">Buscar…</string>
     <string name="addtocollection">＋ Añadir a la colección</string>
@@ -35,8 +34,6 @@
     <string name="nombre_de_la_colecci_n">Nombre de la colección:</string>
     <string name="no_existen_colecciones">No existen colecciones.</string>
     <string name="actualizando_la_colecci_n">Actualizando la colección:</string>
-    <string name="seleccionar_colecci_n">Seleccionar colección:</string>
-    <string name="aceptar">Aceptar</string>
     <string name="a_adido_a">"Añadido a "</string>
     <string name="error_a_adiendo_a_la_colecci_n">Error añadiendo a la colección.</string>
     <string name="carga_completa">Carga completa. (</string>
@@ -44,8 +41,10 @@
     <string name="cargando_sets">Cargando sets…</string>
     <string name="in_collection">En la colección:</string>
     <string name="add_card_to_collection">Añadir carta a colección</string>
-    <string name="add">Añadir</string>
+    <string name="add">Establecer</string>
     <string name="info_not_available">Info no disponible</string>
     <string name="paste_decklist_here">Pega tu decklist aquí…</string>
     <string name="check_cards">Comprobar Cartas</string>
+    <string name="delete_collection">Eliminar colección</string>
+    <string name="are_you_sure_you_want_to_delete">¿Seguro que quieres eliminar \'%1$s\'?</string>
 </resources>

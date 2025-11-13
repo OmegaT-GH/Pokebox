@@ -13,7 +13,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.bumptech.glide.Glide
 import com.omegat.pokebox.activities.ListSets
 import com.omegat.pokebox.activities.MainMenu
-import com.omegat.pokebox.adapters.ListAdapter
+import com.omegat.pokebox.adapters.ListAdapterREMOVE
 import com.omegat.pokebox.data.PokemonCard
 import com.omegat.pokebox.data.PokemonSet
 import com.google.gson.Gson
@@ -21,7 +21,7 @@ import com.google.gson.reflect.TypeToken
 import com.google.gson.stream.JsonReader
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivityREMOVE : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -193,7 +193,7 @@ class MainActivity : AppCompatActivity() {
         val cards: List<PokemonCard> = Gson().fromJson(creader, ctype)
         creader.close()
 
-        val adapter = ListAdapter(this, cards)
+        val adapter = ListAdapterREMOVE(this, cards)
         listView.adapter = adapter
     }
 }
