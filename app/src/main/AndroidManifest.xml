@@ -29,9 +29,6 @@
             android:name=".activities.LoadingActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivityREMOVE"
-            android:exported="false" />
-        <activity
             android:name=".activities.ListCards"
             android:exported="false" />
         <activity
