@@ -148,20 +148,18 @@ class DBHelper(context: Context?) :
     }
 
     fun getCardAmount(colIDq: Int?, cardIDq: String?): Int {
-        readableDatabase.use { db ->
-            val cursor = db.rawQuery(
-                "SELECT $CC_AMOUNT FROM $TABLA_CARTASCOLECCION WHERE $CARD_ID = ? AND $COL_ID = ?",
-                arrayOf(cardIDq, colIDq.toString())
-            )
+        val db = readableDatabase
+        val cursor = db.rawQuery(
+            "SELECT $CC_AMOUNT FROM $TABLA_CARTASCOLECCION WHERE $CARD_ID = ? AND $COL_ID = ?",
+            arrayOf(cardIDq, colIDq.toString())
+        )
 
-            cursor.use {
-                return if (it.moveToFirst()) {
-                    it.getInt(it.getColumnIndexOrThrow(CC_AMOUNT))
-                } else {
-                    0
-                }
+        cursor.use {
+            return if (it.moveToFirst()) {
+                it.getInt(it.getColumnIndexOrThrow(CC_AMOUNT))
+            } else {
+                0
             }
-
         }
     }
 

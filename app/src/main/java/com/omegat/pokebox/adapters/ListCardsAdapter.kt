@@ -51,22 +51,36 @@ class ListCardsAdapter(
             }
             cardRarity.text = card.rarity
             cardSupertype.text = card.supertype
-            cardAmount.text = amount.toString()
+            if (set != null) {
+                cardAmount.textSize = 15f
+                cardAmount.text = amount.toString()
+            } else {
+                cardAmount.textSize = 20f
+                cardAmount.text = ">"
+            }
 
             itemView.setOnClickListener {
                 onItemClick?.invoke(card)
             }
 
-            if (amount == 0) {
-                cardImage.alpha = 0.4f
+            if (set != null) {
+                if (amount == 0) {
+                    cardImage.alpha = 0.4f
+                } else {
+                    cardImage.alpha = 1f
+                }
             } else {
                 cardImage.alpha = 1f
             }
 
             if (absoluteAdapterPosition % 2 == 0) {
-                itemView.background = ContextCompat.getDrawable(itemView.context, R.drawable.rounded_item_background)
+                itemView.background =
+                    ContextCompat.getDrawable(itemView.context, R.drawable.rounded_item_background)
             } else {
-                itemView.background = ContextCompat.getDrawable(itemView.context, R.drawable.rounded_item_background_lighter)
+                itemView.background = ContextCompat.getDrawable(
+                    itemView.context,
+                    R.drawable.rounded_item_background_lighter
+                )
             }
         }
     }

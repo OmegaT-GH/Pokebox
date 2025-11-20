@@ -7,7 +7,6 @@ import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.ImageView
@@ -58,8 +57,8 @@ class AdvancedSearch : AppCompatActivity() {
         val db = DBHelper(this)
         val colid = intent.getIntExtra("col", -1)
 
-        val btsearch = findViewById<Button>(R.id.btSearch)
-        val btfilters = findViewById<Button>(R.id.btOpenFilters)
+        val btsearch = findViewById<LinearLayout>(R.id.btSearch)
+        val btfilters = findViewById<LinearLayout>(R.id.btOpenFilters)
         val drawer = findViewById<DrawerLayout>(R.id.main)
         val rview = findViewById<RecyclerView>(R.id.rviewfilteredsearch)
         val lmanager = LinearLayoutManager(this)
@@ -117,8 +116,18 @@ class AdvancedSearch : AppCompatActivity() {
 
             lifecycleScope.launch(Dispatchers.IO) {
 
+                val searchText = findViewById<EditText>(R.id.etSearch).text.toString()
+
+                val sortCriteria =
+                    if (searchText.isBlank()) {
+                        getString(R.string.m_s_recientes_primero)
+                    } else {
+                        sortSpinner?.selectedItem?.toString()
+                    }
+
                 val filteredcards = CardRepository.getFilteredCards(filter)
-                val sortedcards = when (sortSpinner?.selectedItem?.toString()) {
+                val sortedcards = when (sortCriteria) {
+                    getString(R.string.relevant) -> filteredcards
                     getString(R.string.nombre_a_z) -> filteredcards.sortedBy { it.name?.lowercase() }
                     getString(R.string.nombre_z_a) -> filteredcards.sortedByDescending { it.name?.lowercase() }
                     getString(R.string.m_s_recientes_primero) -> filteredcards.sortedByDescending { it.releaseDate }
@@ -399,7 +408,7 @@ class AdvancedSearch : AppCompatActivity() {
     private fun addSortSection() {
         val sortingSpinner = findViewById<Spinner>(R.id.spOrdenar)
 
-        val options = listOf(getString(R.string.m_s_recientes_primero), getString(R.string.m_s_antiguas_primero), getString(R.string.nombre_a_z), getString(R.string.nombre_z_a))
+        val options = listOf(getString(R.string.relevant), getString(R.string.m_s_recientes_primero), getString(R.string.m_s_antiguas_primero), getString(R.string.nombre_a_z), getString(R.string.nombre_z_a))
 
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, options)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)

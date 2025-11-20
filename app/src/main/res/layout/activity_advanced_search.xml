@@ -19,22 +19,33 @@
             android:layout_height="56dp"
             android:orientation="horizontal">
 
-            <Button
+            <LinearLayout
                 android:id="@+id/btOpenFilters"
-                android:layout_width="30dp"
-                android:layout_height="60dp"
-                style="@style/textbig"
-                android:backgroundTint="@color/Primary"
-                android:text="@string/three_lines"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
                 android:padding="0dp"
                 android:layout_marginStart="4dp"
                 android:layout_marginEnd="4dp"
-                android:layout_weight="1"
-                android:layout_gravity="center"/>
+                android:background="@drawable/menubutton"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:layout_weight="1"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/filter" />
+            </LinearLayout>
 
             <EditText
                 android:id="@+id/etSearch"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="60dp"
                 android:layout_gravity="center"
                 android:layout_weight="9"
@@ -46,17 +57,29 @@
                 android:textColorHint="#AAAAAA"
                 tools:ignore="TextContrastCheck" />
 
-            <Button
+            <LinearLayout
                 android:id="@+id/btSearch"
-                android:layout_width="120dp"
-                android:layout_height="60dp"
-                android:text="@string/buscarsinpuntos"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:padding="0dp"
                 android:layout_marginStart="4dp"
                 android:layout_marginEnd="4dp"
-                style="@style/textbig"
-                android:backgroundTint="@color/Primary"
-                android:layout_weight="2"
-                android:layout_gravity="center" />
+                android:background="@drawable/menubutton"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:layout_weight="1"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/search" />
+            </LinearLayout>
 
         </LinearLayout>
 

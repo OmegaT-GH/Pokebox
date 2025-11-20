@@ -47,4 +47,5 @@
     <string name="check_cards">Comprobar Cartas</string>
     <string name="delete_collection">Eliminar colección</string>
     <string name="are_you_sure_you_want_to_delete">¿Seguro que quieres eliminar \'%1$s\'?</string>
+    <string name="relevant">Relevancia</string>
 </resources>
