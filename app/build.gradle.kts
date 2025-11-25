@@ -12,8 +12,8 @@ android {
         applicationId = "com.omegat.pokebox"
         minSdk = 26
         targetSdk = 36
-        versionCode = 6
-        versionName = "1.2"
+        versionCode = 130
+        versionName = "1.3.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
