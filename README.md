@@ -1,7 +1,7 @@
 POKEBOX - An app to manage your Pokemon TCG Collection
 ---------------------------------------
 
-# ENGLISH
+## ENGLISH
 
 ## What is Pokebox?
 Pokebox is an app developed in Android Studio to manage your Pokemon TCG Collection.
@@ -19,9 +19,8 @@ This was done for a project. I love the TCG and I love collecting stuff, and mos
 
 ### If you have any suggestions (or issues), you can open an issue on GitHub and I'll take a look at it.
 
-----------------------------------------
 
-# ESPAÑOL
+## ESPAÑOL
 
 ## ¿Qué es Pokebox?
 Pokebox es una aplicación desarrollada en Android Studio para manejar tu colección del JCC de Pokémon.
