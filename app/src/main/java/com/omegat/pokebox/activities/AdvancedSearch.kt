@@ -97,15 +97,15 @@ class AdvancedSearch : AppCompatActivity() {
         }.distinct().sorted()
         val allRarities = allCards.mapNotNull { it.rarity }.distinct().sorted()
         val allArtists = allCards.mapNotNull { it.artist }.distinct().sorted()
-        val hasAbility = listOf("Yes", "No")
+        val hasAbility = listOf(getString(R.string.yes), getString(R.string.no))
 
-        addFilterSection(getString(R.string.supertype), allSupertypes)
-        addFilterSection(getString(R.string.subtype), allSubtypes)
-        addFilterSection(getString(R.string.type), allTypes)
-        addFilterSection(getString(R.string.legality), allLegalities)
-        addFilterSection(getString(R.string.rarity), allRarities)
-        addSpinnerSection(getString(R.string.artist), allArtists)
-        addFilterSection(getString(R.string.has_ability), hasAbility)
+        addFilterSection("supertype", getString( R.string.supertype), allSupertypes)
+        addFilterSection("subtype", getString(R.string.subtype), allSubtypes)
+        addFilterSection("type", getString(R.string.type), allTypes)
+        addFilterSection("legality", getString(R.string.legality), allLegalities)
+        addFilterSection("rarity", getString(R.string.rarity), allRarities)
+        addSpinnerSection("artist", getString(R.string.artist), allArtists)
+        addFilterSection("hasability", getString(R.string.has_ability), hasAbility)
         addHPSection()
 
         addSortSection()
@@ -116,14 +116,7 @@ class AdvancedSearch : AppCompatActivity() {
 
             lifecycleScope.launch(Dispatchers.IO) {
 
-                val searchText = findViewById<EditText>(R.id.etSearch).text.toString()
-
-                val sortCriteria =
-                    if (searchText.isBlank()) {
-                        getString(R.string.m_s_recientes_primero)
-                    } else {
-                        sortSpinner?.selectedItem?.toString()
-                    }
+                val sortCriteria = sortSpinner?.selectedItem?.toString() ?: getString(R.string.m_s_recientes_primero)
 
                 val filteredcards = CardRepository.getFilteredCards(filter)
                 val sortedcards = when (sortCriteria) {
@@ -175,7 +168,7 @@ class AdvancedSearch : AppCompatActivity() {
 
     }
 
-    fun addFilterSection(title: String, options: List<String>) {
+    fun addFilterSection(key: String, title: String, options: List<String>) {
         val sectionLayout = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             layoutParams = LinearLayout.LayoutParams(
@@ -239,9 +232,9 @@ class AdvancedSearch : AppCompatActivity() {
         }
 
         findViewById<LinearLayout>(R.id.contFiltro).addView(sectionLayout)
-        filterCheckboxes[title] = contentLayout.children.filterIsInstance<CheckBox>().toList()
+        filterCheckboxes[key] = contentLayout.children.filterIsInstance<CheckBox>().toList()
     }
-    fun addSpinnerSection(title: String, options: List<String>) {
+    fun addSpinnerSection(key: String, title: String, options: List<String>) {
         val sectionLayout = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             layoutParams = LinearLayout.LayoutParams(
@@ -282,7 +275,7 @@ class AdvancedSearch : AppCompatActivity() {
         }
 
         val spinner = Spinner(this).apply {
-            val spinnerOptions = mutableListOf("Todos")
+            val spinnerOptions = mutableListOf(context.getString(R.string.all))
             spinnerOptions.addAll(options)
 
             val adapter = object : ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, spinnerOptions) {
@@ -328,7 +321,7 @@ class AdvancedSearch : AppCompatActivity() {
         }
 
         findViewById<LinearLayout>(R.id.contFiltro).addView(sectionLayout)
-        if (title == "Artist") {
+        if (key == "artist") {
             artistSpinner = spinner
         }
     }
@@ -416,23 +409,23 @@ class AdvancedSearch : AppCompatActivity() {
         sortSpinner = sortingSpinner
     }
     private fun collectFilters(): CardFilter {
-        val selectedSupertypes = filterCheckboxes["Supertype"]?.filter { it.isChecked }?.map { it.text.toString() }.orEmpty()
-        val selectedSubtypes = filterCheckboxes["Subtype"]?.filter { it.isChecked }?.map { it.text.toString() }.orEmpty()
-        val selectedTypes = filterCheckboxes["Type"]?.filter { it.isChecked }?.map { it.text.toString() }.orEmpty()
-        val selectedLegalities = filterCheckboxes["Legality"]?.filter { it.isChecked }?.map { it.text.toString() }.orEmpty()
-        val selectedRarities = filterCheckboxes["Rarity"]?.filter { it.isChecked }?.map { it.text.toString() }.orEmpty()
+        val selectedSupertypes = filterCheckboxes["supertype"]?.filter { it.isChecked }?.map { it.text.toString() }.orEmpty()
+        val selectedSubtypes = filterCheckboxes["subtype"]?.filter { it.isChecked }?.map { it.text.toString() }.orEmpty()
+        val selectedTypes = filterCheckboxes["type"]?.filter { it.isChecked }?.map { it.text.toString() }.orEmpty()
+        val selectedLegalities = filterCheckboxes["legality"]?.filter { it.isChecked }?.map { it.text.toString() }.orEmpty()
+        val selectedRarities = filterCheckboxes["rarity"]?.filter { it.isChecked }?.map { it.text.toString() }.orEmpty()
 
-        val hasAbilityFilter = filterCheckboxes["Has Ability"]?.firstOrNull { it.isChecked }?.text?.let {
+        val hasAbilityFilter = filterCheckboxes["hasability"]?.firstOrNull { it.isChecked }?.text?.let {
             when (it) {
-                "Yes" -> true
-                "No" -> false
+                getString(R.string.yes) -> true
+                getString(R.string.no) -> false
                 else -> null
             }
         }
 
         val name = findViewById<EditText>(R.id.etSearch)?.text?.toString()?.takeIf { it.isNotBlank() }
 
-        val artist = artistSpinner?.selectedItem?.toString()?.takeIf { it != "Todos" }
+        val artist = artistSpinner?.selectedItem?.toString()?.takeIf { it != getString(R.string.all) }
 
         val minHP = minHpEditText?.text?.toString()?.toIntOrNull()
         val maxHP = maxHpEditText?.text?.toString()?.toIntOrNull()

@@ -48,4 +48,7 @@
     <string name="delete_collection">Eliminar colección</string>
     <string name="are_you_sure_you_want_to_delete">¿Seguro que quieres eliminar \'%1$s\'?</string>
     <string name="relevant">Relevancia</string>
+    <string name="yes">Si</string>
+    <string name="no">No</string>
+    <string name="all">Todos</string>
 </resources>
