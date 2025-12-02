@@ -51,4 +51,6 @@
     <string name="yes">Si</string>
     <string name="no">No</string>
     <string name="all">Todos</string>
+    <string name="avgprice">Precio medio</string>
+    <string name="loading">Cargando…</string>
 </resources>

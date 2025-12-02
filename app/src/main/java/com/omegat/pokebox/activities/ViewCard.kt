@@ -29,6 +29,7 @@ import com.omegat.pokebox.R
 import com.omegat.pokebox.bd.DBHelper
 import com.omegat.pokebox.data.PokemonCard
 import com.omegat.pokebox.data.PokemonSet
+import io.pokemontcg.Pokemon
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.withLock
@@ -48,6 +49,8 @@ class ViewCard : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+
 
         val colid = intent.getIntExtra("col", -1)
         val card = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -83,6 +86,9 @@ class ViewCard : AppCompatActivity() {
 
         val db = DBHelper(this)
 
+        val Poke = Pokemon("5d772eb0-136d-4069-80d3-74c11a3009a1")
+        findCardValue(Poke, cardid)
+
 
         for (set in sets) {
             if (set.id == setid) {
@@ -113,6 +119,33 @@ class ViewCard : AppCompatActivity() {
             addDialog(this, db, cardid.toString(), colid)
         }
 
+
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun findCardValue(poke: Pokemon, cardid: String?) {
+
+        val aptext = getString(R.string.avgprice)
+        val tvPrice = findViewById<TextView>(R.id.tvAvgPrice)
+        tvPrice.text = "$aptext: ${getString(R.string.loading)}"
+
+        lifecycleScope.launch(Dispatchers.IO) {
+            try {
+                val card = poke.card().find(cardid.toString())
+                val avgprice = card.cardMarket?.prices?.averageSellPrice
+
+                withContext(Dispatchers.Main) {
+                    tvPrice.text = "$aptext: ${avgprice ?: "N/A"}€"
+                }
+
+            } catch (e: Exception) {
+                Log.e("findCardValue", "Error: ${e.message}")
+
+                withContext(Dispatchers.Main) {
+                    tvPrice.text = "$aptext: N/A"
+                }
+            }
+        }
 
     }
 
