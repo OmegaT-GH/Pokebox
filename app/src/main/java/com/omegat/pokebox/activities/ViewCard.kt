@@ -86,8 +86,8 @@ class ViewCard : AppCompatActivity() {
 
         val db = DBHelper(this)
 
-        val Poke = Pokemon("5d772eb0-136d-4069-80d3-74c11a3009a1")
-        findCardValue(Poke, cardid)
+        val poke = Pokemon("5d772eb0-136d-4069-80d3-74c11a3009a1")
+        findCardValue(poke, cardid)
 
 
         for (set in sets) {

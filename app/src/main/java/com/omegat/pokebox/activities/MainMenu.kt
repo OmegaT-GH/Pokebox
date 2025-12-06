@@ -1,5 +1,6 @@
 package com.omegat.pokebox.activities
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.database.Cursor
 import android.os.Bundle
@@ -12,6 +13,7 @@ import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.Spinner
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
@@ -37,6 +39,7 @@ class MainMenu : AppCompatActivity() {
 
     lateinit var ncolname: String
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -56,6 +59,11 @@ class MainMenu : AppCompatActivity() {
         val btcompmazo = findViewById<LinearLayout>(R.id.btCompMazo)
         val btaddcol = findViewById<Button>(R.id.btCrearColeccion)
         val btdelcol = findViewById<Button>(R.id.btEliminarColeccion)
+
+        val tvversion = findViewById<TextView>(R.id.tvVersion)
+        val version = this.packageManager.getPackageInfo(this.packageName,0).versionName
+        tvversion.text = "v$version"
+
 
         val rlay = findViewById<ConstraintLayout>(R.id.main)
 
@@ -267,7 +275,7 @@ class MainMenu : AppCompatActivity() {
 
             adapter.add(getString(R.string.no_existen_colecciones))
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            spcol.setAdapter(adapter)
+            spcol.adapter = adapter
             spcol.isEnabled = false
             btsetperc.isClickable = false
             btsetperc.background = ContextCompat.getDrawable(this, R.drawable.menubuttondisabled)
@@ -280,7 +288,7 @@ class MainMenu : AppCompatActivity() {
 
             adapter.addAll(collist)
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            spcol.setAdapter(adapter)
+            spcol.adapter = adapter
             spcol.isEnabled = true
             btsetperc.isClickable = true
             btsetperc.background = ContextCompat.getDrawable(this, R.drawable.menubutton)
