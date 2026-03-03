@@ -1,5 +1,8 @@
 package com.omegat.pokebox.activities
 
+import android.graphics.drawable.GradientDrawable
+import android.graphics.drawable.LayerDrawable
+
 //import android.widget.Toast
 import android.annotation.SuppressLint
 import android.content.Context
@@ -10,9 +13,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Button
 import android.widget.ImageView
-import android.widget.NumberPicker
+import android.widget.LinearLayout
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
@@ -72,7 +74,7 @@ class ViewCard : AppCompatActivity() {
         val rarity = findViewById<TextView>(R.id.tvCardRarity)
         val artist = findViewById<TextView>(R.id.tvCardArtist)
 
-        val btadd = findViewById<Button>(R.id.btAddToCollection)
+        val btadd = findViewById<LinearLayout>(R.id.btAddToCollection)
 
         val sinputStream = assets.open("json/sets/en.json")
         val sreader = JsonReader(sinputStream.reader())
@@ -117,6 +119,21 @@ class ViewCard : AppCompatActivity() {
 
         btadd.setOnClickListener {
             addDialog(this, db, cardid.toString(), colid)
+        }
+
+        // Set button color based on card types
+        val types = card?.types
+        val btTextView = btadd.getChildAt(0) as? TextView
+        if (!types.isNullOrEmpty()) {
+            val buttonDrawable = when {
+                types.size >= 2 -> createGradientDrawable(types[0], types[1])
+                else -> createSolidDrawable(types[0])
+            }
+            btadd.background = buttonDrawable
+            btTextView?.setTextColor(0xFF212021.toInt())
+        } else if (card?.supertype?.lowercase() == "trainer") {
+            btadd.background = createSolidDrawable("trainer")
+            btTextView?.setTextColor(0xFF212021.toInt())
         }
 
 
@@ -167,31 +184,40 @@ class ViewCard : AppCompatActivity() {
 
             withContext(Dispatchers.Main) {
 
-                val adapter = ArrayAdapter<String>(context, android.R.layout.simple_spinner_item)
+                val adapter = ArrayAdapter(context, R.layout.spinner_item, collections)
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
                 val inflater = LayoutInflater.from(context)
                 val dialogView = inflater.inflate(R.layout.dialog_add_to_collection, null)
 
                 val spCols = dialogView.findViewById<Spinner>(R.id.spColeccionesATC)
-                val npCantidad = dialogView.findViewById<NumberPicker>(R.id.npCantidad)
+                val tvCantidad = dialogView.findViewById<TextView>(R.id.tvCantidad)
+                val btPlus = dialogView.findViewById<LinearLayout>(R.id.btPlus)
+                val btMinus = dialogView.findViewById<LinearLayout>(R.id.btMinus)
+                
+                var cantidad = 0
 
                 if (collections.isEmpty()) {
-                    adapter.add(getString(R.string.no_existen_colecciones))
                     spCols.isEnabled = false
-                    spCols.adapter = adapter
                 } else {
-                    for (name in collections) adapter.add(name)
                     spCols.isEnabled = true
                     spCols.adapter = adapter
                     spCols.setSelection(adapter.getPosition(db.getCollectionFromID(colid)))
                 }
 
-                npCantidad.minValue = 0
-                npCantidad.maxValue = 99
-                npCantidad.value = 0
+                btPlus.setOnClickListener {
+                    if (cantidad < 99) {
+                        cantidad++
+                        tvCantidad.text = cantidad.toString()
+                    }
+                }
 
-
+                btMinus.setOnClickListener {
+                    if (cantidad > 0) {
+                        cantidad--
+                        tvCantidad.text = cantidad.toString()
+                    }
+                }
 
                 spCols.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
@@ -199,9 +225,9 @@ class ViewCard : AppCompatActivity() {
                         lifecycleScope.launch(Dispatchers.IO) {
                             DBHelper.dbMutex.withLock {
                                 val colId = db.getCollectionFromName(colName)
-                                val cantidad = db.getCardAmount(colId, cardId)
+                                cantidad = db.getCardAmount(colId, cardId)
                                 withContext(Dispatchers.Main) {
-                                    npCantidad.value = cantidad
+                                    tvCantidad.text = cantidad.toString()
                                 }
                             }
                         }
@@ -223,7 +249,6 @@ class ViewCard : AppCompatActivity() {
 
                     positive.setOnClickListener {
                         val colName = spCols.selectedItem.toString()
-                        val cantidad = npCantidad.value
 
                         lifecycleScope.launch (Dispatchers.IO) {
                             DBHelper.dbMutex.withLock {
@@ -238,6 +263,7 @@ class ViewCard : AppCompatActivity() {
                                             "add",
                                             "${getString(R.string.a_adido_a)} '$colName' ($cantidad)"
                                         )
+                                        setResult(RESULT_OK)
                                     } else {
                                         Log.d(
                                             "add",
@@ -255,6 +281,84 @@ class ViewCard : AppCompatActivity() {
                 pickerdialog.show()
             }
         }
+    }
+
+    private fun getTypeColor(type: String): Int {
+        return when (type.lowercase()) {
+            "grass" -> 0xFF8FD460.toInt()
+            "fire" -> 0xFFE85D4A.toInt()
+            "water" -> 0xFF7BA3F0.toInt()
+            "lightning", "electric" -> 0xFFFFC850.toInt()
+            "psychic" -> 0xFFFF7AA8.toInt()
+            "fighting" -> 0xFFFF9850.toInt()
+            "darkness", "dark" -> 0xFF6A7A9A.toInt()
+            "metal", "steel" -> 0xFFD0D0E0.toInt()
+            "dragon" -> 0xFFD3C13E.toInt()
+            "fairy" -> 0xFFFFB0C8.toInt()
+            "colorless", "normal" -> 0xFFB0B098.toInt()
+            "trainer" -> 0xFF6A6A6C.toInt()
+            else -> 0xFF7DB3F5.toInt()
+        }
+    }
+
+    private fun createSolidDrawable(type: String): LayerDrawable {
+        val color = getTypeColor(type)
+        val layers = arrayOfNulls<android.graphics.drawable.Drawable>(3)
+        
+        layers[0] = GradientDrawable().apply {
+            shape = GradientDrawable.RECTANGLE
+            setColor(0xFF1C1C1E.toInt())
+            cornerRadius = 28f
+        }
+        
+        layers[1] = GradientDrawable().apply {
+            shape = GradientDrawable.RECTANGLE
+            setColor(0xFF3C3C3E.toInt())
+            cornerRadius = 28f
+        }
+        
+        layers[2] = GradientDrawable().apply {
+            shape = GradientDrawable.RECTANGLE
+            setColor(color)
+            cornerRadius = 28f
+        }
+        
+        val layerDrawable = LayerDrawable(layers)
+        layerDrawable.setLayerInset(0, 0, 0, 8, 8)
+        layerDrawable.setLayerInset(1, 8, 8, 0, 0)
+        layerDrawable.setLayerInset(2, 4, 4, 4, 4)
+        
+        return layerDrawable
+    }
+
+    private fun createGradientDrawable(type1: String, type2: String): LayerDrawable {
+        val color1 = getTypeColor(type1)
+        val color2 = getTypeColor(type2)
+        val layers = arrayOfNulls<android.graphics.drawable.Drawable>(3)
+        
+        layers[0] = GradientDrawable().apply {
+            shape = GradientDrawable.RECTANGLE
+            setColor(0xFF1C1C1E.toInt())
+            cornerRadius = 28f
+        }
+        
+        layers[1] = GradientDrawable().apply {
+            shape = GradientDrawable.RECTANGLE
+            setColor(0xFF3C3C3E.toInt())
+            cornerRadius = 28f
+        }
+        
+        layers[2] = GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT, intArrayOf(color1, color2)).apply {
+            shape = GradientDrawable.RECTANGLE
+            cornerRadius = 28f
+        }
+        
+        val layerDrawable = LayerDrawable(layers)
+        layerDrawable.setLayerInset(0, 0, 0, 8, 8)
+        layerDrawable.setLayerInset(1, 8, 8, 0, 0)
+        layerDrawable.setLayerInset(2, 4, 4, 4, 4)
+        
+        return layerDrawable
     }
 
 }

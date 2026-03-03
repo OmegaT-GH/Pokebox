@@ -3,49 +3,91 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:padding="16dp"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/select_collection"
+        android:layout_marginBottom="8dp"
+        style="@style/textbold"
+        android:textSize="14sp"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginBottom="8dp"
-        android:minHeight="48dp"
-        android:background="@drawable/spinner_background_white">
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/neo_input">
         <Spinner
             android:id="@+id/spColeccionesATC"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
     </RelativeLayout>
 
-    <LinearLayout
+    <TextView
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:gravity="center_vertical"
+        android:layout_height="wrap_content"
+        android:text="@string/in_collection"
+        android:layout_marginBottom="8dp"
+        style="@style/textbold"
+        android:textSize="14sp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
         android:orientation="horizontal">
 
+        <LinearLayout
+            android:id="@+id/btMinus"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/neo_button_small_outline"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:gravity="center"
+            android:stateListAnimator="@null">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="-"
+                android:textColor="@color/text_on_primary"
+                android:textStyle="bold"
+                android:textSize="24sp"/>
+        </LinearLayout>
+
         <TextView
-            android:id="@+id/tvEncoleccion"
+            android:id="@+id/tvCantidad"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/in_collection"
-            android:layout_marginEnd="32dp"
+            android:text="0"
+            android:textAlignment="center"
+            android:textSize="32sp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
             style="@style/textboldbig"/>
 
-        <NumberPicker
-            android:id="@+id/npCantidad"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:paddingTop="4dp"
-            android:paddingBottom="4dp"
-            android:minHeight="48dp"
-            android:layout_marginTop="4dp" />
+        <LinearLayout
+            android:id="@+id/btPlus"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/neo_button_small_outline"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:gravity="center"
+            android:stateListAnimator="@null">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="+"
+                android:textColor="@color/text_on_primary"
+                android:textStyle="bold"
+                android:textSize="24sp"/>
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>

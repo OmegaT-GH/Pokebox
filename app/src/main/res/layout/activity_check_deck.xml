@@ -11,27 +11,24 @@
     <RelativeLayout
         android:id="@+id/rlayet"
         android:layout_width="0dp"
-        android:layout_height="250dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:background="@drawable/spinner_background_primary">
-        <EditText
-            android:id="@+id/etDecklist"
+        android:background="@android:color/transparent">
+        <Button
+            android:id="@+id/btPasteDecklist"
             android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:ems="10"
-            android:importantForAutofill="no"
-            android:gravity="top"
-            android:inputType="textMultiLine"
-            android:hint="@string/paste_decklist_here" />
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:background="@drawable/neo_button_outline"
+            android:textColor="@color/text_on_primary"
+            android:textStyle="bold"
+            android:stateListAnimator="@null"
+            android:text="@string/paste_decklist" />
     </RelativeLayout>
 
 
@@ -41,6 +38,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
+        android:padding="4dp"
+        android:clipToPadding="false"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:spanCount="3"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -56,12 +55,13 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:background="@drawable/menubutton"
+        android:background="@drawable/neo_button_small_outline"
         android:clickable="true"
         android:focusable="true"
         android:foreground="?attr/selectableItemBackground"
         android:gravity="center"
         android:orientation="vertical"
+        android:stateListAnimator="@null"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/rlay"
         app:layout_constraintTop_toBottomOf="@+id/rlayet">
@@ -88,7 +88,7 @@
         app:layout_constraintEnd_toStartOf="@+id/btDeckCheck"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rlayet"
-        android:background="@drawable/spinner_background_primary">
+        android:background="@drawable/neo_input">
         <Spinner
             android:id="@+id/spDeckCollections"
             android:layout_width="match_parent"

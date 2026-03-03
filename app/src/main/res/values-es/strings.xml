@@ -53,4 +53,7 @@
     <string name="all">Todos</string>
     <string name="avgprice">Precio medio</string>
     <string name="loading">Cargando…</string>
+    <string name="paste_decklist">Pegar decklist</string>
+    <string name="decklist_loaded">✓ Decklist cargada</string>
+    <string name="no_decklist">Ninguna decklist</string>
 </resources>

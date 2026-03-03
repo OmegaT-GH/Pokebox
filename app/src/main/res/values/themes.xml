@@ -1,10 +1,23 @@
 <resources>
-    <!-- Base application theme. -->
-    <style name="Base.Theme.Pokebox" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
-        <item name="colorButtonNormal">@color/Primary</item>
+    <style name="Base.Theme.Pokebox" parent="Theme.Material3.Light.NoActionBar">
+        <item name="colorPrimary">@color/Primary</item>
+        <item name="colorAccent">@color/Primary</item>
+        <item name="android:statusBarColor">@color/Background</item>
+        <item name="android:navigationBarColor">@color/Background</item>
+        <item name="android:windowBackground">@color/Background</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar">false</item>
+        <item name="materialButtonStyle">@style/CustomButton</item>
     </style>
 
     <style name="Theme.Pokebox" parent="Base.Theme.Pokebox" />
+    
+    <style name="CustomButton" parent="Widget.Material3.Button">
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:insetLeft">0dp</item>
+        <item name="android:insetRight">0dp</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:minHeight">0dp</item>
+    </style>
 </resources>

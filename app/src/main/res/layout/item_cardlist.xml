@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="150dp"
     android:layout_margin="5dp"
-    android:background="@drawable/rounded_item_background"
     android:orientation="horizontal"
     android:paddingStart="10dp"
     android:paddingTop="10dp"

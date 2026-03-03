@@ -53,4 +53,7 @@
     <string name="all">All</string>
     <string name="avgprice">Avg. price</string>
     <string name="loading">Loading…</string>
+    <string name="paste_decklist">Paste decklist</string>
+    <string name="decklist_loaded">✓ Decklist loaded</string>
+    <string name="no_decklist">No decklist</string>
 </resources>

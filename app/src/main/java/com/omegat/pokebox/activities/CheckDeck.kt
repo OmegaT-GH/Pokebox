@@ -1,14 +1,18 @@
 package com.omegat.pokebox.activities
 
+import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.widget.ArrayAdapter
+import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.Spinner
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -33,6 +37,8 @@ class CheckDeck : AppCompatActivity() {
     lateinit var sets: List<PokemonSet>
     lateinit var cards: List<PokemonCard>
     lateinit var rviewadap: ListDeckAdapter
+    private var decklistText: String = ""
+    private var hasDecklistLoaded = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,8 +53,6 @@ class CheckDeck : AppCompatActivity() {
         cards = CardRepository.getCards()
         val checkedcards = mutableListOf<PokemonCard>()
 
-
-
         val sinputStream = assets.open("json/sets/en.json")
         val sreader = JsonReader(sinputStream.reader())
         val stype = object : TypeToken<List<PokemonSet>>() {}.type
@@ -59,25 +63,30 @@ class CheckDeck : AppCompatActivity() {
         val colid = intent.getIntExtra("col", -1)
 
         val spcols = findViewById<Spinner>(R.id.spDeckCollections)
-        val et = findViewById<EditText>(R.id.etDecklist)
+        val btPasteDecklist = findViewById<Button>(R.id.btPasteDecklist)
         val btcheck = findViewById<LinearLayout>(R.id.btDeckCheck)
         val rview = findViewById<RecyclerView>(R.id.rviewdeck)
 
+        updateDecklistButtonText(btPasteDecklist)
         loadSpinner(this, db, spcols, colid)
 
+        btPasteDecklist.setOnClickListener {
+            showDecklistDialog()
+        }
+
         btcheck.setOnClickListener {
+            if (decklistText.isEmpty()) return@setOnClickListener
 
             val selectedcollection = spcols.selectedItem.toString()
             val selcolid = db.getCollectionFromName(selectedcollection)
             Log.d("col", "coleccion:$selcolid/$colid")
             checkedcards.clear()
 
-            val deck = getCards(et)
+            val deck = getCardsFromText(decklistText)
             val cardAmounts = mutableListOf<Int>()
             val cardOwned = mutableListOf<Int>()
 
             for (d in deck) {
-
                 val set = sets.find { it.ptcgoCode.equals(d.ptcgocode, ignoreCase = true) }
                 if (set != null) {
                     val found = cards.find { c ->
@@ -93,10 +102,7 @@ class CheckDeck : AppCompatActivity() {
                         val cam = db.getCardAmount(selcolid, set.id+"-"+d.number)
                         cardOwned.add(cam)
                     }
-
-
                 }
-
             }
 
             val checkedcardsL: List<PokemonCard> = checkedcards
@@ -114,18 +120,73 @@ class CheckDeck : AppCompatActivity() {
                     val i = Intent(this, ViewCard::class.java)
                     i.putExtra("col", selcolid)
                     i.putExtra("pcard", selectedCard)
-                    startActivity(i)
+                    startActivityForResult(i, REQUEST_VIEW_CARD)
                 }
                 rview.setHasFixedSize(true)
                 rview.adapter = rviewadap
             }
+        }
+    }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_VIEW_CARD) {
+            refreshDeckList()
+        }
+    }
+
+    private fun refreshDeckList() {
+        if (::rviewadap.isInitialized && hasDecklistLoaded) {
+            val spcols = findViewById<Spinner>(R.id.spDeckCollections)
+            val db = DBHelper(this)
+            val selectedcollection = spcols.selectedItem.toString()
+            val selcolid = db.getCollectionFromName(selectedcollection)
+
+            val newCardOwned = mutableListOf<Int>()
+            for (card in rviewadap.cards) {
+                val cam = db.getCardAmount(selcolid, card.id ?: "")
+                newCardOwned.add(cam)
+            }
+            rviewadap.updateData(rviewadap.cards, rviewadap.cardAmounts, newCardOwned)
+        }
+    }
+
+    private fun showDecklistDialog() {
+        val inflater = LayoutInflater.from(this)
+        val dialogView = inflater.inflate(R.layout.dialog_paste_decklist, null)
+        val etDialog = dialogView.findViewById<EditText>(R.id.etDecklistDialog)
+
+        val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        val clipData = clipboard.primaryClip
+        if (clipData != null && clipData.itemCount > 0) {
+            val clipText = clipData.getItemAt(0).text?.toString() ?: ""
+            etDialog.setText(clipText)
+        } else {
+            etDialog.setText(decklistText)
+        }
+
+        AlertDialog.Builder(this)
+            .setTitle(getString(R.string.paste_decklist))
+            .setView(dialogView)
+            .setPositiveButton(getString(R.string.add)) { _, _ ->
+                decklistText = etDialog.text.toString()
+                hasDecklistLoaded = decklistText.isNotEmpty()
+                updateDecklistButtonText(findViewById(R.id.btPasteDecklist))
+            }
+            .setNegativeButton(getString(R.string.cancelar), null)
+            .show()
+    }
+
+    private fun updateDecklistButtonText(button: Button) {
+        button.text = if (hasDecklistLoaded) {
+            getString(R.string.decklist_loaded)
+        } else {
+            getString(R.string.paste_decklist)
         }
     }
 
     fun loadSpinner(context: Context, db: DBHelper, spcols: Spinner, colid: Int) {
         lifecycleScope.launch(Dispatchers.IO) {
-
             val collections = mutableListOf<String>()
             db.readableDatabase.use { rdb ->
                 val cur = rdb.rawQuery(
@@ -141,7 +202,6 @@ class CheckDeck : AppCompatActivity() {
             }
 
             withContext(Dispatchers.Main) {
-
                 val adapter = ArrayAdapter<String>(context, android.R.layout.simple_spinner_item)
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
@@ -155,18 +215,12 @@ class CheckDeck : AppCompatActivity() {
                 spcols.adapter = adapter
 
                 spcols.setSelection(adapter.getPosition(db.getCollectionFromID(colid)))
-
             }
-
-
         }
     }
 
-    fun getCards(et: EditText): List<CardDeckCheck> {
-        val input = et.text.toString()
-
-        val regex =
-            Regex("""^(\d+)\s+(.+?)\s+(?=[A-Z]{2,4}\s+\d+$)([A-Z]{2,4})\s+(\d+)$""")
+    fun getCardsFromText(input: String): List<CardDeckCheck> {
+        val regex = Regex("""^(\d+)\s+(.+?)\s+(?=[A-Z]{2,4}\s+\d+$)([A-Z]{2,4})\s+(\d+)$""")
 
         val cards = input.lines()
             .mapNotNull { line ->
@@ -175,5 +229,9 @@ class CheckDeck : AppCompatActivity() {
                 }
             }
         return cards
+    }
+
+    companion object {
+        private const val REQUEST_VIEW_CARD = 1001
     }
 }

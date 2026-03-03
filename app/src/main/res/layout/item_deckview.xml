@@ -6,7 +6,8 @@
     android:orientation="vertical"
     android:layout_gravity="top|center"
     android:paddingTop="4dp"
-    android:paddingBottom="4dp">
+    android:paddingBottom="4dp"
+    android:background="@drawable/rounded_item_background">
 
     <ImageView
         android:id="@+id/ivDeckCardImage"

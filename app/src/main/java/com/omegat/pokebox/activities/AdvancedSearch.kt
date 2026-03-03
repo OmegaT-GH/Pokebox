@@ -16,6 +16,7 @@ import android.widget.Spinner
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -70,7 +71,8 @@ class AdvancedSearch : AppCompatActivity() {
             text = context.getString(R.string.filtrosdebusqueda)
             textSize = 20f
             setPadding(16, 16, 16, 16)
-            setTextAppearance(R.style.textboldbig)
+            setTextColor(ContextCompat.getColor(context, R.color.text_primary))
+            setTypeface(null, android.graphics.Typeface.BOLD)
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
@@ -190,7 +192,8 @@ class AdvancedSearch : AppCompatActivity() {
         val titleView = TextView(this).apply {
             text = title
             textSize = 25f
-            setTextAppearance(R.style.textboldbig)
+            setTextColor(ContextCompat.getColor(context, R.color.text_primary))
+            setTypeface(null, android.graphics.Typeface.BOLD)
             layoutParams = LinearLayout.LayoutParams(
                     0,
             LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -209,14 +212,46 @@ class AdvancedSearch : AppCompatActivity() {
         val contentLayout = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             visibility = View.GONE
+            setPadding(16, 4, 16, 4)
         }
 
         options.forEach { option ->
-            val cb = CheckBox(this).apply {
-                text = option
-                setTextAppearance(R.style.text)
+            val rowLayout = LinearLayout(this).apply {
+                orientation = LinearLayout.HORIZONTAL
+                gravity = Gravity.CENTER_VERTICAL
+                setPadding(4, 0, 4, 0)
             }
-            contentLayout.addView(cb)
+
+            val switch = androidx.appcompat.widget.SwitchCompat(this).apply {
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                )
+                thumbDrawable = ContextCompat.getDrawable(context, R.drawable.toggle_thumb)
+                trackDrawable = ContextCompat.getDrawable(context, R.drawable.toggle_track_selector)
+                setPadding(0, 0, 0, 0)
+                minimumWidth = 0
+                minimumHeight = 0
+                scaleX = 0.8f
+                scaleY = 0.8f
+                tag = option
+            }
+
+            val label = TextView(this).apply {
+                text = option
+                setTextColor(ContextCompat.getColor(context, R.color.text_primary))
+                textSize = 14f
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                ).apply {
+                    marginStart = 12
+                }
+            }
+
+            rowLayout.addView(switch)
+            rowLayout.addView(label)
+            contentLayout.addView(rowLayout)
         }
 
         sectionLayout.addView(contentLayout)
@@ -232,7 +267,25 @@ class AdvancedSearch : AppCompatActivity() {
         }
 
         findViewById<LinearLayout>(R.id.contFiltro).addView(sectionLayout)
-        filterCheckboxes[key] = contentLayout.children.filterIsInstance<CheckBox>().toList()
+        
+        val switches = contentLayout.children
+            .filterIsInstance<LinearLayout>()
+            .mapNotNull { it.getChildAt(0) as? androidx.appcompat.widget.SwitchCompat }
+            .toList()
+        
+        filterCheckboxes[key] = switches.map { sw ->
+            CheckBox(this).apply {
+                tag = sw.tag
+                visibility = View.GONE
+                setOnCheckedChangeListener { _, isChecked ->
+                    sw.isChecked = isChecked
+                }
+            }.also { cb ->
+                sw.setOnCheckedChangeListener { _, isChecked ->
+                    cb.isChecked = isChecked
+                }
+            }
+        }
     }
     fun addSpinnerSection(key: String, title: String, options: List<String>) {
         val sectionLayout = LinearLayout(this).apply {
@@ -252,7 +305,8 @@ class AdvancedSearch : AppCompatActivity() {
         val titleView = TextView(this).apply {
             text = title
             textSize = 25f
-            setTextAppearance(R.style.textboldbig)
+            setTextColor(ContextCompat.getColor(context, R.color.text_primary))
+            setTypeface(null, android.graphics.Typeface.BOLD)
             layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
         }
 
@@ -271,7 +325,7 @@ class AdvancedSearch : AppCompatActivity() {
             ).apply {
                 setMargins(0, 8, 0, 8)
             }
-            setBackgroundResource(R.drawable.spinner_background_white)
+            setBackgroundResource(R.drawable.neo_input)
         }
 
         val spinner = Spinner(this).apply {
@@ -281,13 +335,13 @@ class AdvancedSearch : AppCompatActivity() {
             val adapter = object : ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, spinnerOptions) {
                 override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
                     val v = super.getView(position, convertView, parent) as TextView
-                    v.setTextAppearance(R.style.text)
+                    v.setTextColor(ContextCompat.getColor(context, R.color.text_primary))
                     return v
                 }
 
                 override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
                     val v = super.getDropDownView(position, convertView, parent) as TextView
-                    v.setTextAppearance(R.style.text)
+                    v.setTextColor(ContextCompat.getColor(context, R.color.text_primary))
                     return v
                 }
             }
@@ -343,7 +397,8 @@ class AdvancedSearch : AppCompatActivity() {
         val titleView = TextView(this).apply {
             text = context.getString(R.string.rangohp)
             textSize = 25f
-            setTextAppearance(R.style.textboldbig)
+            setTextColor(ContextCompat.getColor(context, R.color.text_primary))
+            setTypeface(null, android.graphics.Typeface.BOLD)
             layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
         }
 
@@ -371,6 +426,9 @@ class AdvancedSearch : AppCompatActivity() {
                 marginEnd = 8
             }
             setPadding(16, 20, 16, 20)
+            setTextColor(ContextCompat.getColor(context, R.color.text_primary))
+            setHintTextColor(ContextCompat.getColor(context, R.color.text_secondary))
+            setBackgroundResource(R.drawable.neo_input)
         }
 
         val maxHP = EditText(this).apply {
@@ -378,6 +436,9 @@ class AdvancedSearch : AppCompatActivity() {
             inputType = InputType.TYPE_CLASS_NUMBER
             layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
             setPadding(16, 20, 16, 20)
+            setTextColor(ContextCompat.getColor(context, R.color.text_primary))
+            setHintTextColor(ContextCompat.getColor(context, R.color.text_secondary))
+            setBackgroundResource(R.drawable.neo_input)
         }
 
         contentLayout.addView(minHP)
@@ -409,13 +470,13 @@ class AdvancedSearch : AppCompatActivity() {
         sortSpinner = sortingSpinner
     }
     private fun collectFilters(): CardFilter {
-        val selectedSupertypes = filterCheckboxes["supertype"]?.filter { it.isChecked }?.map { it.text.toString() }.orEmpty()
-        val selectedSubtypes = filterCheckboxes["subtype"]?.filter { it.isChecked }?.map { it.text.toString() }.orEmpty()
-        val selectedTypes = filterCheckboxes["type"]?.filter { it.isChecked }?.map { it.text.toString() }.orEmpty()
-        val selectedLegalities = filterCheckboxes["legality"]?.filter { it.isChecked }?.map { it.text.toString() }.orEmpty()
-        val selectedRarities = filterCheckboxes["rarity"]?.filter { it.isChecked }?.map { it.text.toString() }.orEmpty()
+        val selectedSupertypes = filterCheckboxes["supertype"]?.filter { it.isChecked }?.map { it.tag.toString() }.orEmpty()
+        val selectedSubtypes = filterCheckboxes["subtype"]?.filter { it.isChecked }?.map { it.tag.toString() }.orEmpty()
+        val selectedTypes = filterCheckboxes["type"]?.filter { it.isChecked }?.map { it.tag.toString() }.orEmpty()
+        val selectedLegalities = filterCheckboxes["legality"]?.filter { it.isChecked }?.map { it.tag.toString() }.orEmpty()
+        val selectedRarities = filterCheckboxes["rarity"]?.filter { it.isChecked }?.map { it.tag.toString() }.orEmpty()
 
-        val hasAbilityFilter = filterCheckboxes["hasability"]?.firstOrNull { it.isChecked }?.text?.let {
+        val hasAbilityFilter = filterCheckboxes["hasability"]?.firstOrNull { it.isChecked }?.tag?.let {
             when (it) {
                 getString(R.string.yes) -> true
                 getString(R.string.no) -> false

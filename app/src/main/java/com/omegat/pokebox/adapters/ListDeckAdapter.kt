@@ -40,13 +40,13 @@ class ListDeckAdapter(
             cardAmount.text = "$owned / $amount"
 
             if (owned >= amount) {
-                cardName.setTextColor("#20FF20".toColorInt())
-                cardSetcode.setTextColor("#20FF20".toColorInt())
-                cardAmount.setTextColor("#20FF20".toColorInt())
+                cardName.setTextColor(ContextCompat.getColor(context, R.color.Primary))
+                cardSetcode.setTextColor(ContextCompat.getColor(context, R.color.Primary))
+                cardAmount.setTextColor(ContextCompat.getColor(context, R.color.Primary))
             } else {
-                cardName.setTextColor("#FFFFFF".toColorInt())
-                cardSetcode.setTextColor("#FFFFFF".toColorInt())
-                cardAmount.setTextColor("#FFFFFF".toColorInt())
+                cardName.setTextColor(ContextCompat.getColor(context, R.color.text_primary))
+                cardSetcode.setTextColor(ContextCompat.getColor(context, R.color.text_secondary))
+                cardAmount.setTextColor(ContextCompat.getColor(context, R.color.text_primary))
             }
 
             itemView.setOnClickListener {

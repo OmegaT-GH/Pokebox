@@ -57,13 +57,12 @@ class MainMenu : AppCompatActivity() {
         val btadvsearch = findViewById<LinearLayout>(R.id.btAdvSearch)
         val btsetperc = findViewById<LinearLayout>(R.id.btListSetsPerc)
         val btcompmazo = findViewById<LinearLayout>(R.id.btCompMazo)
-        val btaddcol = findViewById<Button>(R.id.btCrearColeccion)
-        val btdelcol = findViewById<Button>(R.id.btEliminarColeccion)
+        val btaddcol = findViewById<LinearLayout>(R.id.btCrearColeccion)
+        val btdelcol = findViewById<LinearLayout>(R.id.btEliminarColeccion)
 
         val tvversion = findViewById<TextView>(R.id.tvVersion)
         val version = this.packageManager.getPackageInfo(this.packageName,0).versionName
         tvversion.text = "v$version"
-
 
         val rlay = findViewById<ConstraintLayout>(R.id.main)
 
@@ -256,7 +255,7 @@ class MainMenu : AppCompatActivity() {
 
     }
 
-    fun reloadspinner(db: DBHelper, btsetperc: LinearLayout, btcompmazo: LinearLayout, spcol: Spinner, btdelcol: Button, id: Int?) {
+    fun reloadspinner(db: DBHelper, btsetperc: LinearLayout, btcompmazo: LinearLayout, spcol: Spinner, btdelcol: LinearLayout, id: Int?) {
         val collist: ArrayList<String> = ArrayList()
         val rdb = db.readableDatabase
         val cur: Cursor = rdb.rawQuery("SELECT * FROM Coleccion", null)
@@ -268,7 +267,7 @@ class MainMenu : AppCompatActivity() {
 
         val adapter = ArrayAdapter<String?>(
             this,
-            android.R.layout.simple_spinner_item
+            R.layout.spinner_item
         )
 
         if (collist.isEmpty()) {
@@ -282,7 +281,7 @@ class MainMenu : AppCompatActivity() {
             btcompmazo.isClickable = false
             btcompmazo.background = ContextCompat.getDrawable(this, R.drawable.menubuttondisabled)
             btdelcol.isEnabled = false
-            btdelcol.setBackgroundColor(getColor(R.color.DisabledButton))
+            btdelcol.background = ContextCompat.getDrawable(this, R.drawable.menubuttondisabled)
 
         } else {
 
@@ -291,11 +290,11 @@ class MainMenu : AppCompatActivity() {
             spcol.adapter = adapter
             spcol.isEnabled = true
             btsetperc.isClickable = true
-            btsetperc.background = ContextCompat.getDrawable(this, R.drawable.menubutton)
+            btsetperc.background = ContextCompat.getDrawable(this, R.drawable.neo_button_outline)
             btcompmazo.isClickable = true
-            btcompmazo.background = ContextCompat.getDrawable(this, R.drawable.menubutton)
+            btcompmazo.background = ContextCompat.getDrawable(this, R.drawable.neo_button_outline)
             btdelcol.isEnabled = true
-            btdelcol.setBackgroundColor(getColor(R.color.Primary))
+            btdelcol.background = ContextCompat.getDrawable(this, R.drawable.neo_button_small_outline)
 
         }
 

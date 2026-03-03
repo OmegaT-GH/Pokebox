@@ -1,16 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Dark Neomorphic Color Scheme -->
     <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    
+    <!-- Base Background -->
+    <color name="Background">#FF2C2C2E</color>
+    <color name="LighterBackground">#FF3A3A3C</color>
+    
+    <!-- Neomorphic Shadows -->
+    <color name="neo_shadow_dark">#FF1C1C1E</color>
+    <color name="neo_shadow_light">#FF3C3C3E</color>
+    
+    <!-- Primary Accent -->
+    <color name="Primary">#FF5B9FED</color>
+    <color name="DarkPrimary">#FF4A8AD6</color>
+    <color name="PrimaryLight">#FF7DB3F5</color>
+    
+    <!-- Text Colors -->
+    <color name="text_primary">#FFFFFFFF</color>
+    <color name="text_secondary">#FFB0B0B0</color>
+    <color name="text_on_primary">#FFFFFFFF</color>
+    
+    <!-- Disabled State -->
+    <color name="DisabledButton">#FF4A4A4C</color>
+    
+    <!-- Legacy compatibility -->
     <color name="LowOpacityBlack">#63000000</color>
     <color name="LowerOpacityBlack">#20000000</color>
     <color name="LowerOpacityLighterBlack">#20606060</color>
-    <color name="white">#FFFFFFFF</color>
-
-    <color name="Background">#FF424245</color>
-    <color name="LighterBackground">#FF626265</color>
-    <color name="Primary">#FF2A75BB</color>
-    <!--color name="Secondary">#FFFFCB05</color-->
-    <color name="DarkPrimary">#FF3C5AA6</color>
-    <!--color name="DarkSecondary">#FFC7A008</color-->
-    <color name="DisabledButton">#FF676767</color>
 </resources>
