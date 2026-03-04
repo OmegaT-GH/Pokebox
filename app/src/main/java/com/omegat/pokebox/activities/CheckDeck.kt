@@ -4,7 +4,6 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.widget.ArrayAdapter
 import android.widget.Button
@@ -79,7 +78,6 @@ class CheckDeck : AppCompatActivity() {
 
             val selectedcollection = spcols.selectedItem.toString()
             val selcolid = db.getCollectionFromName(selectedcollection)
-            Log.d("col", "coleccion:$selcolid/$colid")
             checkedcards.clear()
 
             val deck = getCardsFromText(decklistText)

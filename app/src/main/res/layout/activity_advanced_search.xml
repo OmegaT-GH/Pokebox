@@ -17,19 +17,19 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="64dp"
+            android:layout_height="72dp"
             android:orientation="horizontal">
 
             <soup.neumorphism.NeumorphCardView
                 android:id="@+id/btOpenFilters"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="68dp"
+                android:layout_height="68dp"
                 android:layout_marginStart="4dp"
                 android:layout_marginEnd="4dp"
                 android:layout_gravity="center_vertical"
                 android:clickable="true"
                 android:focusable="true"
-                android:foreground="?attr/selectableItemBackground"
+                android:background="?attr/selectableItemBackgroundBorderless"
                 app:neumorph_shadowElevation="6dp"
                 app:neumorph_shadowColorLight="@color/neumorph_light_shadow"
                 app:neumorph_shadowColorDark="@color/neumorph_dark_shadow"
@@ -39,14 +39,14 @@
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="16dp"
+                    android:layout_margin="12dp"
                     android:importantForAccessibility="no"
                     android:src="@drawable/filter" />
             </soup.neumorphism.NeumorphCardView>
 
             <soup.neumorphism.NeumorphCardView
                 android:layout_width="0dp"
-                android:layout_height="60dp"
+                android:layout_height="68dp"
                 android:layout_weight="9"
                 android:layout_marginStart="4dp"
                 android:layout_marginEnd="4dp"
@@ -75,14 +75,14 @@
 
             <soup.neumorphism.NeumorphCardView
                 android:id="@+id/btSearch"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="68dp"
+                android:layout_height="68dp"
                 android:layout_marginStart="4dp"
                 android:layout_marginEnd="4dp"
                 android:layout_gravity="center_vertical"
                 android:clickable="true"
                 android:focusable="true"
-                android:foreground="?attr/selectableItemBackground"
+                android:background="?attr/selectableItemBackgroundBorderless"
                 app:neumorph_shadowElevation="6dp"
                 app:neumorph_shadowColorLight="@color/neumorph_light_shadow"
                 app:neumorph_shadowColorDark="@color/neumorph_dark_shadow"
@@ -92,7 +92,7 @@
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="16dp"
+                    android:layout_margin="12dp"
                     android:importantForAccessibility="no"
                     android:src="@drawable/search" />
             </soup.neumorphism.NeumorphCardView>
@@ -101,9 +101,9 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="64dp"
+            android:layout_height="72dp"
             android:orientation="horizontal"
-            android:gravity="center"
+            android:gravity="center_vertical"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp">
 
@@ -121,17 +121,19 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    style="@style/textboldbig"
+                    style="@style/textbold"
                     android:text="@string/ordenar_por"
                     android:paddingStart="16dp"
                     android:paddingEnd="16dp"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp" />
+                    android:paddingTop="12dp"
+                    android:paddingBottom="12dp"
+                    android:textSize="16sp" />
             </soup.neumorphism.NeumorphCardView>
 
             <soup.neumorphism.NeumorphCardView
-                android:layout_width="wrap_content"
-                android:layout_height="60dp"
+                android:layout_width="0dp"
+                android:layout_height="68dp"
+                android:layout_weight="1"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 app:neumorph_shadowElevation="4dp"
@@ -142,8 +144,8 @@
 
                 <Spinner
                     android:id="@+id/spOrdenar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="60dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp" />
             </soup.neumorphism.NeumorphCardView>

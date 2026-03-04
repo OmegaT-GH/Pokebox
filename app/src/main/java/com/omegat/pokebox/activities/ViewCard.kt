@@ -1,9 +1,5 @@
 package com.omegat.pokebox.activities
 
-import android.graphics.drawable.GradientDrawable
-import android.graphics.drawable.LayerDrawable
-
-//import android.widget.Toast
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Build
@@ -14,7 +10,6 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
@@ -84,8 +79,6 @@ class ViewCard : AppCompatActivity() {
 
         val cardid = card?.id
         val setid = cardid?.substringBefore("-")
-        //Toast.makeText(this, setid, Toast.LENGTH_SHORT).show()
-
         val db = DBHelper(this)
 
         val poke = Pokemon("5d772eb0-136d-4069-80d3-74c11a3009a1")
@@ -252,17 +245,10 @@ class ViewCard : AppCompatActivity() {
                                 val success = db.addCardtoCollection(colId, cardId, wdb, cantidad)
 
                                 withContext(Dispatchers.Main) {
-                                    if (success) {
-                                        Log.d(
-                                            "add",
-                                            "${getString(R.string.a_adido_a)} '$colName' ($cantidad)"
-                                        )
+                    if (success) {
                                         setResult(RESULT_OK)
                                     } else {
-                                        Log.d(
-                                            "add",
-                                            getString(R.string.error_a_adiendo_a_la_colecci_n)
-                                        )
+                                        
                                     }
 
                                     pickerdialog.dismiss()
@@ -294,65 +280,4 @@ class ViewCard : AppCompatActivity() {
             else -> 0xFF7DB3F5.toInt()
         }
     }
-
-    private fun createSolidDrawable(type: String): LayerDrawable {
-        val color = getTypeColor(type)
-        val layers = arrayOfNulls<android.graphics.drawable.Drawable>(3)
-        
-        layers[0] = GradientDrawable().apply {
-            shape = GradientDrawable.RECTANGLE
-            setColor(0xFF1C1C1E.toInt())
-            cornerRadius = 28f
-        }
-        
-        layers[1] = GradientDrawable().apply {
-            shape = GradientDrawable.RECTANGLE
-            setColor(0xFF3C3C3E.toInt())
-            cornerRadius = 28f
-        }
-        
-        layers[2] = GradientDrawable().apply {
-            shape = GradientDrawable.RECTANGLE
-            setColor(color)
-            cornerRadius = 28f
-        }
-        
-        val layerDrawable = LayerDrawable(layers)
-        layerDrawable.setLayerInset(0, 0, 0, 8, 8)
-        layerDrawable.setLayerInset(1, 8, 8, 0, 0)
-        layerDrawable.setLayerInset(2, 4, 4, 4, 4)
-        
-        return layerDrawable
-    }
-
-    private fun createGradientDrawable(type1: String, type2: String): LayerDrawable {
-        val color1 = getTypeColor(type1)
-        val color2 = getTypeColor(type2)
-        val layers = arrayOfNulls<android.graphics.drawable.Drawable>(3)
-        
-        layers[0] = GradientDrawable().apply {
-            shape = GradientDrawable.RECTANGLE
-            setColor(0xFF1C1C1E.toInt())
-            cornerRadius = 28f
-        }
-        
-        layers[1] = GradientDrawable().apply {
-            shape = GradientDrawable.RECTANGLE
-            setColor(0xFF3C3C3E.toInt())
-            cornerRadius = 28f
-        }
-        
-        layers[2] = GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT, intArrayOf(color1, color2)).apply {
-            shape = GradientDrawable.RECTANGLE
-            cornerRadius = 28f
-        }
-        
-        val layerDrawable = LayerDrawable(layers)
-        layerDrawable.setLayerInset(0, 0, 0, 8, 8)
-        layerDrawable.setLayerInset(1, 8, 8, 0, 0)
-        layerDrawable.setLayerInset(2, 4, 4, 4, 4)
-        
-        return layerDrawable
-    }
-
 }

@@ -35,71 +35,47 @@
             android:textSize="24sp" />
     </soup.neumorphism.NeumorphCardView>
 
-    <LinearLayout
+    <soup.neumorphism.NeumorphCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:gravity="center"
-        android:orientation="horizontal">
-
-        <soup.neumorphism.NeumorphCardView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            app:neumorph_shadowElevation="4dp"
-            app:neumorph_shadowColorLight="@color/neumorph_light_shadow"
-            app:neumorph_shadowColorDark="@color/neumorph_dark_shadow"
-            app:neumorph_backgroundColor="@color/Background"
-            app:neumorph_shapeType="flat">
-
-            <TextView
-                android:id="@+id/tvCardNumber"
-                style="@style/text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:textSize="14sp" />
-        </soup.neumorphism.NeumorphCardView>
-
-        <soup.neumorphism.NeumorphCardView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:neumorph_shadowElevation="4dp"
-            app:neumorph_shadowColorLight="@color/neumorph_light_shadow"
-            app:neumorph_shadowColorDark="@color/neumorph_dark_shadow"
-            app:neumorph_backgroundColor="@color/Background"
-            app:neumorph_shapeType="flat">
-
-            <TextView
-                android:id="@+id/tvCardSupertype"
-                style="@style/textbold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:textSize="14sp" />
-        </soup.neumorphism.NeumorphCardView>
-
-    </LinearLayout>
-
-    <soup.neumorphism.NeumorphCardView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginBottom="16dp"
         app:neumorph_shadowElevation="4dp"
         app:neumorph_shadowColorLight="@color/neumorph_light_shadow"
         app:neumorph_shadowColorDark="@color/neumorph_dark_shadow"
         app:neumorph_backgroundColor="@color/Background"
         app:neumorph_shapeType="flat">
 
-        <TextView
-            android:id="@+id/tvAvgPrice"
-            style="@style/textbold"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:textSize="14sp" />
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:padding="8dp">
+
+            <TextView
+                android:id="@+id/tvCardNumber"
+                style="@style/text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tvCardSupertype"
+                style="@style/textbold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tvAvgPrice"
+                style="@style/textbold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp" />
+        </LinearLayout>
     </soup.neumorphism.NeumorphCardView>
 
     <soup.neumorphism.NeumorphCardView
@@ -115,7 +91,7 @@
         <ImageView
             android:id="@+id/ivCardLarge"
             android:layout_width="match_parent"
-            android:layout_height="400dp"
+            android:layout_height="300dp"
             android:adjustViewBounds="true"
             android:contentDescription="@string/card_image"
             android:padding="8dp"

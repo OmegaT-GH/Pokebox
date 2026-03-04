@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -37,7 +36,6 @@ class ListCards : AppCompatActivity() {
         val rview = findViewById<RecyclerView>(R.id.rviewcardsearch)
         val db = DBHelper(this)
         val colid = intent.getIntExtra("col", -1)
-        Log.d(null,colid.toString())
 
         val set = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             intent.getParcelableExtra("pset", PokemonSet::class.java)
@@ -69,28 +67,13 @@ class ListCards : AppCompatActivity() {
             }
 
             rviewadap  = ListCardsAdapter(this, set, cards, cardamounts) { selectedCard ->
-                //Toast.makeText(this, "Pulsado: ${selectedCard.name}", Toast.LENGTH_SHORT).show()
-
                 val i = Intent(this, ViewCard::class.java)
                 i.putExtra("pcard", selectedCard)
                 i.putExtra("col", colid)
                 this.startActivity(i)
             }
             rview.adapter = rviewadap
-
-
-
-
         }
-
-
-
-
-
-
-
-
-
     }
 
     @SuppressLint("NotifyDataSetChanged")

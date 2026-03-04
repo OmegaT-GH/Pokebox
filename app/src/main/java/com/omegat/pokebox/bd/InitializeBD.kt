@@ -36,7 +36,6 @@ class InitializeBD() {
                     val ctype = object : TypeToken<List<PokemonCard>>() {}.type
                     val cards: List<PokemonCard> = Gson().fromJson(creader, ctype)
                     creader.close()
-                    Log.d(null, "Cargando set: ${set.name}")
 
                     for (card in cards) {
                         db.addCard(card.id, set.id, this)

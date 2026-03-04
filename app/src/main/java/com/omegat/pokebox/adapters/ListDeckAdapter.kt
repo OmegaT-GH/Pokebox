@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.omegat.pokebox.R
 import com.omegat.pokebox.data.PokemonCard
-import androidx.core.graphics.toColorInt
 
 class ListDeckAdapter(
     private val context: Context,

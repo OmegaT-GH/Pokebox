@@ -3,7 +3,6 @@ package com.omegat.pokebox.activities
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -54,7 +53,6 @@ class ListSets : AppCompatActivity() {
         if (mode == "percentage") {
 
             val colid = intent.getIntExtra("col", -1)
-            Log.d(null,colid.toString())
             val cur = db.getSetswithcards(colid)
             val setids = mutableListOf<String>()
 
@@ -76,8 +74,6 @@ class ListSets : AppCompatActivity() {
             }
 
             rviewadap  = ListPercentageAdapter(this, setswithcards.reversed(), perc, percamount) { selectedSet ->
-                //Toast.makeText(this, "Pulsado: ${selectedSet.name}", Toast.LENGTH_SHORT).show()
-
                 val i = Intent(this, ListCards::class.java)
                 i.putExtra("pset", selectedSet)
                 i.putExtra("col", colid)
@@ -89,11 +85,8 @@ class ListSets : AppCompatActivity() {
         } else if (mode == "list") {
 
             val colid = intent.getIntExtra("col", -1)
-            Log.d(null,colid.toString())
 
             rview.adapter = ListSetsAdapter(this, sets.reversed()) { selectedSet ->
-                //Toast.makeText(this, "Pulsado: ${selectedSet.name}", Toast.LENGTH_SHORT).show()
-
                 val i = Intent(this, ListCards::class.java)
                 i.putExtra("pset", selectedSet)
                 i.putExtra("col", colid)

@@ -120,7 +120,6 @@ class MainMenu : AppCompatActivity() {
             for (nombre in colecciones) {
                 DBHelper.dbMutex.withLock {
                     initdb.actualizarcoleccion(db, nombre)
-                    Log.d("BD", getString(R.string.actualizando_la_colecci_n) + " $nombre")
                 }
             }
             withContext(Dispatchers.Main) {
@@ -187,7 +186,6 @@ class MainMenu : AppCompatActivity() {
 
                     val id = db.getCollectionFromName(ncolname)
                     if (id == null) {
-                        Log.d("created", getString(R.string.coleccion) +  " '$ncolname' " + getString(R.string.creada_correctamente))
                         initdb.crearcoleccion(this, db, ncolname)
                         val newid = db.getCollectionFromName(ncolname)
                         reloadspinner(db, btsetperc, btcompmazo, spcol, btdelcol, newid)

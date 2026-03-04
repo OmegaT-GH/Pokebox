@@ -219,21 +219,18 @@ class AdvancedSearch : AppCompatActivity() {
             val rowLayout = LinearLayout(this).apply {
                 orientation = LinearLayout.HORIZONTAL
                 gravity = Gravity.CENTER_VERTICAL
-                setPadding(4, 0, 4, 0)
+                setPadding(4, 8, 4, 8)
             }
 
-            val switch = androidx.appcompat.widget.AppCompatToggleButton(this).apply {
+            val checkbox = CheckBox(this).apply {
                 layoutParams = LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
                 ).apply {
-                    width = 120
-                    height = 60
+                    marginEnd = 12
                 }
-                setBackgroundResource(R.drawable.neumorph_pill_button_selector)
-                textOn = ""
-                textOff = ""
                 text = ""
+                buttonDrawable = ContextCompat.getDrawable(context, R.drawable.checkbox_selector)
                 setPadding(0, 0, 0, 0)
                 tag = option
             }
@@ -250,7 +247,7 @@ class AdvancedSearch : AppCompatActivity() {
                 }
             }
 
-            rowLayout.addView(switch)
+            rowLayout.addView(checkbox)
             rowLayout.addView(label)
             contentLayout.addView(rowLayout)
         }
@@ -271,7 +268,7 @@ class AdvancedSearch : AppCompatActivity() {
         
         val switches = contentLayout.children
             .filterIsInstance<LinearLayout>()
-            .mapNotNull { it.getChildAt(0) as? androidx.appcompat.widget.AppCompatToggleButton }
+            .mapNotNull { it.getChildAt(0) as? CheckBox }
             .toList()
         
         filterCheckboxes[key] = switches.map { sw ->

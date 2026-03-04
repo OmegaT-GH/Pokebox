@@ -103,10 +103,6 @@ class DBHelper(context: Context?) :
         )
     }
 
-//    fun getCardByID (cardIDq: String?): Cursor {
-//        return readableDatabase.rawQuery("SELECT * FROM $TABLA_CARTAS WHERE $cardID = ?", arrayOf(cardIDq))
-//    }
-
     fun getCardsFromSet(setIDq: String?): Cursor {
         return readableDatabase.rawQuery(
             "SELECT * FROM $TABLA_CARTAS WHERE $SET_ID = ?",
@@ -177,18 +173,6 @@ class DBHelper(context: Context?) :
             return if (cur.moveToFirst()) cur.getInt(cur.getColumnIndexOrThrow("cardCount")) else 0
         }
     }
-
-    /*fun debugRemoveAllCollections() {
-        val wdb = writableDatabase
-        val query = """
-            DELETE FROM $TABLA_CARTASCOLECCION
-        """.trimIndent()
-        val query2 = """
-            DELETE FROM $TABLA_COLECCIONES
-        """.trimIndent()
-        wdb.execSQL(query)
-        wdb.execSQL(query2)
-    }*/
 
     fun removeCollection(colIDq: Int?) {
         val wdb = writableDatabase
