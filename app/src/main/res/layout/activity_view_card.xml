@@ -13,84 +13,129 @@
     android:paddingBottom="16dp"
     tools:ignore="Overdraw">
 
+    <soup.neumorphism.NeumorphCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp"
+        app:neumorph_shadowElevation="4dp"
+        app:neumorph_shadowColorLight="@color/neumorph_light_shadow"
+        app:neumorph_shadowColorDark="@color/neumorph_dark_shadow"
+        app:neumorph_backgroundColor="@color/Background"
+        app:neumorph_shapeType="flat">
+
         <TextView
             android:id="@+id/tvCardName"
             style="@style/textboldbig"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="8dp"
-            android:background="@drawable/neo_text_background"
             android:gravity="center"
             android:padding="12dp"
             android:textAlignment="center"
             android:textSize="24sp" />
+    </soup.neumorphism.NeumorphCardView>
 
-        <LinearLayout
-            android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <soup.neumorphism.NeumorphCardView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:gravity="center"
-            android:orientation="horizontal">
+            android:layout_marginEnd="16dp"
+            app:neumorph_shadowElevation="4dp"
+            app:neumorph_shadowColorLight="@color/neumorph_light_shadow"
+            app:neumorph_shadowColorDark="@color/neumorph_dark_shadow"
+            app:neumorph_backgroundColor="@color/Background"
+            app:neumorph_shapeType="flat">
 
             <TextView
                 android:id="@+id/tvCardNumber"
                 style="@style/text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:background="@drawable/neo_text_background"
                 android:padding="8dp"
                 android:textSize="14sp" />
+        </soup.neumorphism.NeumorphCardView>
+
+        <soup.neumorphism.NeumorphCardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:neumorph_shadowElevation="4dp"
+            app:neumorph_shadowColorLight="@color/neumorph_light_shadow"
+            app:neumorph_shadowColorDark="@color/neumorph_dark_shadow"
+            app:neumorph_backgroundColor="@color/Background"
+            app:neumorph_shapeType="flat">
 
             <TextView
                 android:id="@+id/tvCardSupertype"
                 style="@style/textbold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/neo_text_background"
                 android:padding="8dp"
                 android:textSize="14sp" />
+        </soup.neumorphism.NeumorphCardView>
 
-        </LinearLayout>
+    </LinearLayout>
+
+    <soup.neumorphism.NeumorphCardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="16dp"
+        app:neumorph_shadowElevation="4dp"
+        app:neumorph_shadowColorLight="@color/neumorph_light_shadow"
+        app:neumorph_shadowColorDark="@color/neumorph_dark_shadow"
+        app:neumorph_backgroundColor="@color/Background"
+        app:neumorph_shapeType="flat">
 
         <TextView
             android:id="@+id/tvAvgPrice"
             style="@style/textbold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/neo_text_background"
             android:padding="8dp"
             android:textSize="14sp" />
+    </soup.neumorphism.NeumorphCardView>
 
-        <androidx.cardview.widget.CardView
+    <soup.neumorphism.NeumorphCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        app:neumorph_shadowElevation="8dp"
+        app:neumorph_shadowColorLight="@color/neumorph_light_shadow"
+        app:neumorph_shadowColorDark="@color/neumorph_dark_shadow"
+        app:neumorph_backgroundColor="@color/Background"
+        app:neumorph_shapeType="flat">
+
+        <ImageView
+            android:id="@+id/ivCardLarge"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            app:cardBackgroundColor="@color/Background"
-            app:cardCornerRadius="24dp"
-            app:cardElevation="0dp">
+            android:layout_height="400dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/card_image"
+            android:padding="8dp"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/ic_launcher_background" />
+    </soup.neumorphism.NeumorphCardView>
 
-            <ImageView
-                android:id="@+id/ivCardLarge"
-                android:layout_width="match_parent"
-                android:layout_height="400dp"
-                android:adjustViewBounds="true"
-                android:background="@drawable/rounded_item_background"
-                android:contentDescription="@string/card_image"
-                android:padding="8dp"
-                android:scaleType="fitCenter"
-                app:srcCompat="@drawable/ic_launcher_background" />
-        </androidx.cardview.widget.CardView>
+    <soup.neumorphism.NeumorphCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        app:neumorph_shadowElevation="6dp"
+        app:neumorph_shadowColorLight="@color/neumorph_light_shadow"
+        app:neumorph_shadowColorDark="@color/neumorph_dark_shadow"
+        app:neumorph_backgroundColor="@color/Background"
+        app:neumorph_shapeType="flat">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:background="@drawable/rounded_item_background"
             android:orientation="vertical"
             android:padding="16dp">
 
@@ -133,27 +178,31 @@
                 android:layout_height="wrap_content"
                 android:textSize="14sp" />
         </LinearLayout>
+    </soup.neumorphism.NeumorphCardView>
 
-        <LinearLayout
-            android:id="@+id/btAddToCollection"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/neo_button_outline"
-            android:clickable="true"
-            android:focusable="true"
-            android:foreground="?attr/selectableItemBackground"
-            android:gravity="center"
-            android:stateListAnimator="@null">
+    <soup.neumorphism.NeumorphCardView
+        android:id="@+id/btAddToCollection"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
+        app:neumorph_shadowElevation="6dp"
+        app:neumorph_shadowColorLight="@color/neumorph_light_shadow"
+        app:neumorph_shadowColorDark="@color/neumorph_dark_shadow"
+        app:neumorph_backgroundColor="@color/Background"
+        app:neumorph_shapeType="flat">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/addtocollection"
-                android:textColor="@color/text_on_primary"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-        </LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/addtocollection"
+            android:textColor="@color/text_on_primary"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+    </soup.neumorphism.NeumorphCardView>
 
-    </LinearLayout>
+</LinearLayout>

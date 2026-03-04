@@ -74,7 +74,7 @@ class ViewCard : AppCompatActivity() {
         val rarity = findViewById<TextView>(R.id.tvCardRarity)
         val artist = findViewById<TextView>(R.id.tvCardArtist)
 
-        val btadd = findViewById<LinearLayout>(R.id.btAddToCollection)
+        val btadd = findViewById<soup.neumorphism.NeumorphCardView>(R.id.btAddToCollection)
 
         val sinputStream = assets.open("json/sets/en.json")
         val sreader = JsonReader(sinputStream.reader())
@@ -123,17 +123,14 @@ class ViewCard : AppCompatActivity() {
 
         // Set button color based on card types
         val types = card?.types
-        val btTextView = btadd.getChildAt(0) as? TextView
         if (!types.isNullOrEmpty()) {
             val buttonDrawable = when {
                 types.size >= 2 -> createGradientDrawable(types[0], types[1])
                 else -> createSolidDrawable(types[0])
             }
-            btadd.background = buttonDrawable
-            btTextView?.setTextColor(0xFF212021.toInt())
+            btadd.setBackgroundColor(getTypeColor(types[0]))
         } else if (card?.supertype?.lowercase() == "trainer") {
-            btadd.background = createSolidDrawable("trainer")
-            btTextView?.setTextColor(0xFF212021.toInt())
+            btadd.setBackgroundColor(getTypeColor("trainer"))
         }
 
 
@@ -192,8 +189,8 @@ class ViewCard : AppCompatActivity() {
 
                 val spCols = dialogView.findViewById<Spinner>(R.id.spColeccionesATC)
                 val tvCantidad = dialogView.findViewById<TextView>(R.id.tvCantidad)
-                val btPlus = dialogView.findViewById<LinearLayout>(R.id.btPlus)
-                val btMinus = dialogView.findViewById<LinearLayout>(R.id.btMinus)
+                val btPlus = dialogView.findViewById<soup.neumorphism.NeumorphCardView>(R.id.btPlus)
+                val btMinus = dialogView.findViewById<soup.neumorphism.NeumorphCardView>(R.id.btMinus)
                 
                 var cantidad = 0
 

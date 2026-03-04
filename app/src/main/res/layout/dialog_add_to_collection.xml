@@ -4,7 +4,8 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="16dp"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TextView
         android:layout_width="wrap_content"
@@ -14,16 +15,23 @@
         style="@style/textbold"
         android:textSize="14sp"/>
 
-    <RelativeLayout
+    <soup.neumorphism.NeumorphCardView
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginBottom="24dp"
-        android:background="@drawable/neo_input">
+        app:neumorph_shadowElevation="4dp"
+        app:neumorph_shadowColorLight="@color/neumorph_light_shadow"
+        app:neumorph_shadowColorDark="@color/neumorph_dark_shadow"
+        app:neumorph_backgroundColor="@color/Background"
+        app:neumorph_shapeType="pressed">
+
         <Spinner
             android:id="@+id/spColeccionesATC"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-    </RelativeLayout>
+            android:layout_height="match_parent"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp" />
+    </soup.neumorphism.NeumorphCardView>
 
     <TextView
         android:layout_width="wrap_content"
@@ -39,24 +47,28 @@
         android:gravity="center"
         android:orientation="horizontal">
 
-        <LinearLayout
+        <soup.neumorphism.NeumorphCardView
             android:id="@+id/btMinus"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:background="@drawable/neo_button_small_outline"
             android:clickable="true"
             android:focusable="true"
             android:foreground="?attr/selectableItemBackground"
-            android:gravity="center"
-            android:stateListAnimator="@null">
+            app:neumorph_shadowElevation="6dp"
+            app:neumorph_shadowColorLight="@color/neumorph_light_shadow"
+            app:neumorph_shadowColorDark="@color/neumorph_dark_shadow"
+            app:neumorph_backgroundColor="@color/Background"
+            app:neumorph_shapeType="flat">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:text="-"
                 android:textColor="@color/text_on_primary"
                 android:textStyle="bold"
                 android:textSize="24sp"/>
-        </LinearLayout>
+        </soup.neumorphism.NeumorphCardView>
 
         <TextView
             android:id="@+id/tvCantidad"
@@ -70,24 +82,28 @@
             android:layout_marginEnd="8dp"
             style="@style/textboldbig"/>
 
-        <LinearLayout
+        <soup.neumorphism.NeumorphCardView
             android:id="@+id/btPlus"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:background="@drawable/neo_button_small_outline"
             android:clickable="true"
             android:focusable="true"
             android:foreground="?attr/selectableItemBackground"
-            android:gravity="center"
-            android:stateListAnimator="@null">
+            app:neumorph_shadowElevation="6dp"
+            app:neumorph_shadowColorLight="@color/neumorph_light_shadow"
+            app:neumorph_shadowColorDark="@color/neumorph_dark_shadow"
+            app:neumorph_backgroundColor="@color/Background"
+            app:neumorph_shapeType="flat">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:text="+"
                 android:textColor="@color/text_on_primary"
                 android:textStyle="bold"
                 android:textSize="24sp"/>
-        </LinearLayout>
+        </soup.neumorphism.NeumorphCardView>
     </LinearLayout>
 
 </LinearLayout>

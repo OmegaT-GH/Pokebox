@@ -1,101 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<soup.neumorphism.NeumorphCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="150dp"
     android:layout_margin="5dp"
-    android:orientation="horizontal"
-    android:paddingStart="10dp"
-    android:paddingTop="10dp"
-    android:paddingEnd="10dp"
-    android:paddingBottom="10dp">
-
-    <ImageView
-        android:id="@+id/CardImage"
-        android:layout_width="90dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_weight="2"
-        android:adjustViewBounds="true"
-        android:contentDescription="@string/card_image"
-        android:scaleType="fitCenter"
-        app:srcCompat="@drawable/ic_launcher_background" />
+    app:neumorph_shadowElevation="4dp"
+    app:neumorph_shadowColorLight="@color/neumorph_light_shadow"
+    app:neumorph_shadowColorDark="@color/neumorph_dark_shadow"
+    app:neumorph_backgroundColor="@color/Background"
+    app:neumorph_shapeType="flat">
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_weight="5"
-        android:orientation="vertical">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:paddingStart="10dp"
+        android:paddingTop="10dp"
+        android:paddingEnd="10dp"
+        android:paddingBottom="10dp">
 
-        <TextView
-            android:id="@+id/CardSuperType"
-            style="@style/text"
-            android:layout_width="wrap_content"
+        <ImageView
+            android:id="@+id/CardImage"
+            android:layout_width="90dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="start" />
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_weight="2"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/card_image"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/ic_launcher_background" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
-            android:orientation="horizontal">
+            android:layout_gravity="center_vertical"
+            android:layout_weight="5"
+            android:orientation="vertical">
 
             <TextView
-                android:id="@+id/CardName"
-                style="@style/textbold"
-                android:minLines="2"
-                android:maxLines="2"
-                android:layout_width="100dp"
+                android:id="@+id/CardSuperType"
+                style="@style/text"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginEnd="20dp"
-                android:gravity="center_vertical" />
+                android:layout_gravity="start" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/CardName"
+                    style="@style/textbold"
+                    android:minLines="2"
+                    android:maxLines="2"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="20dp"
+                    android:gravity="center_vertical" />
+
+                <TextView
+                    android:id="@+id/CardNumber"
+                    style="@style/textbold"
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:textAlignment="center" />
+
+            </LinearLayout>
 
             <TextView
-                android:id="@+id/CardNumber"
-                style="@style/textbold"
-                android:layout_width="60dp"
+                android:id="@+id/CardRarity"
+                style="@style/text"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:textAlignment="center" />
+                android:layout_gravity="start" />
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/CardRarity"
-            style="@style/text"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="start" />
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            android:layout_weight="2">
+
+            <TextView
+                android:id="@+id/tvamount"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:text=""
+                style="@style/textbold"
+                android:textSize="15sp"
+                android:textAlignment="center"
+                android:layout_gravity="center"/>
+
+        </LinearLayout>
 
     </LinearLayout>
 
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_gravity="center"
-        android:layout_weight="2">
-
-        <TextView
-            android:id="@+id/tvamount"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:text=""
-            style="@style/textbold"
-            android:textSize="15sp"
-            android:textAlignment="center"
-            android:layout_gravity="center"/>
-
-
-    </LinearLayout>
-
-
-</LinearLayout>
+</soup.neumorphism.NeumorphCardView>

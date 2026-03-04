@@ -12,6 +12,10 @@
     <color name="neo_shadow_dark">#FF1C1C1E</color>
     <color name="neo_shadow_light">#FF3C3C3E</color>
     
+    <!-- Neumorphism Library Colors -->
+    <color name="neumorph_light_shadow">#FF3C3C3E</color>
+    <color name="neumorph_dark_shadow">#FF1C1C1E</color>
+    
     <!-- Primary Accent -->
     <color name="Primary">#FF5B9FED</color>
     <color name="DarkPrimary">#FF4A8AD6</color>

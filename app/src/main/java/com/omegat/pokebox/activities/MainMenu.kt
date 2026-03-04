@@ -53,12 +53,12 @@ class MainMenu : AppCompatActivity() {
         ncolname = ""
 
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-        val btsetsearch = findViewById<LinearLayout>(R.id.btListSets)
-        val btadvsearch = findViewById<LinearLayout>(R.id.btAdvSearch)
-        val btsetperc = findViewById<LinearLayout>(R.id.btListSetsPerc)
-        val btcompmazo = findViewById<LinearLayout>(R.id.btCompMazo)
-        val btaddcol = findViewById<LinearLayout>(R.id.btCrearColeccion)
-        val btdelcol = findViewById<LinearLayout>(R.id.btEliminarColeccion)
+        val btsetsearch = findViewById<soup.neumorphism.NeumorphCardView>(R.id.btListSets)
+        val btadvsearch = findViewById<soup.neumorphism.NeumorphCardView>(R.id.btAdvSearch)
+        val btsetperc = findViewById<soup.neumorphism.NeumorphCardView>(R.id.btListSetsPerc)
+        val btcompmazo = findViewById<soup.neumorphism.NeumorphCardView>(R.id.btCompMazo)
+        val btaddcol = findViewById<soup.neumorphism.NeumorphCardView>(R.id.btCrearColeccion)
+        val btdelcol = findViewById<soup.neumorphism.NeumorphCardView>(R.id.btEliminarColeccion)
 
         val tvversion = findViewById<TextView>(R.id.tvVersion)
         val version = this.packageManager.getPackageInfo(this.packageName,0).versionName
@@ -255,7 +255,7 @@ class MainMenu : AppCompatActivity() {
 
     }
 
-    fun reloadspinner(db: DBHelper, btsetperc: LinearLayout, btcompmazo: LinearLayout, spcol: Spinner, btdelcol: LinearLayout, id: Int?) {
+    fun reloadspinner(db: DBHelper, btsetperc: soup.neumorphism.NeumorphCardView, btcompmazo: soup.neumorphism.NeumorphCardView, spcol: Spinner, btdelcol: soup.neumorphism.NeumorphCardView, id: Int?) {
         val collist: ArrayList<String> = ArrayList()
         val rdb = db.readableDatabase
         val cur: Cursor = rdb.rawQuery("SELECT * FROM Coleccion", null)
@@ -277,11 +277,11 @@ class MainMenu : AppCompatActivity() {
             spcol.adapter = adapter
             spcol.isEnabled = false
             btsetperc.isClickable = false
-            btsetperc.background = ContextCompat.getDrawable(this, R.drawable.menubuttondisabled)
+            btsetperc.setBackgroundColor(ContextCompat.getColor(this, R.color.DisabledButton))
             btcompmazo.isClickable = false
-            btcompmazo.background = ContextCompat.getDrawable(this, R.drawable.menubuttondisabled)
+            btcompmazo.setBackgroundColor(ContextCompat.getColor(this, R.color.DisabledButton))
             btdelcol.isEnabled = false
-            btdelcol.background = ContextCompat.getDrawable(this, R.drawable.menubuttondisabled)
+            btdelcol.setBackgroundColor(ContextCompat.getColor(this, R.color.DisabledButton))
 
         } else {
 
@@ -290,11 +290,11 @@ class MainMenu : AppCompatActivity() {
             spcol.adapter = adapter
             spcol.isEnabled = true
             btsetperc.isClickable = true
-            btsetperc.background = ContextCompat.getDrawable(this, R.drawable.neo_button_outline)
+            btsetperc.setBackgroundColor(ContextCompat.getColor(this, R.color.Background))
             btcompmazo.isClickable = true
-            btcompmazo.background = ContextCompat.getDrawable(this, R.drawable.neo_button_outline)
+            btcompmazo.setBackgroundColor(ContextCompat.getColor(this, R.color.Background))
             btdelcol.isEnabled = true
-            btdelcol.background = ContextCompat.getDrawable(this, R.drawable.neo_button_small_outline)
+            btdelcol.setBackgroundColor(ContextCompat.getColor(this, R.color.Background))
 
         }
 

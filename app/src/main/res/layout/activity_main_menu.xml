@@ -32,174 +32,215 @@
         app:layout_constraintTop_toBottomOf="@+id/imageView"
         android:layout_marginTop="4dp" />
 
-    <LinearLayout
+    <soup.neumorphism.NeumorphCardView
         android:id="@+id/btListSets"
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
-        android:background="@drawable/neo_button_outline"
         android:clickable="true"
         android:focusable="true"
         android:foreground="?attr/selectableItemBackground"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:stateListAnimator="@null"
+        app:neumorph_shadowElevation="6dp"
+        app:neumorph_shadowColorLight="@color/neumorph_light_shadow"
+        app:neumorph_shadowColorDark="@color/neumorph_dark_shadow"
+        app:neumorph_backgroundColor="@color/Background"
+        app:neumorph_shapeType="flat"
         app:layout_constraintEnd_toStartOf="@+id/btAdvSearch"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
-        <ImageView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:layout_weight="2"
-            android:importantForAccessibility="no"
-            android:src="@drawable/list" />
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_weight="1"
-            android:textColor="@color/text_on_primary"
-            android:textStyle="bold"
-            android:textSize="15sp"
-            android:text="@string/buscar_por_sets" />
-    </LinearLayout>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:layout_weight="2"
+                android:importantForAccessibility="no"
+                android:src="@drawable/list" />
 
-    <LinearLayout
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_weight="1"
+                android:textColor="@color/text_on_primary"
+                android:textStyle="bold"
+                android:textSize="15sp"
+                android:text="@string/buscar_por_sets" />
+        </LinearLayout>
+    </soup.neumorphism.NeumorphCardView>
+
+    <soup.neumorphism.NeumorphCardView
         android:id="@+id/btAdvSearch"
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
-        android:background="@drawable/neo_button_outline"
         android:clickable="true"
         android:focusable="true"
         android:foreground="?attr/selectableItemBackground"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:stateListAnimator="@null"
+        app:neumorph_shadowElevation="6dp"
+        app:neumorph_shadowColorLight="@color/neumorph_light_shadow"
+        app:neumorph_shadowColorDark="@color/neumorph_dark_shadow"
+        app:neumorph_backgroundColor="@color/Background"
+        app:neumorph_shapeType="flat"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/btListSets"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
-        <ImageView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:layout_weight="2"
-            android:importantForAccessibility="no"
-            android:src="@drawable/searchsquare" />
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_weight="1"
-            android:textColor="@color/text_on_primary"
-            android:textStyle="bold"
-            android:textSize="15sp"
-            android:text="@string/b_squeda_avanzada" />
-    </LinearLayout>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:layout_weight="2"
+                android:importantForAccessibility="no"
+                android:src="@drawable/searchsquare" />
 
-    <LinearLayout
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_weight="1"
+                android:textColor="@color/text_on_primary"
+                android:textStyle="bold"
+                android:textSize="15sp"
+                android:text="@string/b_squeda_avanzada" />
+        </LinearLayout>
+    </soup.neumorphism.NeumorphCardView>
+
+    <soup.neumorphism.NeumorphCardView
         android:id="@+id/btListSetsPerc"
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
-        android:background="@drawable/neo_button_outline"
         android:clickable="true"
         android:focusable="true"
         android:foreground="?attr/selectableItemBackground"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:stateListAnimator="@null"
+        app:neumorph_shadowElevation="6dp"
+        app:neumorph_shadowColorLight="@color/neumorph_light_shadow"
+        app:neumorph_shadowColorDark="@color/neumorph_dark_shadow"
+        app:neumorph_backgroundColor="@color/Background"
+        app:neumorph_shapeType="flat"
         app:layout_constraintEnd_toStartOf="@+id/btCompMazo"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btListSets">
 
-        <ImageView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:layout_weight="2"
-            android:importantForAccessibility="no"
-            android:src="@drawable/progress" />
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_weight="1"
-            android:textColor="@color/text_on_primary"
-            android:textStyle="bold"
-            android:textSize="15sp"
-            android:text="@string/progreso_sets" />
-    </LinearLayout>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:layout_weight="2"
+                android:importantForAccessibility="no"
+                android:src="@drawable/progress" />
 
-    <LinearLayout
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_weight="1"
+                android:textColor="@color/text_on_primary"
+                android:textStyle="bold"
+                android:textSize="15sp"
+                android:text="@string/progreso_sets" />
+        </LinearLayout>
+    </soup.neumorphism.NeumorphCardView>
+
+    <soup.neumorphism.NeumorphCardView
         android:id="@+id/btCompMazo"
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
-        android:background="@drawable/neo_button_outline"
         android:clickable="true"
         android:focusable="true"
         android:foreground="?attr/selectableItemBackground"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:stateListAnimator="@null"
+        app:neumorph_shadowElevation="6dp"
+        app:neumorph_shadowColorLight="@color/neumorph_light_shadow"
+        app:neumorph_shadowColorDark="@color/neumorph_dark_shadow"
+        app:neumorph_backgroundColor="@color/Background"
+        app:neumorph_shapeType="flat"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/btListSetsPerc"
         app:layout_constraintTop_toBottomOf="@+id/btAdvSearch">
 
-        <ImageView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:layout_weight="2"
-            android:importantForAccessibility="no"
-            android:src="@drawable/cards" />
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_weight="1"
-            android:textColor="@color/text_on_primary"
-            android:textStyle="bold"
-            android:textSize="15sp"
-            android:text="@string/comprobar_mazo" />
-    </LinearLayout>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:layout_weight="2"
+                android:importantForAccessibility="no"
+                android:src="@drawable/cards" />
 
-    <TextView
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_weight="1"
+                android:textColor="@color/text_on_primary"
+                android:textStyle="bold"
+                android:textSize="15sp"
+                android:text="@string/comprobar_mazo" />
+        </LinearLayout>
+    </soup.neumorphism.NeumorphCardView>
+
+    <soup.neumorphism.NeumorphCardView
         android:id="@+id/tvmiscolecciones"
-        style="@style/textbold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/mis_colecciones"
-        android:textAlignment="center"
-        android:background="@drawable/neo_text_background"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
+        app:neumorph_shadowElevation="4dp"
+        app:neumorph_shadowColorLight="@color/neumorph_light_shadow"
+        app:neumorph_shadowColorDark="@color/neumorph_dark_shadow"
+        app:neumorph_backgroundColor="@color/Background"
+        app:neumorph_shapeType="flat"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvVersion"
-        android:layout_marginTop="16dp" />
+        android:layout_marginTop="16dp">
+
+        <TextView
+            style="@style/textbold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/mis_colecciones"
+            android:textAlignment="center"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp" />
+    </soup.neumorphism.NeumorphCardView>
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -212,56 +253,70 @@
         android:gravity="center"
         app:layout_constraintTop_toBottomOf="@+id/tvmiscolecciones">
 
-        <RelativeLayout
+        <soup.neumorphism.NeumorphCardView
             android:layout_width="260dp"
             android:layout_height="48dp"
             android:layout_marginEnd="8dp"
-            android:background="@drawable/neo_input">
+            app:neumorph_shadowElevation="4dp"
+            app:neumorph_shadowColorLight="@color/neumorph_light_shadow"
+            app:neumorph_shadowColorDark="@color/neumorph_dark_shadow"
+            app:neumorph_backgroundColor="@color/Background"
+            app:neumorph_shapeType="pressed">
+
             <Spinner
                 android:id="@+id/spColecciones"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-        </RelativeLayout>
+                android:layout_height="match_parent"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp" />
+        </soup.neumorphism.NeumorphCardView>
 
-        <LinearLayout
+        <soup.neumorphism.NeumorphCardView
             android:id="@+id/btCrearColeccion"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:background="@drawable/neo_button_small_outline"
             android:clickable="true"
             android:focusable="true"
             android:foreground="?attr/selectableItemBackground"
-            android:gravity="center"
-            android:stateListAnimator="@null">
+            app:neumorph_shadowElevation="6dp"
+            app:neumorph_shadowColorLight="@color/neumorph_light_shadow"
+            app:neumorph_shadowColorDark="@color/neumorph_dark_shadow"
+            app:neumorph_backgroundColor="@color/Background"
+            app:neumorph_shapeType="flat">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:text="@string/bigplus"
                 android:textColor="@color/text_on_primary"
                 android:textStyle="bold"
-                android:textSize="20sp"/>
-        </LinearLayout>
+                android:textSize="20sp" />
+        </soup.neumorphism.NeumorphCardView>
 
-        <LinearLayout
+        <soup.neumorphism.NeumorphCardView
             android:id="@+id/btEliminarColeccion"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_marginStart="8dp"
-            android:background="@drawable/neo_button_small_outline"
             android:clickable="true"
             android:focusable="true"
             android:foreground="?attr/selectableItemBackground"
-            android:gravity="center"
-            android:stateListAnimator="@null">
+            app:neumorph_shadowElevation="6dp"
+            app:neumorph_shadowColorLight="@color/neumorph_light_shadow"
+            app:neumorph_shadowColorDark="@color/neumorph_dark_shadow"
+            app:neumorph_backgroundColor="@color/Background"
+            app:neumorph_shapeType="flat">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:text="@string/bigminus"
                 android:textColor="@color/text_on_primary"
                 android:textStyle="bold"
-                android:textSize="20sp"/>
-        </LinearLayout>
-
+                android:textSize="20sp" />
+        </soup.neumorphism.NeumorphCardView>
 
     </LinearLayout>
 

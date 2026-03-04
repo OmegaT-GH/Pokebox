@@ -64,7 +64,7 @@ class CheckDeck : AppCompatActivity() {
 
         val spcols = findViewById<Spinner>(R.id.spDeckCollections)
         val btPasteDecklist = findViewById<Button>(R.id.btPasteDecklist)
-        val btcheck = findViewById<LinearLayout>(R.id.btDeckCheck)
+        val btcheck = findViewById<soup.neumorphism.NeumorphCardView>(R.id.btDeckCheck)
         val rview = findViewById<RecyclerView>(R.id.rviewdeck)
 
         updateDecklistButtonText(btPasteDecklist)

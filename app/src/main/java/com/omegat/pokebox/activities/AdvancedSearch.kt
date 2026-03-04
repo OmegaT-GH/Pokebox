@@ -58,8 +58,8 @@ class AdvancedSearch : AppCompatActivity() {
         val db = DBHelper(this)
         val colid = intent.getIntExtra("col", -1)
 
-        val btsearch = findViewById<LinearLayout>(R.id.btSearch)
-        val btfilters = findViewById<LinearLayout>(R.id.btOpenFilters)
+        val btsearch = findViewById<soup.neumorphism.NeumorphCardView>(R.id.btSearch)
+        val btfilters = findViewById<soup.neumorphism.NeumorphCardView>(R.id.btOpenFilters)
         val drawer = findViewById<DrawerLayout>(R.id.main)
         val rview = findViewById<RecyclerView>(R.id.rviewfilteredsearch)
         val lmanager = LinearLayoutManager(this)
