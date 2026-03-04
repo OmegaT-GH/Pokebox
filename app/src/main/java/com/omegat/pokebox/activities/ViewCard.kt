@@ -124,11 +124,8 @@ class ViewCard : AppCompatActivity() {
         // Set button color based on card types
         val types = card?.types
         if (!types.isNullOrEmpty()) {
-            val buttonDrawable = when {
-                types.size >= 2 -> createGradientDrawable(types[0], types[1])
-                else -> createSolidDrawable(types[0])
-            }
-            btadd.setBackgroundColor(getTypeColor(types[0]))
+            val color = getTypeColor(types[0])
+            btadd.setBackgroundColor(color)
         } else if (card?.supertype?.lowercase() == "trainer") {
             btadd.setBackgroundColor(getTypeColor("trainer"))
         }

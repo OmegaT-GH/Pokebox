@@ -224,8 +224,8 @@ class AdvancedSearch : AppCompatActivity() {
 
             val switch = androidx.appcompat.widget.AppCompatToggleButton(this).apply {
                 layoutParams = LinearLayout.LayoutParams(
-                    60,
-                    30
+                    80,
+                    40
                 )
                 setBackgroundResource(R.drawable.neumorph_pill_button_selector)
                 textOn = ""
