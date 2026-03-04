@@ -255,7 +255,7 @@
 
         <soup.neumorphism.NeumorphCardView
             android:layout_width="260dp"
-            android:layout_height="48dp"
+            android:layout_height="56dp"
             android:layout_marginEnd="8dp"
             app:neumorph_shadowElevation="4dp"
             app:neumorph_shadowColorLight="@color/neumorph_light_shadow"
@@ -273,8 +273,8 @@
 
         <soup.neumorphism.NeumorphCardView
             android:id="@+id/btCrearColeccion"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
             android:clickable="true"
             android:focusable="true"
             android:foreground="?attr/selectableItemBackground"
@@ -291,13 +291,13 @@
                 android:text="@string/bigplus"
                 android:textColor="@color/text_on_primary"
                 android:textStyle="bold"
-                android:textSize="20sp" />
+                android:textSize="24sp" />
         </soup.neumorphism.NeumorphCardView>
 
         <soup.neumorphism.NeumorphCardView
             android:id="@+id/btEliminarColeccion"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
             android:layout_marginStart="8dp"
             android:clickable="true"
             android:focusable="true"
@@ -315,7 +315,7 @@
                 android:text="@string/bigminus"
                 android:textColor="@color/text_on_primary"
                 android:textStyle="bold"
-                android:textSize="20sp" />
+                android:textSize="24sp" />
         </soup.neumorphism.NeumorphCardView>
 
     </LinearLayout>

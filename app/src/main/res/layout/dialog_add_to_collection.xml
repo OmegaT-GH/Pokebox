@@ -49,8 +49,8 @@
 
         <soup.neumorphism.NeumorphCardView
             android:id="@+id/btMinus"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
             android:clickable="true"
             android:focusable="true"
             android:foreground="?attr/selectableItemBackground"
@@ -67,7 +67,7 @@
                 android:text="-"
                 android:textColor="@color/text_on_primary"
                 android:textStyle="bold"
-                android:textSize="24sp"/>
+                android:textSize="28sp"/>
         </soup.neumorphism.NeumorphCardView>
 
         <TextView
@@ -84,8 +84,8 @@
 
         <soup.neumorphism.NeumorphCardView
             android:id="@+id/btPlus"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
             android:clickable="true"
             android:focusable="true"
             android:foreground="?attr/selectableItemBackground"
@@ -102,7 +102,7 @@
                 android:text="+"
                 android:textColor="@color/text_on_primary"
                 android:textStyle="bold"
-                android:textSize="24sp"/>
+                android:textSize="28sp"/>
         </soup.neumorphism.NeumorphCardView>
     </LinearLayout>
 
