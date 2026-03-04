@@ -2,16 +2,13 @@ package com.omegat.pokebox.activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.text.InputType
-import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.RelativeLayout
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
@@ -20,17 +17,16 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.children
-import androidx.drawerlayout.widget.DrawerLayout
-import com.omegat.pokebox.R
-import com.omegat.pokebox.data.CardRepository
 import androidx.core.view.isGone
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.omegat.pokebox.R
 import com.omegat.pokebox.adapters.ListCardsAdapter
 import com.omegat.pokebox.bd.DBHelper
 import com.omegat.pokebox.data.CardFilter
+import com.omegat.pokebox.data.CardRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -45,7 +41,6 @@ class AdvancedSearch : AppCompatActivity() {
     lateinit var rviewadap: ListCardsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_advanced_search)
@@ -65,26 +60,29 @@ class AdvancedSearch : AppCompatActivity() {
         val lmanager = LinearLayoutManager(this)
         rview.layoutManager = lmanager
 
+        setupFilterMenu()
+        setupSortSpinner()
 
-        val filterContainer = findViewById<LinearLayout>(R.id.contFiltro)
-        val title = TextView(this).apply {
-            text = context.getString(R.string.filtrosdebusqueda)
-            textSize = 20f
-            setPadding(16, 16, 16, 16)
-            setTextColor(ContextCompat.getColor(context, R.color.text_primary))
-            setTypeface(null, android.graphics.Typeface.BOLD)
-            layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            ).apply {
-                topMargin = 100
-                bottomMargin = 20
-            }
+        btsearch.setOnClickListener {
+            val filter = collectFilters()
+            performSearch(filter, db, colid, rview)
         }
-        filterContainer.addView(title)
+
+        btfilters.setOnClickListener {
+            drawer.openDrawer(GravityCompat.START)
+        }
+    }
+
+    private fun setupFilterMenu() {
+        val filterContainer = findViewById<LinearLayout>(R.id.contFiltro)
+        filterContainer.removeAllViews()
+
+        // Add professional header
+        addFilterHeader(filterContainer)
 
         val allCards = CardRepository.getCards()
 
+        // Extract filter options
         val allSupertypes = allCards.mapNotNull { it.supertype }.distinct().sorted()
         val allSubtypes = allCards.flatMap { it.subtypes ?: emptyList() }.distinct().sorted()
         val allTypes = allCards.flatMap { it.types ?: emptyList() }.distinct().sorted()
@@ -101,372 +99,257 @@ class AdvancedSearch : AppCompatActivity() {
         val allArtists = allCards.mapNotNull { it.artist }.distinct().sorted()
         val hasAbility = listOf(getString(R.string.yes), getString(R.string.no))
 
-        addFilterSection("supertype", getString( R.string.supertype), allSupertypes)
-        addFilterSection("subtype", getString(R.string.subtype), allSubtypes)
-        addFilterSection("type", getString(R.string.type), allTypes)
-        addFilterSection("legality", getString(R.string.legality), allLegalities)
-        addFilterSection("rarity", getString(R.string.rarity), allRarities)
-        addSpinnerSection("artist", getString(R.string.artist), allArtists)
-        addFilterSection("hasability", getString(R.string.has_ability), hasAbility)
-        addHPSection()
-
-        addSortSection()
-
-        btsearch.setOnClickListener {
-
-            val filter = collectFilters()
-
-            lifecycleScope.launch(Dispatchers.IO) {
-
-                val sortCriteria = sortSpinner?.selectedItem?.toString() ?: getString(R.string.m_s_recientes_primero)
-
-                val filteredcards = CardRepository.getFilteredCards(filter)
-                val sortedcards = when (sortCriteria) {
-                    getString(R.string.relevant) -> filteredcards
-                    getString(R.string.nombre_a_z) -> filteredcards.sortedBy { it.name?.lowercase() }
-                    getString(R.string.nombre_z_a) -> filteredcards.sortedByDescending { it.name?.lowercase() }
-                    getString(R.string.m_s_recientes_primero) -> filteredcards.sortedByDescending { it.releaseDate }
-                    getString(R.string.m_s_antiguas_primero) -> filteredcards.sortedBy { it.releaseDate }
-                    else -> filteredcards
-                }
-
-                val cardamounts = mutableListOf<Int>()
-                for (card in sortedcards) {
-                    if (colid != -1) {
-                        val am = db.getCardAmount(colid, card.id)
-                        cardamounts.add(am)
-                    } else {
-                        cardamounts.add(0)
-                    }
-                }
-
-                withContext(Dispatchers.Main) {
-
-                    if (::rviewadap.isInitialized) {
-                        rviewadap.updateData(sortedcards, cardamounts)
-                    } else {
-                        rviewadap = ListCardsAdapter(this@AdvancedSearch, sortedcards, cardamounts) { selectedCard ->
-                            val i = Intent(this@AdvancedSearch, ViewCard::class.java)
-                            i.putExtra("pcard", selectedCard)
-                            startActivity(i)
-                        }
-
-                        rview.setHasFixedSize(true)
-                        rview.adapter = rviewadap
-                    }
-
-                }
-
-            }
-
-
-
-
-        }
-
-        btfilters.setOnClickListener {
-            drawer.openDrawer(GravityCompat.START)
-        }
-
+        // Add filter sections with new professional design
+        addProfessionalFilterSection(filterContainer, "supertype", getString(R.string.supertype), allSupertypes)
+        addProfessionalFilterSection(filterContainer, "subtype", getString(R.string.subtype), allSubtypes)
+        addProfessionalFilterSection(filterContainer, "type", getString(R.string.type), allTypes)
+        addProfessionalFilterSection(filterContainer, "legality", getString(R.string.legality), allLegalities)
+        addProfessionalFilterSection(filterContainer, "rarity", getString(R.string.rarity), allRarities)
+        addProfessionalSpinnerSection(filterContainer, "artist", getString(R.string.artist), allArtists)
+        addProfessionalFilterSection(filterContainer, "hasability", getString(R.string.has_ability), hasAbility)
+        addProfessionalHPSection(filterContainer)
     }
 
-    fun addFilterSection(key: String, title: String, options: List<String>) {
-        val sectionLayout = LinearLayout(this).apply {
+    private fun addFilterHeader(container: LinearLayout) {
+        val headerView = LayoutInflater.from(this).inflate(R.layout.filter_section_header, container, false)
+        val titleView = headerView.findViewById<TextView>(R.id.tvSectionTitle)
+        val arrowView = headerView.findViewById<ImageView>(R.id.ivArrow)
+        
+        titleView.text = getString(R.string.filtrosdebusqueda)
+        titleView.textSize = 20f
+        titleView.setTypeface(null, android.graphics.Typeface.BOLD)
+        arrowView.visibility = View.GONE
+        
+        // Make header non-clickable
+        headerView.isClickable = false
+        headerView.isFocusable = false
+        headerView.background = null
+        
+        val layoutParams = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        ).apply {
+            topMargin = 100
+            bottomMargin = 24
+        }
+        headerView.layoutParams = layoutParams
+        
+        container.addView(headerView)
+    }
+
+    private fun addProfessionalFilterSection(container: LinearLayout, key: String, title: String, options: List<String>) {
+        val sectionContainer = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
-            )
+            ).apply {
+                bottomMargin = 16
+            }
         }
 
-        val header = LinearLayout(this).apply {
-            orientation = LinearLayout.HORIZONTAL
-            setPadding(8, 8, 8, 8)
-            layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            )
-            gravity = Gravity.CENTER_VERTICAL
-        }
+        // Create header
+        val headerView = LayoutInflater.from(this).inflate(R.layout.filter_section_header, sectionContainer, false)
+        val titleView = headerView.findViewById<TextView>(R.id.tvSectionTitle)
+        val arrowView = headerView.findViewById<ImageView>(R.id.ivArrow)
+        
+        titleView.text = title
+        sectionContainer.addView(headerView)
 
-        val titleView = TextView(this).apply {
-            text = title
-            textSize = 25f
-            setTextColor(ContextCompat.getColor(context, R.color.text_primary))
-            setTypeface(null, android.graphics.Typeface.BOLD)
-            layoutParams = LinearLayout.LayoutParams(
-                    0,
-            LinearLayout.LayoutParams.WRAP_CONTENT,
-            1f
-            )
-        }
-
-        val arrow = ImageView(this).apply {
-            setImageResource(R.drawable.arrow_right)
-        }
-
-        header.addView(titleView)
-        header.addView(arrow)
-        sectionLayout.addView(header)
-
-        val contentLayout = LinearLayout(this).apply {
+        // Create content container
+        val contentContainer = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             visibility = View.GONE
-            setPadding(16, 4, 16, 4)
+            setPadding(4, 4, 4, 4)
         }
 
+        val checkboxes = mutableListOf<CheckBox>()
+
+        // Add options
         options.forEach { option ->
-            val rowLayout = LinearLayout(this).apply {
-                orientation = LinearLayout.HORIZONTAL
-                gravity = Gravity.CENTER_VERTICAL
-                setPadding(4, 8, 4, 8)
+            val optionView = LayoutInflater.from(this).inflate(R.layout.filter_option_item, contentContainer, false)
+            val checkbox = optionView.findViewById<CheckBox>(R.id.cbFilterOption)
+            val label = optionView.findViewById<TextView>(R.id.tvFilterLabel)
+            
+            checkbox.tag = option
+            label.text = option
+            checkboxes.add(checkbox)
+            
+            // Make the entire item clickable
+            optionView.setOnClickListener {
+                checkbox.isChecked = !checkbox.isChecked
             }
-
-            val checkbox = CheckBox(this).apply {
-                layoutParams = LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT
-                ).apply {
-                    marginEnd = 12
-                }
-                text = ""
-                buttonDrawable = ContextCompat.getDrawable(context, R.drawable.checkbox_selector)
-                setPadding(0, 0, 0, 0)
-                tag = option
-            }
-
-            val label = TextView(this).apply {
-                text = option
-                setTextColor(ContextCompat.getColor(context, R.color.text_primary))
-                textSize = 14f
-                layoutParams = LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT
-                ).apply {
-                    marginStart = 12
-                }
-            }
-
-            rowLayout.addView(checkbox)
-            rowLayout.addView(label)
-            contentLayout.addView(rowLayout)
+            
+            contentContainer.addView(optionView)
         }
 
-        sectionLayout.addView(contentLayout)
+        sectionContainer.addView(contentContainer)
 
-        header.setOnClickListener {
-            if (contentLayout.isGone) {
-                contentLayout.visibility = View.VISIBLE
-                arrow.rotation = 90f
+        // Handle expand/collapse
+        headerView.setOnClickListener {
+            if (contentContainer.isGone) {
+                contentContainer.visibility = View.VISIBLE
+                arrowView.rotation = 90f
             } else {
-                contentLayout.visibility = View.GONE
-                arrow.rotation = 0f
+                contentContainer.visibility = View.GONE
+                arrowView.rotation = 0f
             }
         }
 
-        findViewById<LinearLayout>(R.id.contFiltro).addView(sectionLayout)
-        
-        val switches = contentLayout.children
-            .filterIsInstance<LinearLayout>()
-            .mapNotNull { it.getChildAt(0) as? CheckBox }
-            .toList()
-        
-        filterCheckboxes[key] = switches.map { sw ->
-            CheckBox(this).apply {
-                tag = sw.tag
-                visibility = View.GONE
-                setOnCheckedChangeListener { _, isChecked ->
-                    sw.isChecked = isChecked
-                }
-            }.also { cb ->
-                sw.setOnCheckedChangeListener { _, isChecked ->
-                    cb.isChecked = isChecked
-                }
-            }
-        }
+        container.addView(sectionContainer)
+        filterCheckboxes[key] = checkboxes
     }
-    fun addSpinnerSection(key: String, title: String, options: List<String>) {
-        val sectionLayout = LinearLayout(this).apply {
+
+    private fun addProfessionalSpinnerSection(container: LinearLayout, key: String, title: String, options: List<String>) {
+        val sectionContainer = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
-            )
-        }
-
-        val header = LinearLayout(this).apply {
-            orientation = LinearLayout.HORIZONTAL
-            gravity = Gravity.CENTER_VERTICAL
-            setPadding(8,8,8,8)
-        }
-
-        val titleView = TextView(this).apply {
-            text = title
-            textSize = 25f
-            setTextColor(ContextCompat.getColor(context, R.color.text_primary))
-            setTypeface(null, android.graphics.Typeface.BOLD)
-            layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
-        }
-
-        val arrow = ImageView(this).apply {
-            setImageResource(R.drawable.arrow_right)
-        }
-
-        header.addView(titleView)
-        header.addView(arrow)
-        sectionLayout.addView(header)
-
-        val spinnerContainer = RelativeLayout(this).apply {
-            layoutParams = RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.MATCH_PARENT,
-                RelativeLayout.LayoutParams.WRAP_CONTENT
             ).apply {
-                setMargins(0, 8, 0, 8)
+                bottomMargin = 16
             }
-            setBackgroundResource(R.drawable.neo_input)
         }
 
-        val spinner = Spinner(this).apply {
-            val spinnerOptions = mutableListOf(context.getString(R.string.all))
-            spinnerOptions.addAll(options)
+        // Create header
+        val headerView = LayoutInflater.from(this).inflate(R.layout.filter_section_header, sectionContainer, false)
+        val titleView = headerView.findViewById<TextView>(R.id.tvSectionTitle)
+        val arrowView = headerView.findViewById<ImageView>(R.id.ivArrow)
+        
+        titleView.text = title
+        sectionContainer.addView(headerView)
 
-            val adapter = object : ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, spinnerOptions) {
-                override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-                    val v = super.getView(position, convertView, parent) as TextView
-                    v.setTextColor(ContextCompat.getColor(context, R.color.text_primary))
-                    return v
-                }
+        // Create spinner container
+        val spinnerView = LayoutInflater.from(this).inflate(R.layout.filter_spinner_item, sectionContainer, false)
+        val spinner = spinnerView.findViewById<Spinner>(R.id.spFilterSpinner)
+        
+        val spinnerOptions = mutableListOf(getString(R.string.all))
+        spinnerOptions.addAll(options)
+        
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, spinnerOptions)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinner.adapter = adapter
+        
+        spinnerView.visibility = View.GONE
+        sectionContainer.addView(spinnerView)
 
-                override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
-                    val v = super.getDropDownView(position, convertView, parent) as TextView
-                    v.setTextColor(ContextCompat.getColor(context, R.color.text_primary))
-                    return v
-                }
-            }
-
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            this.adapter = adapter
-
-            layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            ).apply {
-                topMargin = 8
-                bottomMargin = 8
-
-            }
-            setPadding(16, 8, 16, 8)
-        }
-
-        spinnerContainer.addView(spinner)
-        spinnerContainer.visibility = View.GONE
-        sectionLayout.addView(spinnerContainer)
-
-        header.setOnClickListener {
-            spinnerContainer.visibility = if (spinnerContainer.isGone) {
-                arrow.rotation = 90f
-                View.VISIBLE
+        // Handle expand/collapse
+        headerView.setOnClickListener {
+            if (spinnerView.isGone) {
+                spinnerView.visibility = View.VISIBLE
+                arrowView.rotation = 90f
             } else {
-                arrow.rotation = 0f
-                View.GONE
+                spinnerView.visibility = View.GONE
+                arrowView.rotation = 0f
             }
         }
 
-        findViewById<LinearLayout>(R.id.contFiltro).addView(sectionLayout)
+        container.addView(sectionContainer)
+        
         if (key == "artist") {
             artistSpinner = spinner
         }
     }
-    fun addHPSection() {
-        val sectionLayout = LinearLayout(this).apply {
+
+    private fun addProfessionalHPSection(container: LinearLayout) {
+        val sectionContainer = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
-            )
-        }
-
-        val header = LinearLayout(this).apply {
-            orientation = LinearLayout.HORIZONTAL
-            gravity = Gravity.CENTER_VERTICAL
-            setPadding(8, 8, 8, 8)
-        }
-
-        val titleView = TextView(this).apply {
-            text = context.getString(R.string.rangohp)
-            textSize = 25f
-            setTextColor(ContextCompat.getColor(context, R.color.text_primary))
-            setTypeface(null, android.graphics.Typeface.BOLD)
-            layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
-        }
-
-        val arrow = ImageView(this).apply {
-            setImageResource(R.drawable.arrow_right)
-        }
-
-        header.addView(titleView)
-        header.addView(arrow)
-        sectionLayout.addView(header)
-
-        val contentLayout = LinearLayout(this).apply {
-            orientation = LinearLayout.HORIZONTAL
-            visibility = View.GONE
-            layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            ).apply { topMargin = 8 }
-        }
-
-        val minHP = EditText(this).apply {
-            hint = context.getString(R.string.min)
-            inputType = InputType.TYPE_CLASS_NUMBER
-            layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f).apply {
-                marginEnd = 8
+            ).apply {
+                bottomMargin = 16
             }
-            setPadding(16, 20, 16, 20)
-            setTextColor(ContextCompat.getColor(context, R.color.text_primary))
-            setHintTextColor(ContextCompat.getColor(context, R.color.text_secondary))
-            setBackgroundResource(R.drawable.neo_input)
         }
 
-        val maxHP = EditText(this).apply {
-            hint = context.getString(R.string.max)
-            inputType = InputType.TYPE_CLASS_NUMBER
-            layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
-            setPadding(16, 20, 16, 20)
-            setTextColor(ContextCompat.getColor(context, R.color.text_primary))
-            setHintTextColor(ContextCompat.getColor(context, R.color.text_secondary))
-            setBackgroundResource(R.drawable.neo_input)
-        }
+        // Create header
+        val headerView = LayoutInflater.from(this).inflate(R.layout.filter_section_header, sectionContainer, false)
+        val titleView = headerView.findViewById<TextView>(R.id.tvSectionTitle)
+        val arrowView = headerView.findViewById<ImageView>(R.id.ivArrow)
+        
+        titleView.text = getString(R.string.rangohp)
+        sectionContainer.addView(headerView)
 
-        contentLayout.addView(minHP)
-        contentLayout.addView(maxHP)
-        sectionLayout.addView(contentLayout)
+        // Create HP range container
+        val hpView = LayoutInflater.from(this).inflate(R.layout.filter_hp_range, sectionContainer, false)
+        val minHP = hpView.findViewById<EditText>(R.id.etMinHP)
+        val maxHP = hpView.findViewById<EditText>(R.id.etMaxHP)
+        
+        hpView.visibility = View.GONE
+        sectionContainer.addView(hpView)
 
-        header.setOnClickListener {
-            contentLayout.visibility = if (contentLayout.isGone) {
-                arrow.rotation = 90f
-                View.VISIBLE
+        // Handle expand/collapse
+        headerView.setOnClickListener {
+            if (hpView.isGone) {
+                hpView.visibility = View.VISIBLE
+                arrowView.rotation = 90f
             } else {
-                arrow.rotation = 0f
-                View.GONE
+                hpView.visibility = View.GONE
+                arrowView.rotation = 0f
             }
         }
 
-        findViewById<LinearLayout>(R.id.contFiltro).addView(sectionLayout)
+        container.addView(sectionContainer)
         minHpEditText = minHP
         maxHpEditText = maxHP
     }
-    private fun addSortSection() {
+
+    private fun setupSortSpinner() {
         val sortingSpinner = findViewById<Spinner>(R.id.spOrdenar)
-
-        val options = listOf(getString(R.string.relevant), getString(R.string.m_s_recientes_primero), getString(R.string.m_s_antiguas_primero), getString(R.string.nombre_a_z), getString(R.string.nombre_z_a))
-
+        val options = listOf(
+            getString(R.string.relevant),
+            getString(R.string.m_s_recientes_primero),
+            getString(R.string.m_s_antiguas_primero),
+            getString(R.string.nombre_a_z),
+            getString(R.string.nombre_z_a)
+        )
+        
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, options)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         sortingSpinner.adapter = adapter
         sortSpinner = sortingSpinner
     }
+
+    private fun performSearch(filter: CardFilter, db: DBHelper, colid: Int, rview: RecyclerView) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            val sortCriteria = sortSpinner?.selectedItem?.toString() ?: getString(R.string.m_s_recientes_primero)
+            
+            val filteredcards = CardRepository.getFilteredCards(filter)
+            val sortedcards = when (sortCriteria) {
+                getString(R.string.relevant) -> filteredcards
+                getString(R.string.nombre_a_z) -> filteredcards.sortedBy { it.name?.lowercase() }
+                getString(R.string.nombre_z_a) -> filteredcards.sortedByDescending { it.name?.lowercase() }
+                getString(R.string.m_s_recientes_primero) -> filteredcards.sortedByDescending { it.releaseDate }
+                getString(R.string.m_s_antiguas_primero) -> filteredcards.sortedBy { it.releaseDate }
+                else -> filteredcards
+            }
+            
+            val cardamounts = mutableListOf<Int>()
+            for (card in sortedcards) {
+                if (colid != -1) {
+                    val am = db.getCardAmount(colid, card.id)
+                    cardamounts.add(am)
+                } else {
+                    cardamounts.add(0)
+                }
+            }
+            
+            withContext(Dispatchers.Main) {
+                if (::rviewadap.isInitialized) {
+                    rviewadap.updateData(sortedcards, cardamounts)
+                } else {
+                    rviewadap = ListCardsAdapter(this@AdvancedSearch, sortedcards, cardamounts) { selectedCard ->
+                        val i = Intent(this@AdvancedSearch, ViewCard::class.java)
+                        i.putExtra("pcard", selectedCard)
+                        startActivity(i)
+                    }
+                    rview.setHasFixedSize(true)
+                    rview.adapter = rviewadap
+                }
+            }
+        }
+    }
+
     private fun collectFilters(): CardFilter {
         val selectedSupertypes = filterCheckboxes["supertype"]?.filter { it.isChecked }?.map { it.tag.toString() }.orEmpty()
         val selectedSubtypes = filterCheckboxes["subtype"]?.filter { it.isChecked }?.map { it.tag.toString() }.orEmpty()
@@ -483,9 +366,7 @@ class AdvancedSearch : AppCompatActivity() {
         }
 
         val name = findViewById<EditText>(R.id.etSearch)?.text?.toString()?.takeIf { it.isNotBlank() }
-
         val artist = artistSpinner?.selectedItem?.toString()?.takeIf { it != getString(R.string.all) }
-
         val minHP = minHpEditText?.text?.toString()?.toIntOrNull()
         val maxHP = maxHpEditText?.text?.toString()?.toIntOrNull()
 

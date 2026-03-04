@@ -159,7 +159,7 @@
     <soup.neumorphism.NeumorphCardView
         android:id="@+id/btAddToCollection"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
+        android:layout_height="68dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
         android:clickable="true"
@@ -176,7 +176,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="@string/addtocollection"
-            android:textColor="@color/text_on_primary"
+            android:textColor="@color/text_addbutton"
             android:textSize="16sp"
             android:textStyle="bold" />
     </soup.neumorphism.NeumorphCardView>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<soup.neumorphism.NeumorphCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="4dp"
+    app:neumorph_shadowElevation="2dp"
+    app:neumorph_shadowColorLight="@color/neumorph_light_shadow"
+    app:neumorph_shadowColorDark="@color/neumorph_dark_shadow"
+    app:neumorph_backgroundColor="@color/Background"
+    app:neumorph_shapeType="pressed">
+
+    <Spinner
+        android:id="@+id/spFilterSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp" />
+
+</soup.neumorphism.NeumorphCardView>

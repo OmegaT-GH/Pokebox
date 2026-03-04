@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<soup.neumorphism.NeumorphCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:background="?attr/selectableItemBackgroundBorderless"
+    app:neumorph_shadowElevation="4dp"
+    app:neumorph_shadowColorLight="@color/neumorph_light_shadow"
+    app:neumorph_shadowColorDark="@color/neumorph_dark_shadow"
+    app:neumorph_backgroundColor="@color/Background"
+    app:neumorph_shapeType="flat">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/tvSectionTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            style="@style/textbold"
+            android:textSize="16sp"
+            android:textColor="@color/text_primary" />
+
+        <ImageView
+            android:id="@+id/ivArrow"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/arrow_right"
+            android:contentDescription="@string/expand_collapse" />
+
+    </LinearLayout>
+
+</soup.neumorphism.NeumorphCardView>

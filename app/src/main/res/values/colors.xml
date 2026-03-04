@@ -25,6 +25,7 @@
     <color name="text_primary">#FFFFFFFF</color>
     <color name="text_secondary">#FFB0B0B0</color>
     <color name="text_on_primary">#FFFFFFFF</color>
+    <color name="text_addbutton">#FF202120</color>
     
     <!-- Disabled State -->
     <color name="DisabledButton">#FF4A4A4C</color>

@@ -130,7 +130,7 @@ class MainMenu : AppCompatActivity() {
         // ----------------------------------------------------------------------------------
 
         btsetsearch.setOnClickListener {
-            val colid = db.getCollectionFromName(spcol.selectedItem.toString())
+            val colid = db.getCollectionFromName(spcol.selectedItem?.toString() ?: "")
             val i = Intent(this, ListSets::class.java)
             i.putExtra("mode", "list")
             i.putExtra("col", colid)
@@ -138,7 +138,7 @@ class MainMenu : AppCompatActivity() {
         }
 
         btadvsearch.setOnClickListener {
-            val colid = db.getCollectionFromName(spcol.selectedItem.toString())
+            val colid = db.getCollectionFromName(spcol.selectedItem?.toString() ?: "")
             if (CardRepository.getCards().isEmpty()) {
                 val i = Intent(this, LoadingActivity::class.java)
                 i.putExtra("col", colid)
@@ -209,8 +209,7 @@ class MainMenu : AppCompatActivity() {
         }
 
         btsetperc.setOnClickListener {
-
-            val selectedcollection = spcol.selectedItem.toString()
+            val selectedcollection = spcol.selectedItem?.toString() ?: ""
             val colid = db.getCollectionFromName(selectedcollection)
             val i = Intent(this, ListSets::class.java)
             i.putExtra("mode", "percentage")
@@ -219,7 +218,7 @@ class MainMenu : AppCompatActivity() {
         }
 
         btcompmazo.setOnClickListener {
-            val selectedcollection = spcol.selectedItem.toString()
+            val selectedcollection = spcol.selectedItem?.toString() ?: ""
             val colid = db.getCollectionFromName(selectedcollection)
 
             if (CardRepository.getCards().isEmpty()) {
@@ -235,11 +234,11 @@ class MainMenu : AppCompatActivity() {
         }
 
         btdelcol.setOnClickListener {
-            val colid = db.getCollectionFromName(spcol.selectedItem.toString())
+            val colid = db.getCollectionFromName(spcol.selectedItem?.toString() ?: "")
 
             AlertDialog.Builder(this)
                 .setTitle(getString(R.string.delete_collection))
-                .setMessage(getString(R.string.are_you_sure_you_want_to_delete, spcol.selectedItem))
+                .setMessage(getString(R.string.are_you_sure_you_want_to_delete, spcol.selectedItem?.toString()))
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .setPositiveButton(android.R.string.ok
                 ) { dialog, whichButton ->
@@ -269,7 +268,6 @@ class MainMenu : AppCompatActivity() {
         )
 
         if (collist.isEmpty()) {
-
             adapter.add(getString(R.string.no_existen_colecciones))
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             spcol.adapter = adapter
@@ -280,9 +278,7 @@ class MainMenu : AppCompatActivity() {
             btcompmazo.setBackgroundColor(ContextCompat.getColor(this, R.color.DisabledButton))
             btdelcol.isEnabled = false
             btdelcol.setBackgroundColor(ContextCompat.getColor(this, R.color.DisabledButton))
-
         } else {
-
             adapter.addAll(collist)
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             spcol.adapter = adapter
@@ -293,7 +289,6 @@ class MainMenu : AppCompatActivity() {
             btcompmazo.setBackgroundColor(ContextCompat.getColor(this, R.color.Background))
             btdelcol.isEnabled = true
             btdelcol.setBackgroundColor(ContextCompat.getColor(this, R.color.Background))
-
         }
 
         spcol.setSelection(adapter.getPosition(db.getCollectionFromID(id)))

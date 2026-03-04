@@ -255,7 +255,7 @@
 
         <soup.neumorphism.NeumorphCardView
             android:layout_width="260dp"
-            android:layout_height="60dp"
+            android:layout_height="68dp"
             android:layout_marginEnd="8dp"
             app:neumorph_shadowElevation="4dp"
             app:neumorph_shadowColorLight="@color/neumorph_light_shadow"
@@ -273,8 +273,8 @@
 
         <soup.neumorphism.NeumorphCardView
             android:id="@+id/btCrearColeccion"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="68dp"
+            android:layout_height="68dp"
             android:clickable="true"
             android:focusable="true"
             android:background="?attr/selectableItemBackgroundBorderless"
@@ -284,20 +284,20 @@
             app:neumorph_backgroundColor="@color/Background"
             app:neumorph_shapeType="flat">
 
-            <TextView
+            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="@string/bigplus"
-                android:textColor="@color/text_on_primary"
-                android:textStyle="bold"
-                android:textSize="24sp" />
+                android:contentDescription="addbutton"
+                android:src="@drawable/add2"
+                tools:ignore="HardcodedText" />
+
         </soup.neumorphism.NeumorphCardView>
 
         <soup.neumorphism.NeumorphCardView
             android:id="@+id/btEliminarColeccion"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="68dp"
+            android:layout_height="68dp"
             android:layout_marginStart="8dp"
             android:clickable="true"
             android:focusable="true"
@@ -308,14 +308,13 @@
             app:neumorph_backgroundColor="@color/Background"
             app:neumorph_shapeType="flat">
 
-            <TextView
+            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="@string/bigminus"
-                android:textColor="@color/text_on_primary"
-                android:textStyle="bold"
-                android:textSize="24sp" />
+                android:contentDescription="trashbutton"
+                android:src="@drawable/trash"
+                tools:ignore="HardcodedText" />
         </soup.neumorphism.NeumorphCardView>
 
     </LinearLayout>
