@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/Background"
+    tools:ignore="Overdraw">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="150dp"
+        android:layout_marginTop="16dp"
+        android:contentDescription="@string/pokebox_logo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@mipmap/pokeboxlogo" />
+
+    <TextView
+        android:id="@+id/tvVersion"
+        style="@style/text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:textColor="@color/text_secondary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        android:layout_marginTop="4dp" />
+
+    <soup.neumorphism.NeumorphCardView
+        android:id="@+id/btListSets"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:neumorph_shadowElevation="6dp"
+        app:neumorph_shadowColorLight="@color/neumorph_light_shadow"
+        app:neumorph_shadowColorDark="@color/neumorph_dark_shadow"
+        app:neumorph_backgroundColor="@color/Background"
+        app:neumorph_shapeType="flat"
+        app:layout_constraintEnd_toStartOf="@+id/btAdvSearch"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:layout_weight="2"
+                android:importantForAccessibility="no"
+                android:src="@drawable/list" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_weight="1"
+                android:textColor="@color/text_on_primary"
+                android:textStyle="bold"
+                android:textSize="15sp"
+                android:text="@string/buscar_por_sets" />
+        </LinearLayout>
+    </soup.neumorphism.NeumorphCardView>
+
+    <soup.neumorphism.NeumorphCardView
+        android:id="@+id/btAdvSearch"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:neumorph_shadowElevation="6dp"
+        app:neumorph_shadowColorLight="@color/neumorph_light_shadow"
+        app:neumorph_shadowColorDark="@color/neumorph_dark_shadow"
+        app:neumorph_backgroundColor="@color/Background"
+        app:neumorph_shapeType="flat"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btListSets"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:layout_weight="2"
+                android:importantForAccessibility="no"
+                android:src="@drawable/searchsquare" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_weight="1"
+                android:textColor="@color/text_on_primary"
+                android:textStyle="bold"
+                android:textSize="15sp"
+                android:text="@string/b_squeda_avanzada" />
+        </LinearLayout>
+    </soup.neumorphism.NeumorphCardView>
+
+    <soup.neumorphism.NeumorphCardView
+        android:id="@+id/btListSetsPerc"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:neumorph_shadowElevation="6dp"
+        app:neumorph_shadowColorLight="@color/neumorph_light_shadow"
+        app:neumorph_shadowColorDark="@color/neumorph_dark_shadow"
+        app:neumorph_backgroundColor="@color/Background"
+        app:neumorph_shapeType="flat"
+        app:layout_constraintEnd_toStartOf="@+id/btCompMazo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btListSets">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:layout_weight="2"
+                android:importantForAccessibility="no"
+                android:src="@drawable/progress" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_weight="1"
+                android:textColor="@color/text_on_primary"
+                android:textStyle="bold"
+                android:textSize="15sp"
+                android:text="@string/progreso_sets" />
+        </LinearLayout>
+    </soup.neumorphism.NeumorphCardView>
+
+    <soup.neumorphism.NeumorphCardView
+        android:id="@+id/btCompMazo"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:neumorph_shadowElevation="6dp"
+        app:neumorph_shadowColorLight="@color/neumorph_light_shadow"
+        app:neumorph_shadowColorDark="@color/neumorph_dark_shadow"
+        app:neumorph_backgroundColor="@color/Background"
+        app:neumorph_shapeType="flat"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btListSetsPerc"
+        app:layout_constraintTop_toBottomOf="@+id/btAdvSearch">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:layout_weight="2"
+                android:importantForAccessibility="no"
+                android:src="@drawable/cards" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_weight="1"
+                android:textColor="@color/text_on_primary"
+                android:textStyle="bold"
+                android:textSize="15sp"
+                android:text="@string/comprobar_mazo" />
+        </LinearLayout>
+    </soup.neumorphism.NeumorphCardView>
+
+    <soup.neumorphism.NeumorphCardView
+        android:id="@+id/tvmiscolecciones"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:neumorph_shadowElevation="4dp"
+        app:neumorph_shadowColorLight="@color/neumorph_light_shadow"
+        app:neumorph_shadowColorDark="@color/neumorph_dark_shadow"
+        app:neumorph_backgroundColor="@color/Background"
+        app:neumorph_shapeType="flat"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvVersion"
+        android:layout_marginTop="16dp">
+
+        <TextView
+            style="@style/textbold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/mis_colecciones"
+            android:textAlignment="center"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp" />
+    </soup.neumorphism.NeumorphCardView>
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@+id/tvmiscolecciones">
+
+        <soup.neumorphism.NeumorphCardView
+            android:layout_width="260dp"
+            android:layout_height="68dp"
+            android:layout_marginEnd="8dp"
+            app:neumorph_shadowElevation="4dp"
+            app:neumorph_shadowColorLight="@color/neumorph_light_shadow"
+            app:neumorph_shadowColorDark="@color/neumorph_dark_shadow"
+            app:neumorph_backgroundColor="@color/Background"
+            app:neumorph_shapeType="pressed">
+
+            <Spinner
+                android:id="@+id/spColecciones"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp" />
+        </soup.neumorphism.NeumorphCardView>
+
+        <soup.neumorphism.NeumorphCardView
+            android:id="@+id/btCrearColeccion"
+            android:layout_width="68dp"
+            android:layout_height="68dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:neumorph_shadowElevation="6dp"
+            app:neumorph_shadowColorLight="@color/neumorph_light_shadow"
+            app:neumorph_shadowColorDark="@color/neumorph_dark_shadow"
+            app:neumorph_backgroundColor="@color/Background"
+            app:neumorph_shapeType="flat">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:contentDescription="addbutton"
+                android:src="@drawable/add2"
+                tools:ignore="HardcodedText" />
+
+        </soup.neumorphism.NeumorphCardView>
+
+        <soup.neumorphism.NeumorphCardView
+            android:id="@+id/btEliminarColeccion"
+            android:layout_width="68dp"
+            android:layout_height="68dp"
+            android:layout_marginStart="8dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:neumorph_shadowElevation="6dp"
+            app:neumorph_shadowColorLight="@color/neumorph_light_shadow"
+            app:neumorph_shadowColorDark="@color/neumorph_dark_shadow"
+            app:neumorph_backgroundColor="@color/Background"
+            app:neumorph_shapeType="flat">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:contentDescription="trashbutton"
+                android:src="@drawable/trash"
+                tools:ignore="HardcodedText" />
+        </soup.neumorphism.NeumorphCardView>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
