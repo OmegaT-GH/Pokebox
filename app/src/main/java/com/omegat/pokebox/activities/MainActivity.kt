@@ -57,6 +57,11 @@ class MainActivity : AppCompatActivity() {
         val btSearch = findViewById<LinearLayout>(R.id.btNavSearch)
         val btDecks = findViewById<LinearLayout>(R.id.btNavDecks)
 
+        // Initialize pill position after layout
+        navPill.post {
+            animatePillTo(0, animate = false)
+        }
+
         btHome.setOnClickListener {
             if (currentFragmentIndex != 0) {
                 animatePillTo(0)
@@ -90,16 +95,20 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun animatePillTo(position: Int) {
+    private fun animatePillTo(position: Int, animate: Boolean = true) {
         val navContainer = findViewById<View>(R.id.navContainer)
         val containerWidth = navContainer.width
         val pillWidth = navPill.width
         val itemWidth = containerWidth / 4f
         val targetX = (itemWidth * position) + (itemWidth - pillWidth) / 2
 
-        ObjectAnimator.ofFloat(navPill, "translationX", targetX).apply {
-            duration = 300
-            start()
+        if (animate) {
+            ObjectAnimator.ofFloat(navPill, "translationX", targetX).apply {
+                duration = 300
+                start()
+            }
+        } else {
+            navPill.translationX = targetX
         }
     }
 

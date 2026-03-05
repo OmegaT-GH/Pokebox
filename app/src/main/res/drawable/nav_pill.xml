@@ -14,10 +14,7 @@
     </item>
     <item android:top="2dp" android:left="2dp" android:bottom="2dp" android:right="2dp">
         <shape android:shape="rectangle">
-            <gradient
-                android:startColor="@color/PrimaryLight"
-                android:endColor="@color/Primary"
-                android:angle="135"/>
+            <solid android:color="@color/LighterBackground"/>
             <corners android:radius="28dp"/>
         </shape>
     </item>

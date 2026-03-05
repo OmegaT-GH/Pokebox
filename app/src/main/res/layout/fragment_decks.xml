@@ -3,49 +3,95 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
-    android:background="@color/Background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:ignore="Overdraw">
+    android:background="@color/Background">
 
     <soup.neumorphism.NeumorphCardView
-        android:id="@+id/tvdeckcheck"
-        android:layout_width="wrap_content"
+        android:id="@+id/rlayet"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:neumorph_backgroundColor="@color/Background"
-        app:neumorph_shadowColorDark="@color/neumorph_dark_shadow"
+        app:neumorph_shadowElevation="6dp"
         app:neumorph_shadowColorLight="@color/neumorph_light_shadow"
-        app:neumorph_shadowElevation="4dp"
+        app:neumorph_shadowColorDark="@color/neumorph_dark_shadow"
+        app:neumorph_backgroundColor="@color/Background"
         app:neumorph_shapeType="flat">
 
-        <TextView
-            style="@style/textbold"
-            android:layout_width="wrap_content"
+        <Button
+            android:id="@+id/btPasteDecklist"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingStart="16dp"
-            android:paddingTop="8dp"
-            android:paddingEnd="16dp"
-            android:paddingBottom="8dp"
-            android:text="@string/comprobar_mazo"
-            android:textAlignment="center" />
+            android:layout_margin="8dp"
+            android:background="@android:color/transparent"
+            android:textColor="@color/text_on_primary"
+            android:textStyle="bold"
+            android:stateListAnimator="@null"
+            android:text="@string/paste_decklist" />
+    </soup.neumorphism.NeumorphCardView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rviewdeck"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:padding="4dp"
+        android:clipToPadding="false"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:spanCount="3"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btDeckCheck" />
+
+    <soup.neumorphism.NeumorphCardView
+        android:id="@+id/btDeckCheck"
+        android:layout_width="68dp"
+        android:layout_height="68dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
+        app:neumorph_shadowElevation="6dp"
+        app:neumorph_shadowColorLight="@color/neumorph_light_shadow"
+        app:neumorph_shadowColorDark="@color/neumorph_dark_shadow"
+        app:neumorph_backgroundColor="@color/Background"
+        app:neumorph_shapeType="flat"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/rlay"
+        app:layout_constraintTop_toBottomOf="@+id/rlayet">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:importantForAccessibility="no"
+            android:src="@drawable/collbookmark" />
     </soup.neumorphism.NeumorphCardView>
 
     <soup.neumorphism.NeumorphCardView
-        android:id="@+id/neumorphCardView"
-        android:layout_width="260dp"
+        android:id="@+id/rlay"
+        android:layout_width="0dp"
         android:layout_height="68dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/rviewdeck"
+        app:layout_constraintEnd_toStartOf="@+id/btDeckCheck"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvdeckcheck"
-        app:neumorph_backgroundColor="@color/Background"
-        app:neumorph_shadowColorDark="@color/neumorph_dark_shadow"
-        app:neumorph_shadowColorLight="@color/neumorph_light_shadow"
+        app:layout_constraintTop_toBottomOf="@+id/rlayet"
         app:neumorph_shadowElevation="4dp"
+        app:neumorph_shadowColorLight="@color/neumorph_light_shadow"
+        app:neumorph_shadowColorDark="@color/neumorph_dark_shadow"
+        app:neumorph_backgroundColor="@color/Background"
         app:neumorph_shapeType="pressed">
 
         <Spinner
@@ -55,73 +101,5 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp" />
     </soup.neumorphism.NeumorphCardView>
-
-    <Button
-        android:id="@+id/btPasteDecklist"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/paste_decklist"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/neumorphCardView" />
-
-    <soup.neumorphism.NeumorphCardView
-        android:id="@+id/btDeckCheck"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_marginTop="16dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:clickable="true"
-        android:focusable="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btPasteDecklist"
-        app:neumorph_backgroundColor="@color/Background"
-        app:neumorph_shadowColorDark="@color/neumorph_dark_shadow"
-        app:neumorph_shadowColorLight="@color/neumorph_light_shadow"
-        app:neumorph_shadowElevation="6dp"
-        app:neumorph_shapeType="flat">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
-                android:layout_weight="2"
-                android:importantForAccessibility="no"
-                android:src="@drawable/cards" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_weight="1"
-                android:text="@string/comprobar_mazo"
-                android:textColor="@color/text_on_primary"
-                android:textSize="15sp"
-                android:textStyle="bold" />
-        </LinearLayout>
-    </soup.neumorphism.NeumorphCardView>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rviewdeck"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btDeckCheck" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -48,19 +48,14 @@ class DecksFragment : Fragment() {
         
         db = DBHelper(requireContext())
         cards = CardRepository.getCards()
-        
+        val checkedcards = mutableListOf<PokemonCard>()
+
         val sinputStream = requireContext().assets.open("json/sets/en.json")
         val sreader = JsonReader(sinputStream.reader())
         val stype = object : TypeToken<List<PokemonSet>>() {}.type
         sets = Gson().fromJson(sreader, stype)
         sreader.close()
-        
-        setupViews(view)
-        
-        return view
-    }
 
-    private fun setupViews(view: View) {
         val spcols = view.findViewById<Spinner>(R.id.spDeckCollections)
         val btPasteDecklist = view.findViewById<Button>(R.id.btPasteDecklist)
         val btcheck = view.findViewById<soup.neumorphism.NeumorphCardView>(R.id.btDeckCheck)
@@ -78,7 +73,7 @@ class DecksFragment : Fragment() {
 
             val selectedcollection = spcols.selectedItem.toString()
             val selcolid = db.getCollectionFromName(selectedcollection)
-            val checkedcards = mutableListOf<PokemonCard>()
+            checkedcards.clear()
 
             val deck = getCardsFromText(decklistText)
             val cardAmounts = mutableListOf<Int>()
@@ -97,7 +92,7 @@ class DecksFragment : Fragment() {
                         checkedcards.add(found)
                         cardAmounts.add(d.count)
 
-                        val cam = db.getCardAmount(selcolid, set.id + "-" + d.number)
+                        val cam = db.getCardAmount(selcolid, set.id+"-"+d.number)
                         cardOwned.add(cam)
                     }
                 }
@@ -124,6 +119,8 @@ class DecksFragment : Fragment() {
                 rview.adapter = rviewadap
             }
         }
+        
+        return view
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -162,7 +159,7 @@ class DecksFragment : Fragment() {
             etDialog.setText(decklistText)
         }
 
-        AlertDialog.Builder(requireContext())
+        val dialog = AlertDialog.Builder(requireContext())
             .setTitle(getString(R.string.paste_decklist))
             .setView(dialogView)
             .setPositiveButton(getString(R.string.add)) { _, _ ->
@@ -171,7 +168,10 @@ class DecksFragment : Fragment() {
                 view?.findViewById<Button>(R.id.btPasteDecklist)?.let { updateDecklistButtonText(it) }
             }
             .setNegativeButton(getString(R.string.cancelar), null)
-            .show()
+            .create()
+        
+        dialog.window?.setBackgroundDrawableResource(R.color.Background)
+        dialog.show()
     }
 
     private fun updateDecklistButtonText(button: Button) {
