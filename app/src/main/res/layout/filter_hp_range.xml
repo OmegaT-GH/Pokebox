@@ -20,7 +20,7 @@
         <EditText
             android:id="@+id/etMinHP"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="68dp"
             android:hint="@string/min"
             android:inputType="number"
             android:textColor="@color/text_primary"
@@ -47,7 +47,7 @@
         <EditText
             android:id="@+id/etMaxHP"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="68dp"
             android:hint="@string/max"
             android:inputType="number"
             android:textColor="@color/text_primary"

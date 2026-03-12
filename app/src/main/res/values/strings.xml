@@ -69,4 +69,8 @@
     <string name="decklist_loaded">✓ Decklist loaded</string>
     <string name="no_decklist">No decklist</string>
     <string name="expand_collapse">Expand/Collapse</string>
+    <string name="no_log_movements">No movements registered yet</string>
+    <string name="log_increased">Increased quantity from %1$d to %2$d</string>
+    <string name="log_decreased">Decreased quantity from %1$d to %2$d</string>
+    <string name="unknown_card">Unknown card</string>
 </resources>

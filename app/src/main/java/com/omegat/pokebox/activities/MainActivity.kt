@@ -9,12 +9,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.omegat.pokebox.R
+import com.omegat.pokebox.bd.DBHelper
 import com.omegat.pokebox.data.CardRepository
 import com.omegat.pokebox.fragments.DecksFragment
 import com.omegat.pokebox.fragments.HomeFragment
 import com.omegat.pokebox.fragments.LogFragment
 import com.omegat.pokebox.fragments.SearchFragment
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
@@ -49,6 +53,16 @@ class MainActivity : AppCompatActivity() {
         }
 
         setupBottomNavigation()
+        
+        // Clean old log entries in background
+        lifecycleScope.launch(Dispatchers.IO) {
+            try {
+                val db = DBHelper(this@MainActivity)
+                db.cleanOldLogEntries()
+            } catch (e: Exception) {
+                // Silent fail, no afecta la funcionalidad de la app
+            }
+        }
     }
 
     private fun setupBottomNavigation() {

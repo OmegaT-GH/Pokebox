@@ -1,20 +1,177 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/Background">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Search"
-        android:textColor="@color/text_primary"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingTop="16dp">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <!-- Search Bar -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="72dp"
+            android:orientation="horizontal"
+            android:paddingHorizontal="16dp">
+
+            <soup.neumorphism.NeumorphCardView
+                android:id="@+id/btOpenFilters"
+                android:layout_width="68dp"
+                android:layout_height="68dp"
+                android:layout_marginEnd="8dp"
+                android:layout_gravity="center_vertical"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                app:neumorph_shadowElevation="6dp"
+                app:neumorph_shadowColorLight="@color/neumorph_light_shadow"
+                app:neumorph_shadowColorDark="@color/neumorph_dark_shadow"
+                app:neumorph_backgroundColor="@color/Background"
+                app:neumorph_shapeType="flat">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="12dp"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/filter" />
+            </soup.neumorphism.NeumorphCardView>
+
+            <soup.neumorphism.NeumorphCardView
+                android:layout_width="0dp"
+                android:layout_height="68dp"
+                android:layout_weight="1"
+                android:layout_marginHorizontal="4dp"
+                android:layout_gravity="center_vertical"
+                app:neumorph_shadowElevation="4dp"
+                app:neumorph_shadowColorLight="@color/neumorph_light_shadow"
+                app:neumorph_shadowColorDark="@color/neumorph_dark_shadow"
+                app:neumorph_backgroundColor="@color/Background"
+                app:neumorph_shapeType="pressed">
+
+                <EditText
+                    android:id="@+id/etSearch"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="@string/buscar"
+                    android:importantForAutofill="no"
+                    android:inputType="text"
+                    android:textColorHint="@color/text_secondary"
+                    android:textColor="@color/text_primary"
+                    android:background="@android:color/transparent"
+                    android:paddingHorizontal="16dp"
+                    android:textSize="16sp" />
+            </soup.neumorphism.NeumorphCardView>
+
+            <soup.neumorphism.NeumorphCardView
+                android:id="@+id/btSearch"
+                android:layout_width="68dp"
+                android:layout_height="68dp"
+                android:layout_marginStart="8dp"
+                android:layout_gravity="center_vertical"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                app:neumorph_shadowElevation="6dp"
+                app:neumorph_shadowColorLight="@color/neumorph_light_shadow"
+                app:neumorph_shadowColorDark="@color/neumorph_dark_shadow"
+                app:neumorph_backgroundColor="@color/Background"
+                app:neumorph_shapeType="flat">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="12dp"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/search" />
+            </soup.neumorphism.NeumorphCardView>
+
+        </LinearLayout>
+
+        <!-- Sort Section -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="68dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="16dp"
+            android:layout_marginTop="8dp">
+
+            <soup.neumorphism.NeumorphCardView
+                android:layout_width="wrap_content"
+                android:layout_height="68dp"
+                android:layout_marginEnd="8dp"
+                app:neumorph_shadowElevation="4dp"
+                app:neumorph_shadowColorLight="@color/neumorph_light_shadow"
+                app:neumorph_shadowColorDark="@color/neumorph_dark_shadow"
+                app:neumorph_backgroundColor="@color/Background"
+                app:neumorph_shapeType="flat">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/textbold"
+                    android:text="@string/ordenar_por"
+                    android:layout_gravity="center"
+                    android:paddingHorizontal="16dp"
+                    android:textSize="16sp" />
+            </soup.neumorphism.NeumorphCardView>
+
+            <soup.neumorphism.NeumorphCardView
+                android:layout_width="0dp"
+                android:layout_height="68dp"
+                android:layout_weight="1"
+                app:neumorph_shadowElevation="4dp"
+                app:neumorph_shadowColorLight="@color/neumorph_light_shadow"
+                app:neumorph_shadowColorDark="@color/neumorph_dark_shadow"
+                app:neumorph_backgroundColor="@color/Background"
+                app:neumorph_shapeType="pressed">
+
+                <Spinner
+                    android:id="@+id/spOrdenar"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginHorizontal="16dp" />
+            </soup.neumorphism.NeumorphCardView>
+
+        </LinearLayout>
+
+        <!-- Results -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rviewfilteredsearch"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginTop="8dp"
+            android:padding="8dp"
+            android:clipToPadding="false" />
+
+    </LinearLayout>
+
+    <!-- Filter Drawer -->
+    <ScrollView
+        android:id="@+id/scrFiltro"
+        android:layout_width="300dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@color/Background"
+        android:elevation="8dp"
+        android:padding="16dp"
+        android:clipToPadding="false">
+
+        <LinearLayout
+            android:id="@+id/contFiltro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="100dp" />
+
+    </ScrollView>
+
+</androidx.drawerlayout.widget.DrawerLayout>

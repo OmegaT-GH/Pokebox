@@ -56,4 +56,8 @@
     <string name="paste_decklist">Pegar decklist</string>
     <string name="decklist_loaded">✓ Decklist cargada</string>
     <string name="no_decklist">Ninguna decklist</string>
+    <string name="no_log_movements">No hay movimientos registrados aún</string>
+    <string name="log_increased">Aumentada la cantidad de %1$d a %2$d</string>
+    <string name="log_decreased">Reducida la cantidad de %1$d a %2$d</string>
+    <string name="unknown_card">Carta desconocida</string>
 </resources>

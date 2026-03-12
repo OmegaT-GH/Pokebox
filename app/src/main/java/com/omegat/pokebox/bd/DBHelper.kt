@@ -24,21 +24,26 @@ class DBHelper(context: Context?) :
         val createTablaColecciones =
             "CREATE TABLE $TABLA_COLECCIONES ($COL_ID INTEGER PRIMARY KEY AUTOINCREMENT, $COL_NAME TEXT UNIQUE)"
         val createTablaCartasColeccion =
-            "CREATE TABLE $TABLA_CARTASCOLECCION ($CARD_ID TEXT, $COL_ID INTEGER, $CC_AMOUNT INTEGER, PRIMARY KEY ($CARD_ID, $COL_ID), FOREIGN KEY ($CARD_ID) REFERENCES $TABLA_CARTAS($CARD_ID), FOREIGN KEY ($COL_ID) REFERENCES $TABLA_COLECCIONES($COL_ID))"
+            "CREATE TABLE $TABLA_CARTASCOLECCION ($CARD_ID TEXT, $COL_ID INTEGER, $CC_AMOUNT INTEGER, $CC_LAST_MODIFIED INTEGER, PRIMARY KEY ($CARD_ID, $COL_ID), FOREIGN KEY ($CARD_ID) REFERENCES $TABLA_CARTAS($CARD_ID), FOREIGN KEY ($COL_ID) REFERENCES $TABLA_COLECCIONES($COL_ID))"
+        val createTablaLogMovimientos =
+            "CREATE TABLE $TABLA_LOG_MOVIMIENTOS ($LOG_ID INTEGER PRIMARY KEY AUTOINCREMENT, $COL_ID INTEGER NOT NULL, $CARD_ID TEXT NOT NULL, $LOG_CANTIDAD_ANTERIOR INTEGER NOT NULL, $LOG_CANTIDAD_NUEVA INTEGER NOT NULL, $LOG_TIMESTAMP INTEGER NOT NULL, FOREIGN KEY ($COL_ID) REFERENCES $TABLA_COLECCIONES($COL_ID), FOREIGN KEY ($CARD_ID) REFERENCES $TABLA_CARTAS($CARD_ID))"
 
         db!!.execSQL(createTablaSets)
         db.execSQL(createTablaCartas)
         db.execSQL(createTablaColecciones)
         db.execSQL(createTablaCartasColeccion)
+        db.execSQL(createTablaLogMovimientos)
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
-        db?.execSQL("DROP TABLE IF EXISTS $TABLA_CARTASCOLECCION")
-        db?.execSQL("DROP TABLE IF EXISTS  $TABLA_CARTAS")
-        db?.execSQL("DROP TABLE IF EXISTS $TABLA_COLECCIONES")
-        db?.execSQL("DROP TABLE IF EXISTS  $TABLA_SETS")
-
-        onCreate(db)
+        if (oldVersion < 2) {
+            db?.execSQL("ALTER TABLE $TABLA_CARTASCOLECCION ADD COLUMN $CC_LAST_MODIFIED INTEGER DEFAULT NULL")
+        }
+        if (oldVersion < 3) {
+            val createTablaLogMovimientos =
+                "CREATE TABLE $TABLA_LOG_MOVIMIENTOS ($LOG_ID INTEGER PRIMARY KEY AUTOINCREMENT, $COL_ID INTEGER NOT NULL, $CARD_ID TEXT NOT NULL, $LOG_CANTIDAD_ANTERIOR INTEGER NOT NULL, $LOG_CANTIDAD_NUEVA INTEGER NOT NULL, $LOG_TIMESTAMP INTEGER NOT NULL, FOREIGN KEY ($COL_ID) REFERENCES $TABLA_COLECCIONES($COL_ID), FOREIGN KEY ($CARD_ID) REFERENCES $TABLA_CARTAS($CARD_ID))"
+            db?.execSQL(createTablaLogMovimientos)
+        }
     }
 
     fun addSet(id: String?, name: String?, code: String?, db: SQLiteDatabase? = null): Boolean {
@@ -77,23 +82,75 @@ class DBHelper(context: Context?) :
             put(CC_AMOUNT, 0)
         }
 
-        return db.insert(TABLA_CARTASCOLECCION, null, values) != 1L
+        return db.insert(TABLA_CARTASCOLECCION, null, values) != -1L
     }
 
     fun addCardtoCollection(colIDq: Int?, cardIDq: String?, db: SQLiteDatabase, amount: Int): Boolean {
-        val query = """
-        UPDATE $TABLA_CARTASCOLECCION
-        SET $CC_AMOUNT = ?
-        WHERE $COL_ID = ? AND $CARD_ID = ?
-        """.trimIndent()
-
         return try {
-            db.execSQL(query, arrayOf(amount.toString(), colIDq.toString(), cardIDq))
+            // Obtener cantidad anterior
+            val previousAmount = getCardAmount(colIDq, cardIDq)
+            
+            // Actualizar cantidad y timestamp
+            val timestamp = if (amount > 0) System.currentTimeMillis() else null
+            val query = """
+            UPDATE $TABLA_CARTASCOLECCION
+            SET $CC_AMOUNT = ?, $CC_LAST_MODIFIED = ?
+            WHERE $COL_ID = ? AND $CARD_ID = ?
+            """.trimIndent()
+            db.execSQL(query, arrayOf(amount.toString(), timestamp?.toString(), colIDq.toString(), cardIDq))
+            
+            // Registrar en log si la cantidad cambió y la nueva cantidad es > 0
+            if (previousAmount != amount && amount > 0) {
+                addLogEntry(colIDq, cardIDq, previousAmount, amount, db)
+            }
+            
             true
         } catch (e: Exception) {
             Log.e("DB", "Error incrementando cantidad de carta", e)
             false
         }
+    }
+    
+    private fun addLogEntry(colIDq: Int?, cardIDq: String?, previousAmount: Int, newAmount: Int, db: SQLiteDatabase) {
+        val values = ContentValues().apply {
+            put(COL_ID, colIDq)
+            put(CARD_ID, cardIDq)
+            put(LOG_CANTIDAD_ANTERIOR, previousAmount)
+            put(LOG_CANTIDAD_NUEVA, newAmount)
+            put(LOG_TIMESTAMP, System.currentTimeMillis())
+        }
+        db.insert(TABLA_LOG_MOVIMIENTOS, null, values)
+    }
+    
+    fun cleanOldLogEntries() {
+        writableDatabase.use { db ->
+            try {
+                val query = """
+                DELETE FROM $TABLA_LOG_MOVIMIENTOS 
+                WHERE $LOG_ID NOT IN (
+                    SELECT $LOG_ID 
+                    FROM (
+                        SELECT $LOG_ID, 
+                               ROW_NUMBER() OVER (PARTITION BY $COL_ID ORDER BY $LOG_TIMESTAMP DESC) as rn
+                        FROM $TABLA_LOG_MOVIMIENTOS
+                    )
+                    WHERE rn <= 30
+                )
+                """.trimIndent()
+                db.execSQL(query)
+            } catch (e: Exception) {
+                Log.e("DB", "Error limpiando logs antiguos", e)
+            }
+        }
+    }
+    
+    fun getLogMovimientos(colIDq: Int?): Cursor {
+        val query = """
+        SELECT * FROM $TABLA_LOG_MOVIMIENTOS
+        WHERE $COL_ID = ?
+        ORDER BY $LOG_TIMESTAMP DESC
+        """.trimIndent()
+        return readableDatabase.rawQuery(query, arrayOf(colIDq.toString()))
     }
 
     fun getSetByID(setIDq: String?): Cursor {
@@ -176,14 +233,18 @@ class DBHelper(context: Context?) :
 
     fun removeCollection(colIDq: Int?) {
         val wdb = writableDatabase
-        val query = """
-            DELETE FROM $TABLA_CARTASCOLECCION WHERE $COL_ID = ?
+        val query1 = """
+            DELETE FROM $TABLA_LOG_MOVIMIENTOS WHERE $COL_ID = ?
         """.trimIndent()
         val query2 = """
+            DELETE FROM $TABLA_CARTASCOLECCION WHERE $COL_ID = ?
+        """.trimIndent()
+        val query3 = """
             DELETE FROM $TABLA_COLECCIONES WHERE $COL_ID = ?
         """.trimIndent()
-        wdb.execSQL(query, arrayOf(colIDq))
+        wdb.execSQL(query1, arrayOf(colIDq))
         wdb.execSQL(query2, arrayOf(colIDq))
+        wdb.execSQL(query3, arrayOf(colIDq))
     }
 
     fun getSetPercentage(setIDq: String?, colIDq: Int?): Int {
@@ -215,11 +276,12 @@ class DBHelper(context: Context?) :
 
     companion object {
         private const val DB_NAME: String = "dbcoleccion"
-        private const val DATABASE_VERSION = 1
+        private const val DATABASE_VERSION = 3
         const val TABLA_SETS = "Sets"
         const val TABLA_CARTAS = "Carta"
         const val TABLA_COLECCIONES = "Coleccion"
         const val TABLA_CARTASCOLECCION = "CartasColeccion"
+        const val TABLA_LOG_MOVIMIENTOS = "LogMovimientos"
         const val SET_ID = "setID"
         const val SET_NAME = "setName"
         const val SET_CODE = "setCode"
@@ -227,6 +289,11 @@ class DBHelper(context: Context?) :
         const val COL_ID = "colID"
         const val COL_NAME = "colName"
         const val CC_AMOUNT = "ccamount"
+        const val CC_LAST_MODIFIED = "cclastmodified"
+        const val LOG_ID = "logID"
+        const val LOG_CANTIDAD_ANTERIOR = "cantidadAnterior"
+        const val LOG_CANTIDAD_NUEVA = "cantidadNueva"
+        const val LOG_TIMESTAMP = "timestamp"
         val dbMutex = Mutex()
     }
 }
